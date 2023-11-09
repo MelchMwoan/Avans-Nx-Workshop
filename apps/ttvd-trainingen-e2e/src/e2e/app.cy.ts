@@ -1,6 +1,6 @@
 import { getGreeting } from '../support/app.po';
 
-describe('share-a-meal-web-e2e', () => {
+describe('ttvd-trainingen-e2e', () => {
   beforeEach(() => cy.visit('/'));
 
   it('should display welcome message', () => {

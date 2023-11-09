@@ -19,16 +19,16 @@
       "@avans-nx-workshop/backend/features": [
         "libs/backend/features/src/index.ts"
       ],
-      "@avans-nx-workshop/share-a-meal/common": [
-        "libs/share-a-meal/common/src/index.ts"
-      ],
-      "@avans-nx-workshop/share-a-meal/features": [
-        "libs/share-a-meal/features/src/index.ts"
-      ],
-      "@avans-nx-workshop/share-a-meal/ui": [
-        "libs/share-a-meal/ui/src/index.ts"
-      ],
       "@avans-nx-workshop/shared/api": ["libs/shared/api/src/index.ts"],
+      "@avans-nx-workshop/ttvd-trainingen/common": [
+        "libs/ttvd-trainingen/common/src/index.ts"
+      ],
+      "@avans-nx-workshop/ttvd-trainingen/features": [
+        "libs/ttvd-trainingen/features/src/index.ts"
+      ],
+      "@avans-nx-workshop/ttvd-trainingen/ui": [
+        "libs/ttvd-trainingen/ui/src/index.ts"
+      ],
       "@avans-nx-workshop/ui": ["libs/ui/src/index.ts"]
     }
   },

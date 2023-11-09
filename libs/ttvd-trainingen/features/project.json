@@ -1,7 +1,7 @@
 {
-  "name": "common",
+  "name": "features",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/share-a-meal/common/src",
+  "sourceRoot": "libs/ttvd-trainingen/features/src",
   "prefix": "avans-nx-workshop",
   "tags": [],
   "projectType": "library",
@@ -10,7 +10,7 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "libs/share-a-meal/common/jest.config.ts",
+        "jestConfig": "libs/ttvd-trainingen/features/jest.config.ts",
         "passWithNoTests": true
       },
       "configurations": {
@@ -25,8 +25,8 @@
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": [
-          "libs/share-a-meal/common/**/*.ts",
-          "libs/share-a-meal/common/**/*.html"
+          "libs/ttvd-trainingen/features/**/*.ts",
+          "libs/ttvd-trainingen/features/**/*.html"
         ]
       }
     }

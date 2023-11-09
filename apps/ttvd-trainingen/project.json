@@ -1,25 +1,25 @@
 {
-  "name": "share-a-meal-web",
+  "name": "ttvd-trainingen",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "prefix": "avans-nx-workshop",
-  "sourceRoot": "apps/share-a-meal-web/src",
+  "sourceRoot": "apps/ttvd-trainingen/src",
   "tags": [],
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:browser",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/apps/share-a-meal-web",
-        "index": "apps/share-a-meal-web/src/index.html",
-        "main": "apps/share-a-meal-web/src/main.ts",
+        "outputPath": "dist/apps/ttvd-trainingen",
+        "index": "apps/ttvd-trainingen/src/index.html",
+        "main": "apps/ttvd-trainingen/src/main.ts",
         "polyfills": ["zone.js"],
-        "tsConfig": "apps/share-a-meal-web/tsconfig.app.json",
+        "tsConfig": "apps/ttvd-trainingen/tsconfig.app.json",
         "assets": [
-          "apps/share-a-meal-web/src/favicon.ico",
-          "apps/share-a-meal-web/src/assets"
+          "apps/ttvd-trainingen/src/favicon.ico",
+          "apps/ttvd-trainingen/src/assets"
         ],
-        "styles": ["apps/share-a-meal-web/src/styles.css"],
+        "styles": ["apps/ttvd-trainingen/src/styles.css"],
         "scripts": []
       },
       "configurations": {
@@ -53,10 +53,10 @@
       "executor": "@angular-devkit/build-angular:dev-server",
       "configurations": {
         "production": {
-          "browserTarget": "share-a-meal-web:build:production"
+          "browserTarget": "ttvd-trainingen:build:production"
         },
         "development": {
-          "browserTarget": "share-a-meal-web:build:development"
+          "browserTarget": "ttvd-trainingen:build:development"
         }
       },
       "defaultConfiguration": "development"
@@ -64,7 +64,7 @@
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",
       "options": {
-        "browserTarget": "share-a-meal-web:build"
+        "browserTarget": "ttvd-trainingen:build"
       }
     },
     "lint": {
@@ -72,8 +72,8 @@
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": [
-          "apps/share-a-meal-web/**/*.ts",
-          "apps/share-a-meal-web/**/*.html"
+          "apps/ttvd-trainingen/**/*.ts",
+          "apps/ttvd-trainingen/**/*.html"
         ]
       }
     },
@@ -81,7 +81,7 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "apps/share-a-meal-web/jest.config.ts",
+        "jestConfig": "apps/ttvd-trainingen/jest.config.ts",
         "passWithNoTests": true
       },
       "configurations": {
@@ -94,7 +94,7 @@
     "serve-static": {
       "executor": "@nx/web:file-server",
       "options": {
-        "buildTarget": "share-a-meal-web:build"
+        "buildTarget": "ttvd-trainingen:build"
       }
     }
   }

@@ -3,7 +3,7 @@ export default {
   displayName: 'features',
   preset: '../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  coverageDirectory: '../../../coverage/libs/share-a-meal/features',
+  coverageDirectory: '../../../coverage/libs/ttvd-trainingen/features',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',

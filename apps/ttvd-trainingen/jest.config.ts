@@ -1,9 +1,9 @@
 /* eslint-disable */
 export default {
-  displayName: 'share-a-meal-web',
+  displayName: 'ttvd-trainingen',
   preset: '../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  coverageDirectory: '../../coverage/apps/share-a-meal-web',
+  coverageDirectory: '../../coverage/apps/ttvd-trainingen',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',
