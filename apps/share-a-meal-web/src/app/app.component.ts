@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { NxWelcomeComponent } from './nx-welcome.component';
+import { RouterLink, RouterLinkActive, RouterModule, RouterOutlet } from '@angular/router';
 import { FeaturesModule } from '@avans-nx-workshop/share-a-meal/features';
 import { UiModule } from '@avans-nx-workshop/share-a-meal/ui';
 import { initFlowbite } from 'flowbite';
 
 @Component({
   standalone: true,
-  imports: [NxWelcomeComponent, RouterModule, FeaturesModule, UiModule],
+  imports: [RouterModule, RouterOutlet, RouterLink, RouterLinkActive, FeaturesModule, UiModule],
   selector: 'avans-nx-workshop-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
