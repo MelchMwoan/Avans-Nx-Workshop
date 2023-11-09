@@ -2,13 +2,13 @@
 import { Routes } from '@angular/router';
 import { AboutComponent } from 'libs/share-a-meal/features/src/lib/about/about.component';
 import { MealListComponent } from 'libs/share-a-meal/features/src/lib/meal/meal-list/meal-list.component';
-import { AppComponent } from './app.component';
+import { HomeComponent } from 'libs/share-a-meal/features/src/lib/home/home.component';
 
 export const appRoutes: Routes = [
     {
         path: 'home',
         title: 'Home',
-        component: AppComponent
+        component: HomeComponent
     },
     {
         path: 'about',
