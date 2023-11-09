@@ -1,0 +1,6 @@
+<h1 class="text-3xl font-extrabold">User Details</h1>
+<p class="text-2xl">Name: {{user?.firstName}} {{user?.lastName}}</p>
+<p class="text-2xl">Email: {{user?.email}}</p>
+<p class="text-2xl">Telephone: {{user?.telephone}}</p>
+<p class="text-2xl">Birthdate: {{user?.birthDate | date : 'longDate' }}</p>
+<p>Id: {{user?.id}}</p>

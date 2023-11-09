@@ -3,9 +3,10 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { BackendFeaturesMealModule } from '@avans-nx-workshop/backend/features';
+import { BackendFeaturesUserModule } from '@avans-nx-workshop/backend/features';
 
 @Module({
-  imports: [BackendFeaturesMealModule],
+  imports: [BackendFeaturesMealModule, BackendFeaturesUserModule],
   controllers: [AppController],
   providers: [AppService],
 })

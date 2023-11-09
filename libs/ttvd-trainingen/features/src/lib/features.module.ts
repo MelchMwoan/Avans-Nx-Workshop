@@ -6,16 +6,29 @@ import { MealService } from './meal/meal.service';
 import { HttpClientModule } from '@angular/common/http';
 import { AboutComponent } from './about/about.component';
 import { HomeComponent } from './home/home.component';
+import { UserDetailComponent } from './user/user-detail/user-detail.component';
+import { UserListComponent } from './user/user-list/user-list.component';
+import { UserService } from './user/user.service';
+import { RouterModule } from '@angular/router'
 
 @NgModule({
-  imports: [CommonModule, HttpClientModule],
+  imports: [CommonModule, HttpClientModule, RouterModule],
   declarations: [
     MealListComponent,
     MealDetailComponent,
     AboutComponent,
     HomeComponent,
+    UserDetailComponent,
+    UserListComponent,
   ],
-  providers: [MealService],
-  exports: [MealListComponent, MealDetailComponent, AboutComponent, HomeComponent],
+  providers: [MealService, UserService],
+  exports: [
+    MealListComponent,
+    MealDetailComponent,
+    AboutComponent,
+    HomeComponent,
+    UserDetailComponent,
+    UserListComponent,
+  ],
 })
 export class FeaturesModule {}
