@@ -50,4 +50,14 @@ export class UserCreateComponent implements OnInit, OnDestroy {
       this.router.navigate(['/user/'+results.results.id])
     });
   }
+
+  deleteUser() {
+    console.log(`Delete: ${this.user?.id}`);
+    const userId = this.user?.id;
+    if(!userId) return console.log('User ID is not defined')
+    this.subscription = this.userService.delete(userId).subscribe((results) => {
+      console.log(`results: ${JSON.stringify(results)}`);
+      this.router.navigate(['/users'])
+    });
+  }
 }

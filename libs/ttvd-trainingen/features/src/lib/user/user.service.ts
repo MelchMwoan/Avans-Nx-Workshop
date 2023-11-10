@@ -74,6 +74,19 @@ export class UserService {
             )
     }
 
+    public delete(id: string | null, options?: any) {
+        console.log(`deleting`)
+        return this.http
+            .delete<ApiResponse<any>>(this.endpoint + '/' + id, {
+                ...options,
+                ...httpOptions,
+            })
+            .pipe(
+                tap(console.log),
+                catchError((error) => this.handleError(error, this.router))
+            );
+    }
+
     /**
      * Handle errors.
      */

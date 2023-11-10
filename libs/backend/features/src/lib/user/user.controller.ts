@@ -1,4 +1,4 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Delete } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Get, Param, Post, Body } from '@nestjs/common';
 import { IUser } from '@avans-nx-workshop/shared/api';
@@ -21,5 +21,10 @@ export class UserController {
     @Post('')
     create(@Body() data: CreateUserDto): IUser {
         return this.userService.create(data);
+    }
+
+    @Delete(':id')
+    delete(@Param('id') id: string): void {
+        this.userService.delete(id);
     }
 }
