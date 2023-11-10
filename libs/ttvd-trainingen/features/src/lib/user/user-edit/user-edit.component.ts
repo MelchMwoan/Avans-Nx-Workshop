@@ -1,17 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { UserService } from '../user.service';
 import { Subscription } from 'rxjs';
 import { IUser } from '@avans-nx-workshop/shared/api';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'avans-nx-workshop-user-create',
-  templateUrl: './user-create.component.html',
+  selector: 'avans-nx-workshop-user-edit',
+  templateUrl: './user-edit.component.html',
   styles: [],
 })
-export class UserCreateComponent {
+export class UserCreateComponent implements OnInit, OnDestroy {
+  user: IUser | null = null;
   subscription: Subscription | undefined = undefined;
+  routeSub: Subscription | undefined = undefined;
 
   createUserForm = this.formBuilder.group({
     firstName: ['', Validators.required],
@@ -22,7 +24,23 @@ export class UserCreateComponent {
     id: `user-${Math.floor(Math.random() * 10000)}`,
   })
 
-  constructor(private userService: UserService, private formBuilder: FormBuilder, private router: Router) {}
+  constructor(private userService: UserService, private formBuilder: FormBuilder, private router: Router, private route: ActivatedRoute) {}
+  ngOnInit(): void {
+    this.routeSub = this.route.params.subscribe(params => {
+      if(params['id']) {
+        console.log('edit')
+        this.subscription = this.userService.read(params['id']).subscribe((results) => {
+          console.log(`results: ${results}`);
+          this.user = results;
+        });
+      }
+    });    
+  }
+
+  ngOnDestroy(): void {
+      if(this.subscription) this.subscription.unsubscribe();
+      if(this.routeSub) this.routeSub.unsubscribe();
+  }
 
   onSubmit() {
     console.log(`Submitted: ${this.createUserForm}`);

@@ -5,6 +5,7 @@
         First Name
       </label>
       <input formControlName="firstName"
+      [ngModel]="user?.firstName"
         class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
         id="grid-first-name" type="text">
       <span *ngIf="createUserForm.get('firstName')?.invalid" class="text-sm text-red-500">
@@ -16,6 +17,7 @@
         Last Name
       </label>
       <input formControlName="lastName"
+      [ngModel]="user?.lastName"
         class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
         id="grid-last-name" type="text">
       <span *ngIf="createUserForm.get('lastName')?.invalid" class="text-sm text-red-500">
@@ -30,6 +32,7 @@
         Email
       </label>
       <input formControlName="email"
+      [ngModel]="user?.email"
         class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
         id="grid-email" type="email">
         <span *ngIf="createUserForm.get('email')?.invalid" class="text-sm text-red-500">
@@ -44,6 +47,7 @@
         Telephone
       </label>
       <input formControlName="telephone"
+      [ngModel]="user?.telephone"
         class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
         id="grid-tel" type="tel">
         <span *ngIf="createUserForm.get('telephone')?.invalid" class="text-sm text-red-500">
@@ -58,6 +62,7 @@
         Date
       </label>
       <input formControlName="birthDate"
+      [ngModel]="user?.birthDate | date:'yyyy-MM-dd'"
         class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
         id="grid-date" type="date">
         <span *ngIf="createUserForm.get('birthDate')?.invalid" class="text-sm text-red-500">
@@ -68,6 +73,7 @@
   <button class="button" type="submit" 
   [class.pointer-events-none]="createUserForm.invalid"
   [class.opacity-30]="createUserForm.invalid"
-    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" >Create
-    User</button>
+    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+    {{ user ? 'Edit User' : 'Create User' }}
+  </button>
 </form>
