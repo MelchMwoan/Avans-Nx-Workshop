@@ -4,19 +4,22 @@
       <label class="peer block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
         First Name
       </label>
-      <input formControlName="firstName"
+      <input formControlName="firstName"  
+      [ngClass]="{'border-red-500 bg-red-50 text-red-900': createUserForm.get('firstName')?.invalid}"
       [ngModel]="user?.firstName"
         class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
         id="grid-first-name" type="text">
       <span *ngIf="createUserForm.get('firstName')?.invalid" class="text-sm text-red-500">
         First Name is required
       </span>
+      <div></div>
     </div>
     <div class="w-full md:w-1/2 px-3">
       <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
         Last Name
       </label>
       <input formControlName="lastName"
+      [ngClass]="{'border-red-500 bg-red-50 text-red-900': createUserForm.get('lastName')?.invalid}"
       [ngModel]="user?.lastName"
         class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
         id="grid-last-name" type="text">
@@ -32,6 +35,7 @@
         Email
       </label>
       <input formControlName="email"
+      [ngClass]="{'border-red-500 bg-red-50 text-red-900': createUserForm.get('email')?.invalid}"
       [ngModel]="user?.email"
         class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
         id="grid-email" type="email">
@@ -47,6 +51,7 @@
         Telephone
       </label>
       <input formControlName="telephone"
+      [ngClass]="{'border-red-500 bg-red-50 text-red-900': createUserForm.get('telephone')?.invalid}"
       [ngModel]="user?.telephone"
         class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
         id="grid-tel" type="tel">
@@ -62,6 +67,7 @@
         Date
       </label>
       <input formControlName="birthDate"
+      [ngClass]="{'border-red-500 bg-red-50 text-red-900': createUserForm.get('birthDate')?.invalid}"
       [ngModel]="user?.birthDate | date:'yyyy-MM-dd'"
         class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
         id="grid-date" type="date">
