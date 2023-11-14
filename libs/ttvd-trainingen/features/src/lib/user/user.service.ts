@@ -61,16 +61,41 @@ export class UserService {
             );
     }
 
+    public create(user: IUser, options?: any) {
+        console.log(`creating user`);
+        return this.http
+            .post<ApiResponse<IUser>>(this.endpoint, user, {
+                ...options,
+                ...httpOptions,
+            })
+            .pipe(
+                tap(console.log),
+                catchError((error) => this.handleError(error, this.router))
+            )
+    }
+
+    public delete(id: string | null, options?: any) {
+        console.log(`deleting`)
+        return this.http
+            .delete<ApiResponse<any>>(this.endpoint + '/' + id, {
+                ...options,
+                ...httpOptions,
+            })
+            .pipe(
+                tap(console.log),
+                catchError((error) => this.handleError(error, this.router))
+            );
+    }
+
     /**
      * Handle errors.
      */
     public handleError(error: HttpErrorResponse, router: Router): Observable<any> {
         console.log('handleError in UserService', error);
         
-    if (error.status === 404) {
-        // Redirect to users page if resource not found
-        this.router.navigate(['/users']);
-    }
+        if (error.status === 404) {
+            this.router.navigate(['/users']);
+        }
         return throwError(() => new Error(error.message));
     }
 }

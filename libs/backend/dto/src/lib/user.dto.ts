@@ -27,6 +27,10 @@ export class CreateUserDto implements ICreateUser {
     @IsString()
     @IsNotEmpty()
     email!: string;
+    
+    @IsString()
+    @IsNotEmpty()
+    telephone!: string;
 
     @IsString()
     @IsNotEmpty()

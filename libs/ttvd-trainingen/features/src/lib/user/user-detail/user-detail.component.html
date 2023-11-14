@@ -1,6 +1,15 @@
-<h1 class="text-3xl font-extrabold">User Details</h1>
-<p class="text-2xl">Name: {{user?.firstName}} {{user?.lastName}}</p>
-<p class="text-2xl">Email: {{user?.email}}</p>
-<p class="text-2xl">Telephone: {{user?.telephone}}</p>
-<p class="text-2xl">Birthdate: {{user?.birthDate | date : 'longDate' }}</p>
-<p>Id: {{user?.id}}</p>
+<div class="container max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+    <div>
+        <h1 class="text-3xl font-extrabold">User Details</h1>
+        <p class="text-2xl">Name: {{user?.firstName}} {{user?.lastName}}</p>
+        <p class="text-2xl">Email: {{user?.email}}</p>
+        <p class="text-2xl">Telephone: {{user?.telephone}}</p>
+        <p class="text-2xl">Birthdate: {{user?.birthDate | date : 'longDate' }}</p>
+        <p>Id: {{user?.id}}</p>
+        <td class="py-4">
+            <a [routerLink]="['/user/edit', user?.id]"><button
+                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Edit
+                    User</button></a>
+        </td>
+    </div>
+</div>

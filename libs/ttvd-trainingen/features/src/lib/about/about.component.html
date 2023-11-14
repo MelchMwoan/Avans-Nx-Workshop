@@ -1,18 +1,59 @@
-<h1 class="text-center text-5xl font-extrabold">TTVD ProjectCasus</h1>
-<p>Dit is de casus voor het ATIx 23-24 individuele Client-side project</p>
+<div class="container max-w-screen-xl mx-auto p-4">
 
-<h2>Functionele Requirements</h2>
-<table class="table-auto">
-  <tr>
-    <th>Nr.</th>
-    <th>Titel</th>
-    <th>Beschrijving</th>
-    <th>Moscow</th>
-  </tr>
-  <tr>
-    <td>1</td>
-    <td>Requirement</td>
-    <td>Bladiebla</td>
-    <td>M</td>
-  </tr>
-</table>
+  <h1 class="text-4xl font-semibold my-2">TTVD ProjectCasus</h1>
+  <p>Dit is de casus voor het ATIx 23-24 individuele Client-side project.<br>
+    Ik heb als casus gekozen voor een inschrijfsysteem voor de trainingen van mijn eigen sportclub (tafeltennis). Deze suggestie stond ook bij de voorbeelden van het project, en toen bedacht ik me dat mijn sportclub een inschrijfsysteem heeft wat redelijk slecht werkt. Voor het vrijspelen is het goed, maar niet voor de trainingen. <br>
+Je kan je aanmelden, maar deze aanmelding kan je dan niet meer verwijderen. En je moet altijd een tegenstander invullen, maar bij de training heb je geen vaste tegenstander dus daar moet je altijd x invullen. <a href="https://ttvdordrecht.com/reserveren/" class="text-blue-600 underline">Competitie & Vrijspelen - TTV Dordrecht</a> <br>
+Dat werkt niet lekker, daarom ga ik een eigen systeem maken.
+<br><br>Je hebt verschillende soorten senioren trainingen, namelijk op 3 niveau’s: beginnend, gevorderd en de selectie. En daarnaast is er ook nog jeugdtraining op 2 niveaus. Namelijk beginnend en de selectie. Elke training heeft minstens 1 trainer, maar soms ook meerdere. Ook heeft elke training een maximaal aantal deelnemers want er passen maar een beperkt aantal tafels in de zalen. En ook een minimum aantal deelnemers, maar deze wordt bepaald door de trainer. Een training kan ook geannuleerd of gewijzigd worden wanneer een trainer bijvoorbeeld ziek is.
+<br><br>Een training bestaat uit meerdere opdrachten. Deze opdrachten hebben een naam, een difficulty (die is gekoppeld aan de niveaus voor trainingen) en een beschrijving waar de stappen in beschreven staan. De difficulty is enkel een indicatie, een beginner kan bijvoorbeeld gewoon deelnemen aan een training waar oefeningen inzitten die voor de selectie zijn ontworpen.
+<br><br>De club heeft momenteel 2 zalen, elke zaal heeft een ander formaat en dus een ander maximum aantal tafels. Eens in de zoveel tijd moet er onderhoud worden gepleegd in een zaal waardoor deze langere tijd niet beschikbaar is. Daarvoor heeft de zaal een boolean. Ook heeft elke zaal een naam, bijvoorbeeld “Kleine zaal”. Er kan natuurlijk maar 1 training tegelijkertijd gegeven worden.
+<br><br>Voor sommige trainingen moet een speler een minimale NTTB (Nederlandse TafelTennis Bond) rating hebben. Daarom moet deze informatie ook worden opgeslagen bij de spelers, voor de trainers maakt de rating niet uit. Niet elke speler speelt competitie, dus de rating is wel optioneel. En sommige spelers hebben wel een rating van vroeger maar zijn gestopt met spelen, daarom is er ook een boolean die zegt of deze speler momenteel competitie speelt. Elk lid van een club is geregistreerd bij de NTTB dus elke speler heeft ook een eigen bondsnummer (ook als diegene geen competitie speelt).
+  </p>
+
+  <h2 class="text-4xl font-semibold my-2">Functionele Requirements</h2>
+  <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+      <tr>
+        <th scope="col" class="px-6 py-3">Nr.</th>
+        <th scope="col" class="px-6 py-3">Titel</th>
+        <th scope="col" class="px-6 py-3">Beschrijving</th>
+        <th scope="col" class="px-6 py-3">Moscow</th>
+      </tr>
+    </thead>
+    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+      <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">1</td>
+      <td class="px-6 py-4">Requirement</td>
+      <td class="px-6 py-4">Bladiebla</td>
+      <td class="px-6 py-4">M</td>
+    </tr>
+  </table>
+
+  
+  <h2 class="text-4xl font-semibold my-2">Niet-Functionele Requirements</h2>
+  <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+      <tr>
+        <th scope="col" class="px-6 py-3">Nr.</th>
+        <th scope="col" class="px-6 py-3">Titel</th>
+        <th scope="col" class="px-6 py-3">Beschrijving</th>
+        <th scope="col" class="px-6 py-3">Moscow</th>
+      </tr>
+    </thead>
+    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+      <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">1</td>
+      <td class="px-6 py-4">UI</td>
+      <td class="px-6 py-4">De UI moet op zo'n manier zijn opgesteld dat het gebruiksvriendelijk is volgens de regels die in UxDesign-1 voorbij zijn gekomen</td>
+      <td class="px-6 py-4">M</td>
+    </tr>
+    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+      <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">2</td>
+      <td class="px-6 py-4">UI</td>
+      <td class="px-6 py-4">De UI moet op zo'n manier zijn opgesteld dat het gebruiksvriendelijk is volgens de regels die in UxDesign-1 voorbij zijn gekomen</td>
+      <td class="px-6 py-4">M</td>
+    </tr>
+  </table>
+  
+  <h2 class="text-4xl font-semibold">ERD</h2>
+  <img src="x">
+</div>
