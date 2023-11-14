@@ -31,14 +31,14 @@ jobs:
       - name: Upload angular app for deployment
         uses: actions/upload-artifact@v3
         with:
-          name: angular-app
-          path: angular-app-release.zip
+          name: ttvd-trainingen
+          path: ttvd-trainingen-release.zip
       
       - name: Upload nestjs api for deployment
         uses: actions/upload-artifact@v3
         with:
-          name: nestjs-api
-          path: nestjs-api-release.zip
+          name: data-api
+          path: data-api-release.zip
           
   deploy-angular:
     runs-on: ubuntu-latest
@@ -49,14 +49,14 @@ jobs:
       - name: Download angular artifact
         uses: actions/download-artifact@v3
         with:
-          name: angular-app
+          name: ttvd-trainingen
 
       - name: Unzip angular artifact
-        run: unzip angular-app-release.zip
+        run: unzip ttvd-trainingen-release.zip
 
       - name: Deploy to static azure web app
         id: builddeploy
-        uses: Azure/static-web-app-deploys@v1
+        uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.ANGULAR_PUBLISHTOKEN }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
@@ -76,10 +76,10 @@ jobs:
       - name: Download nestjs artifact
         uses: actions/download-artifact@v3
         with:
-          name: nestjs-api
+          name: data-api
 
       - name: Unzip angular artifact
-        run: unzip nestjs-api-release.zip
+        run: unzip data-api-release.zip
 
       - name: Deploy to azure web app
         id: deploy-to-webapp
