@@ -1,0 +1,91 @@
+name: Deployment to Azure
+on: 
+  push:
+    branches:
+      - main
+      - Deployment
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Node.js version
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+          
+      - name: npm install, build, and test
+        run: |
+          npm install
+          npm run build --if-present
+          npm run test --if-present
+
+      - name: Zip artifacts for deployment
+        run: |
+          echo ${GITHUB_WORKSPACE}
+          cd ${GITHUB_WORKSPACE}/dist/apps/backend-api/ && zip ${GITHUB_WORKSPACE}/backend-api-release.zip ./* -r
+          cd ${GITHUB_WORKSPACE}/dist/apps/frontend-app/ && zip ${GITHUB_WORKSPACE}/frontend-app-release.zip ./* -r
+
+      - name: Upload angular app for deployment
+        uses: actions/upload-artifact@v3
+        with:
+          name: angular-app
+          path: angular-app-release.zip
+      
+      - name: Upload nestjs api for deployment
+        uses: actions/upload-artifact@v3
+        with:
+          name: nestjs-api
+          path: nestjs-api-release.zip
+          
+  deploy-angular:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: 'Production'
+    steps:
+      - name: Download angular artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: angular-app
+
+      - name: Unzip angular artifact
+        run: unzip angular-app-release.zip
+
+      - name: Deploy to static azure web app
+        id: builddeploy
+        uses: Azure/static-web-app-deploys@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.ANGULAR_PUBLISHTOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: "upload"
+          app_location: "/"
+          api_location: ""
+          output_location: ""
+          
+  deploy-api:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+      - name: Download nestjs artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: nestjs-api
+
+      - name: Unzip angular artifact
+        run: unzip nestjs-api-release.zip
+
+      - name: Deploy to azure web app
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'NxWorkshop'
+          slot-name: 'Production'
+          publish-profile: ${{ secrets.NEXTJS_PUBLISHPROFILE }}
+          package: .
