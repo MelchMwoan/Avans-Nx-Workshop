@@ -20,6 +20,9 @@
         "libs/backend/features/src/index.ts"
       ],
       "@avans-nx-workshop/shared/api": ["libs/shared/api/src/index.ts"],
+      "@avans-nx-workshop/shared/util-env": [
+        "libs/shared/util-env/src/index.ts"
+      ],
       "@avans-nx-workshop/ttvd-trainingen/common": [
         "libs/ttvd-trainingen/common/src/index.ts"
       ],
