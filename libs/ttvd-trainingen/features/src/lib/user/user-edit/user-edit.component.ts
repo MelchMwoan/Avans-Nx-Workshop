@@ -44,6 +44,7 @@ export class UserCreateComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
+    if(this.createUserForm.invalid) return this.createUserForm.markAllAsTouched();
     if(this.user != null) {
       console.log(`Updating: ${this.createUserForm}`);
       const id = this.user.id;
