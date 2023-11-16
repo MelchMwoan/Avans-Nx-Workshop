@@ -4,6 +4,7 @@ import { map, catchError, tap } from 'rxjs/operators';
 import { ApiResponse, IUser } from '@avans-nx-workshop/shared/api';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { environment } from '@avans-nx-workshop/shared/util-env';
 
 /**
  * See https://angular.io/guide/http#requesting-data-from-a-server
@@ -19,7 +20,7 @@ export const httpOptions = {
  */
 @Injectable()
 export class UserService {
-    endpoint = 'http://localhost:3000/api/user';
+    endpoint = environment.dataApiUrl + '/user';
 
     constructor(private readonly http: HttpClient, private router: Router) {}
 
