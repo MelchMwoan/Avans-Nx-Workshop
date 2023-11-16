@@ -6,11 +6,11 @@
         First Name
       </label>
       <input formControlName="firstName"  
-      [ngClass]="{'border-red-500 bg-red-50 text-red-900': createUserForm.get('firstName')?.invalid}"
+      [ngClass]="{'border-red-500 bg-red-50 text-red-900': createUserForm.controls['firstName'].invalid && createUserForm.controls['firstName'].touched}"
       [ngModel]="user?.firstName"
         class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
         id="grid-first-name" type="text">
-      <span *ngIf="createUserForm.get('firstName')?.invalid" class="text-sm text-red-500">
+      <span *ngIf="createUserForm.controls['firstName'].invalid && createUserForm.controls['firstName'].touched" class="text-sm text-red-500">
         First Name is required
       </span>
       <div></div>
@@ -20,11 +20,11 @@
         Last Name
       </label>
       <input formControlName="lastName"
-      [ngClass]="{'border-red-500 bg-red-50 text-red-900': createUserForm.get('lastName')?.invalid}"
+      [ngClass]="{'border-red-500 bg-red-50 text-red-900': createUserForm.controls['lastName'].invalid && createUserForm.controls['lastName'].touched}"
       [ngModel]="user?.lastName"
         class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
         id="grid-last-name" type="text">
-      <span *ngIf="createUserForm.get('lastName')?.invalid" class="text-sm text-red-500">
+      <span *ngIf="createUserForm.controls['lastName'].invalid && createUserForm.controls['lastName'].touched" class="text-sm text-red-500">
         Last Name is required
       </span>
     </div>
@@ -36,11 +36,11 @@
         Email
       </label>
       <input formControlName="email"
-      [ngClass]="{'border-red-500 bg-red-50 text-red-900': createUserForm.get('email')?.invalid}"
+      [ngClass]="{'border-red-500 bg-red-50 text-red-900': createUserForm.controls['email'].invalid && createUserForm.controls['email'].touched}"
       [ngModel]="user?.email"
         class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
         id="grid-email" type="email">
-        <span *ngIf="createUserForm.get('email')?.invalid" class="text-sm text-red-500">
+        <span *ngIf="createUserForm.controls['email'].invalid && createUserForm.controls['email'].touched" class="text-sm text-red-500">
           Email is invalid
         </span>
     </div>
@@ -52,11 +52,11 @@
         Telephone
       </label>
       <input formControlName="telephone"
-      [ngClass]="{'border-red-500 bg-red-50 text-red-900': createUserForm.get('telephone')?.invalid}"
+      [ngClass]="{'border-red-500 bg-red-50 text-red-900': createUserForm.controls['telephone'].invalid && createUserForm.controls['telephone'].touched}"
       [ngModel]="user?.telephone"
         class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
         id="grid-tel" type="tel">
-        <span *ngIf="createUserForm.get('telephone')?.invalid" class="text-sm text-red-500">
+        <span *ngIf="createUserForm.controls['telephone'].invalid && createUserForm.controls['telephone'].touched" class="text-sm text-red-500">
           Tel is required
         </span>
     </div>
@@ -68,11 +68,11 @@
         Date
       </label>
       <input formControlName="birthDate"
-      [ngClass]="{'border-red-500 bg-red-50 text-red-900': createUserForm.get('birthDate')?.invalid}"
+      [ngClass]="{'border-red-500 bg-red-50 text-red-900': createUserForm.controls['birthDate'].invalid && createUserForm.controls['birthDate'].touched}"
       [ngModel]="user?.birthDate | date:'yyyy-MM-dd'"
         class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
         id="grid-date" type="date">
-        <span *ngIf="createUserForm.get('birthDate')?.invalid" class="text-sm text-red-500">
+        <span *ngIf="createUserForm.controls['birthDate'].invalid && createUserForm.controls['birthDate'].touched" class="text-sm text-red-500">
           Birth Date is required
         </span>
     </div>

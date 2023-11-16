@@ -32,6 +32,7 @@ export class UserCreateComponent implements OnInit, OnDestroy {
         this.subscription = this.userService.read(params['id']).subscribe((results) => {
           console.log(`results: ${JSON.stringify(results)}`);
           this.user = results;
+          this.createUserForm.markAllAsTouched();
         });
       }
     });    
