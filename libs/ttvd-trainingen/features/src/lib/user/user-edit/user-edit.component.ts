@@ -30,7 +30,7 @@ export class UserCreateComponent implements OnInit, OnDestroy {
       if(params['id']) {
         console.log('edit')
         this.subscription = this.userService.read(params['id']).subscribe((results) => {
-          console.log(`results: ${results}`);
+          console.log(`results: ${JSON.stringify(results)}`);
           this.user = results;
         });
       }
@@ -43,12 +43,22 @@ export class UserCreateComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    console.log(`Submitted: ${this.createUserForm}`);
-    const user: IUser = this.createUserForm.value as unknown as IUser;
-    this.subscription = this.userService.create(user).subscribe((results) => {
-      console.log(`results: ${JSON.stringify(results)}`);
-      this.router.navigate(['/user/'+results.results.id])
-    });
+    if(this.user != null) {
+      console.log(`Updating: ${this.createUserForm}`);
+      const id = this.user.id;
+      const user: IUser = this.createUserForm.value as unknown as IUser;
+      this.subscription = this.userService.update(id, user).subscribe((results) => {
+        console.log(`results: ${JSON.stringify(results)}`);
+        this.router.navigate(['/user/'+results.results.id])
+      });
+    } else {
+      console.log(`Creating: ${this.createUserForm}`);
+      const user: IUser = this.createUserForm.value as unknown as IUser;
+      this.subscription = this.userService.create(user).subscribe((results) => {
+        console.log(`results: ${JSON.stringify(results)}`);
+        this.router.navigate(['/user/'+results.results.id])
+      });
+    }
   }
 
   deleteUser() {

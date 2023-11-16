@@ -74,6 +74,19 @@ export class UserService {
             )
     }
 
+    public update(id: string, user: IUser, options?: any) {
+        console.log(`updating user`);
+        return this.http
+            .put<ApiResponse<IUser>>(this.endpoint + "/" + id, user, {
+                ...options,
+                ...httpOptions,
+            })
+            .pipe(
+                tap(console.log),
+                catchError((error) => this.handleError(error, this.router))
+            )
+    }
+    
     public delete(id: string | null, options?: any) {
         console.log(`deleting`)
         return this.http

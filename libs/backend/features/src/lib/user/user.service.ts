@@ -58,4 +58,20 @@ export class UserService {
         this.users$.next([...current, newUser]);
         return newUser;
     }
+
+    update(id: string, user: Pick<IUser, 'firstName' | 'telephone' | 'lastName' | 'email' | 'birthDate'>): IUser {
+        Logger.log('update', this.TAG);
+        const index = this.users$.value.findIndex((td) => td.id === id);
+        if(index !== -1) {
+            const newUser: IUser = {
+                ...this.users$.value[index],
+                ...user,
+                id: id
+            };
+            this.users$.value[index] = newUser;
+            return newUser;
+        } else {
+            throw new NotFoundException("User was not found");
+        }
+    }
 }

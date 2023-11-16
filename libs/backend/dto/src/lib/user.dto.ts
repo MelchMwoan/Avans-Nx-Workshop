@@ -64,4 +64,28 @@ export class UpsertUserDto implements IUpsertUser {
 }
 
 export class UpdateUserDto implements IUpdateUser {
+    @IsString()
+    @IsOptional()
+    @IsNotEmpty()
+    firstName!: string;
+
+    @IsString()
+    @IsOptional()
+    @IsNotEmpty()
+    lastName!: string;
+
+    @IsString()
+    @IsOptional()
+    @IsNotEmpty()
+    email!: string;
+    
+    @IsString()
+    @IsOptional()
+    @IsNotEmpty()
+    telephone!: string;
+
+    @IsString()
+    @IsOptional()
+    @IsNotEmpty()
+    birthDate!: Date;
 }
