@@ -4,6 +4,7 @@ import { UserService } from '../user.service';
 import { Subscription } from 'rxjs';
 import { IUser } from '@avans-nx-workshop/shared/api';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Modal, ModalInterface, ModalOptions } from 'flowbite';
 
 @Component({
   selector: 'avans-nx-workshop-user-edit',
@@ -34,6 +35,17 @@ export class UserCreateComponent implements OnInit, OnDestroy {
           this.user = results;
           this.createUserForm.markAllAsTouched();
         });
+        const $modalElement: HTMLElement | null = document.querySelector('#popup-modal');
+        const $modalOptions: ModalOptions = {
+          placement: 'bottom-right',
+          backdrop: 'dynamic',
+          closable: true
+        }
+        const modal: ModalInterface = new Modal($modalElement, $modalOptions);
+        document.querySelector('#deleteUserBtn')?.addEventListener('click', function() {modal.show()});
+        document.querySelector('#closeModalBtn')?.addEventListener('click', function() {modal.hide()});
+        document.querySelector('#confirmDeleteBtn')?.addEventListener('click', function() {modal.hide()});
+        document.querySelector('#cancelBtn')?.addEventListener('click', function() {modal.hide()});
       }
     });    
   }
