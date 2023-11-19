@@ -8,11 +8,24 @@ export interface IUser {
     email: string;
     telephone: string;
     birthDate: Date;
+    password: string;
+}
+
+export interface IPlayer {
+    user: IUser;
+    rating: number;
+    playsCompetition: boolean;
+    NTTBnumber: number;
+}
+
+export interface ITrainer {
+    user: IUser;
+    loan: number;
 }
 
 export type ICreateUser = Pick<
     IUser,
-    'firstName' | 'lastName' | 'email' | 'birthDate'
+    'firstName' | 'lastName' | 'email' | 'birthDate' | 'password'
 >;
 export type IUpdateUser = Partial<Omit<IUser, 'id'>>;
 export type IUpsertUser = IUser;

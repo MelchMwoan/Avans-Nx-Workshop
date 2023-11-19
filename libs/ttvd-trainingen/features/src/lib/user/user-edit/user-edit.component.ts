@@ -23,6 +23,7 @@ export class UserCreateComponent implements OnInit, OnDestroy {
       telephone: ['', [Validators.required]],
       birthDate: [null, [Validators.required]],
     id: `user-${Math.floor(Math.random() * 10000)}`,
+    password: ''
   })
 
   constructor(private userService: UserService, private formBuilder: FormBuilder, private router: Router, private route: ActivatedRoute) {}

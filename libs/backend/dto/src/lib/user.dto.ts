@@ -35,6 +35,9 @@ export class CreateUserDto implements ICreateUser {
     @IsString()
     @IsNotEmpty()
     birthDate!: Date;
+
+    @IsString()
+    password!: string;
 }
 
 export class UpsertUserDto implements IUpsertUser {
@@ -61,6 +64,9 @@ export class UpsertUserDto implements IUpsertUser {
     @IsDate()
     @IsNotEmpty()
     birthDate!: Date;
+
+    @IsString()
+    password!: string;
 }
 
 export class UpdateUserDto implements IUpdateUser {
@@ -88,4 +94,7 @@ export class UpdateUserDto implements IUpdateUser {
     @IsOptional()
     @IsNotEmpty()
     birthDate!: Date;
+    
+    @IsString()
+    password!: string;
 }

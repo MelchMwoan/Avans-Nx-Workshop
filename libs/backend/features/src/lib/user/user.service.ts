@@ -14,7 +14,44 @@ export class UserService {
             lastName: 'Willenborg',
             email: 'mw@test.nl',
             telephone: '06-12345678',
-            birthDate: new Date('06-08-2004')
+            birthDate: new Date('06-08-2004'),
+            password: ''
+        },
+        {
+            id: '1',
+            firstName: 'Henk',
+            lastName: 'Hoogerheiden',
+            email: 'hh@test.nl',
+            telephone: '06-11122233',
+            birthDate: new Date('12-10-2002'),
+            password: ''
+        },
+        {
+            id: '2',
+            firstName: 'Jan',
+            lastName: 'Hoogerheiden',
+            email: 'jh@test.nl',
+            telephone: '06-87654321',
+            birthDate: new Date('21-02-1998'),
+            password: ''
+        },
+        {
+            id: '3',
+            firstName: 'Paas',
+            lastName: 'Haas',
+            email: 'ph@test.nl',
+            telephone: '06-12332112',
+            birthDate: new Date('08-08-2008'),
+            password: ''
+        },
+        {
+            id: '4',
+            firstName: 'Pieter',
+            lastName: 'Klaassen',
+            email: 'pk@test.nl',
+            telephone: '06-99988877',
+            birthDate: new Date('09-08-2007'),
+            password: ''
         },
     ]);
 
@@ -53,6 +90,7 @@ export class UserService {
         // Use the incoming data, a randomized ID, and a default value of `false` to create the new to-do
         const newUser: IUser = {
             ...user,
+            password: '',
             id: `user-${Math.floor(Math.random() * 10000)}`,
         };
         this.users$.next([...current, newUser]);
