@@ -1,26 +1,30 @@
 import { Controller, Delete, Put } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Get, Param, Post, Body } from '@nestjs/common';
-import { IUser } from '@avans-nx-workshop/shared/api';
-import { CreateUserDto, UpdateUserDto } from '@avans-nx-workshop/backend/dto';
+import { IPlayer, ITrainer, IUser } from '@avans-nx-workshop/shared/api';
+import { CreatePlayerDto, CreateTrainerDto, UpdateUserDto } from '@avans-nx-workshop/backend/dto';
 
 @Controller('user')
 export class UserController {
     constructor(private userService: UserService) {}
 
     @Get('')
-    getAll(): IUser[] {
+    getAll(): (IPlayer | ITrainer)[] {
         return this.userService.getAll();
     }
 
     @Get(':id')
-    getOne(@Param('id') id: string): IUser {
+    getOne(@Param('id') id: string): (IPlayer | ITrainer) {
         return this.userService.getOne(id);
     }
 
     @Post('')
-    create(@Body() data: CreateUserDto): IUser {
-        return this.userService.create(data);
+    create(@Body() data: CreatePlayerDto | CreateTrainerDto): (IPlayer | ITrainer) {
+        if ('rating' in data) {
+            return this.userService.create(data);
+        } else {
+            return this.userService.create(data);
+        }
     }
 
     @Delete(':id')
@@ -29,7 +33,7 @@ export class UserController {
     }
 
     @Put(':id')
-    update(@Param('id') id: string, @Body() data: UpdateUserDto): IUser {
+    update(@Param('id') id: string, @Body() data: UpdateUserDto): (IPlayer | ITrainer) {
         return this.userService.update(id, data);
     }
 }

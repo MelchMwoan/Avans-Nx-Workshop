@@ -1,13 +1,14 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { IUser } from '@avans-nx-workshop/shared/api';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { IPlayer, ITrainer, IUser } from '@avans-nx-workshop/shared/api';
 import { BehaviorSubject } from 'rxjs';
 import { Logger } from '@nestjs/common';
+import { CreatePlayerDto, CreateTrainerDto } from '@avans-nx-workshop/backend/dto';
 
 @Injectable()
 export class UserService {
     TAG = 'UserService';
 
-    private users$ = new BehaviorSubject<IUser[]>([
+    private users$ = new BehaviorSubject<( IPlayer | ITrainer)[]>([
         {
             id: '0',
             firstName: 'Melchior',
@@ -15,7 +16,8 @@ export class UserService {
             email: 'mw@test.nl',
             telephone: '06-12345678',
             birthDate: new Date('06-08-2004'),
-            password: ''
+            password: '',
+            loan: 0
         },
         {
             id: '1',
@@ -24,7 +26,10 @@ export class UserService {
             email: 'hh@test.nl',
             telephone: '06-11122233',
             birthDate: new Date('12-10-2002'),
-            password: ''
+            password: '',
+            playsCompetition: true,
+            NTTBnumber: 1,
+            rating: 3
         },
         {
             id: '2',
@@ -33,7 +38,10 @@ export class UserService {
             email: 'jh@test.nl',
             telephone: '06-87654321',
             birthDate: new Date('21-02-1998'),
-            password: ''
+            password: '',
+            playsCompetition: false,
+            NTTBnumber: 3,
+            rating: 13
         },
         {
             id: '3',
@@ -42,7 +50,10 @@ export class UserService {
             email: 'ph@test.nl',
             telephone: '06-12332112',
             birthDate: new Date('08-08-2008'),
-            password: ''
+            password: '',
+            playsCompetition: true,
+            NTTBnumber: 2,
+            rating: 213
         },
         {
             id: '4',
@@ -51,16 +62,17 @@ export class UserService {
             email: 'pk@test.nl',
             telephone: '06-99988877',
             birthDate: new Date('09-08-2007'),
-            password: ''
+            password: '',
+            loan: 0
         },
     ]);
 
-    getAll(): IUser[] {
+    getAll(): (IPlayer | ITrainer)[] {
         Logger.log('getAll', this.TAG);
         return this.users$.value;
     }
 
-    getOne(id: string): IUser {
+    getOne(id: string): IPlayer | ITrainer {
         Logger.log(`getOne(${id})`, this.TAG);
         const user = this.users$.value.find((td) => td.id === id);
         if (!user) {
@@ -84,30 +96,53 @@ export class UserService {
      * return signature - we still want to respond with the complete
      * object
      */
-    create(user: Pick<IUser, 'firstName' | 'telephone' | 'lastName' | 'email' | 'birthDate'>): IUser {
+    create(user: Pick<IPlayer, 'firstName' | 'telephone' | 'lastName' | 'email' | 'birthDate' | 'rating' | 'NTTBnumber' | 'playsCompetition'> | Pick<ITrainer, 'firstName' | 'telephone' | 'lastName' | 'email' | 'birthDate' | 'loan'>): IPlayer | ITrainer {
         Logger.log('create', this.TAG);
         const current = this.users$.value;
         // Use the incoming data, a randomized ID, and a default value of `false` to create the new to-do
-        const newUser: IUser = {
-            ...user,
-            password: '',
-            id: `user-${Math.floor(Math.random() * 10000)}`,
-        };
-        this.users$.next([...current, newUser]);
-        return newUser;
+        if('rating' in user) {
+            const newUser: IPlayer = {
+                ...user,
+                password: '',
+                id: `user-${Math.floor(Math.random() * 10000)}`,
+            };
+            this.users$.next([...current, newUser]);
+            return newUser;
+        } else if('loan' in user) {
+            const newUser: ITrainer = {
+                ...user,
+                password: '',
+                id: `user-${Math.floor(Math.random() * 10000)}`,
+            };
+            this.users$.next([...current, newUser]);
+            return newUser;
+        } else {
+            throw new BadRequestException("Create either a Player (with rating, nttbnumer and playscompetition) or a Trainer (with loan)");
+
+        }
     }
 
-    update(id: string, user: Pick<IUser, 'firstName' | 'telephone' | 'lastName' | 'email' | 'birthDate'>): IUser {
+    update(id: string, user: Pick<IPlayer, 'firstName' | 'telephone' | 'lastName' | 'email' | 'birthDate'| 'rating' | 'NTTBnumber' | 'playsCompetition'> | Pick<ITrainer, 'firstName' | 'telephone' | 'lastName' | 'email' | 'birthDate' | 'loan'>): IPlayer | ITrainer {
         Logger.log('update', this.TAG);
         const index = this.users$.value.findIndex((td) => td.id === id);
         if(index !== -1) {
-            const newUser: IUser = {
-                ...this.users$.value[index],
-                ...user,
-                id: id
-            };
-            this.users$.value[index] = newUser;
-            return newUser;
+            if('rating' in user) {
+                const newUser: IPlayer = {
+                    ...this.users$.value[index] as IPlayer,
+                    ...user,
+                    id: id
+                };
+                this.users$.value[index] = newUser;
+                return newUser;
+            } else {
+                const newUser: ITrainer = {
+                    ...this.users$.value[index] as ITrainer,
+                    ...user,
+                    id: id
+                };
+                this.users$.value[index] = newUser;
+                return newUser;
+            }
         } else {
             throw new NotFoundException("User was not found");
         }

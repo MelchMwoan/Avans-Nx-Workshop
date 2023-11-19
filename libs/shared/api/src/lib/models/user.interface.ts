@@ -1,6 +1,7 @@
 import { Id } from './id.type';
 
 // Voor nu is onze user een string; later zullen we hier een User object van maken.
+//TODO: implement password through authentication
 export interface IUser {
     id: Id;
     firstName: string;
@@ -11,15 +12,13 @@ export interface IUser {
     password: string;
 }
 
-export interface IPlayer {
-    user: IUser;
+export interface IPlayer extends IUser{
     rating: number;
     playsCompetition: boolean;
     NTTBnumber: number;
 }
 
-export interface ITrainer {
-    user: IUser;
+export interface ITrainer extends IUser{
     loan: number;
 }
 

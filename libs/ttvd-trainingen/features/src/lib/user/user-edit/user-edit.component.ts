@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { UserService } from '../user.service';
 import { Subscription } from 'rxjs';
-import { IUser } from '@avans-nx-workshop/shared/api';
+import { IPlayer, ITrainer, IUser } from '@avans-nx-workshop/shared/api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Modal, ModalInterface, ModalOptions } from 'flowbite';
 
@@ -23,11 +23,32 @@ export class UserCreateComponent implements OnInit, OnDestroy {
       telephone: ['', [Validators.required]],
       birthDate: [null, [Validators.required]],
     id: `user-${Math.floor(Math.random() * 10000)}`,
-    password: ''
+    password: '',
+    type: ['', [Validators.required]],
+    rating: ['', []],
+    nttb: ['', []],
+    playsCompetition: ['', []]
   })
 
   constructor(private userService: UserService, private formBuilder: FormBuilder, private router: Router, private route: ActivatedRoute) {}
+
   ngOnInit(): void {
+    this.createUserForm.get('type')?.valueChanges.subscribe((type) => {
+      const playerControls = [this.createUserForm.get('rating'),this.createUserForm.get('nttb'),this.createUserForm.get('playsCompetition')]
+      switch(type) {
+        case 'player': {
+          playerControls?.forEach((control) => control?.setValidators([Validators.required]))
+          break;
+        }
+        default: {
+          playerControls?.forEach((control) => control?.clearValidators())
+          break;
+        }
+      } 
+
+      playerControls?.forEach((control) => control?.updateValueAndValidity())
+    })
+
     this.routeSub = this.route.params.subscribe(params => {
       if(params['id']) {
         console.log('edit')
@@ -67,12 +88,21 @@ export class UserCreateComponent implements OnInit, OnDestroy {
         this.router.navigate(['/user/'+results.results.id])
       });
     } else {
-      console.log(`Creating: ${this.createUserForm}`);
-      const user: IUser = this.createUserForm.value as unknown as IUser;
-      this.subscription = this.userService.create(user).subscribe((results) => {
-        console.log(`results: ${JSON.stringify(results)}`);
-        this.router.navigate(['/user/'+results.results.id])
-      });
+      if(this.createUserForm.get('type')?.value == 'player') {
+        console.log(`Creating player: ${this.createUserForm}`);
+        const user: IPlayer = this.createUserForm.value as unknown as IPlayer;
+        this.subscription = this.userService.create(user).subscribe((results) => {
+          console.log(`results: ${JSON.stringify(results)}`);
+          this.router.navigate(['/user/'+results.results.id])
+        });
+      } else {
+        console.log(`Creating trainer: ${this.createUserForm}`);
+        const user: ITrainer = this.createUserForm.value as unknown as ITrainer;
+        this.subscription = this.userService.create(user).subscribe((results) => {
+          console.log(`results: ${JSON.stringify(results)}`);
+          this.router.navigate(['/user/'+results.results.id])
+        });
+      }
     }
   }
 
