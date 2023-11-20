@@ -104,11 +104,29 @@ export class UserEditComponent implements OnInit, OnDestroy {
     if(this.user != null) {
       console.log(`Updating: ${this.createUserForm}`);
       const id = this.user.id;
-      const user: IUser = this.createUserForm.value as unknown as IUser;
-      this.subscription = this.userService.update(id, user).subscribe((results) => {
-        console.log(`results: ${JSON.stringify(results)}`);
-        this.router.navigate(['/user/'+results.results.id])
-      });
+      if(this.createUserForm.get('userType')?.value == 'player') {
+        const playsCompetition = Boolean(this.createUserForm.value.playsCompetition);
+        const user: CreateUserDto = {
+          userType: 'player',
+          player: {
+            ...removeNullProperties(this.createUserForm.value) as CreatePlayerDto,
+            playsCompetition
+          }
+        };
+        this.subscription = this.userService.update(id, user).subscribe((results) => {
+          console.log(`results: ${JSON.stringify(results)}`);
+          this.router.navigate(['/user/'+results.results.id])
+        });
+      } else {
+        const user: CreateUserDto = {
+          userType: 'trainer',
+          trainer: removeNullProperties(this.createUserForm.value) as CreateTrainerDto,
+        };
+        this.subscription = this.userService.update(id, user).subscribe((results) => {
+          console.log(`results: ${JSON.stringify(results)}`);
+          this.router.navigate(['/user/'+results.results.id])
+        });
+      }
     } else {
       if(this.createUserForm.get('userType')?.value == 'player') {
         console.log(`Creating player: ${JSON.stringify(this.createUserForm.value)}`);

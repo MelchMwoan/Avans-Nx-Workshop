@@ -5,7 +5,7 @@ import { ApiResponse, IPlayer, ITrainer, IUser } from '@avans-nx-workshop/shared
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from '@avans-nx-workshop/shared/util-env';
-import { CreateUserDto } from '@avans-nx-workshop/backend/dto';
+import { CreateUserDto, UpdateUserDto } from '@avans-nx-workshop/backend/dto';
 
 /**
  * See https://angular.io/guide/http#requesting-data-from-a-server
@@ -75,10 +75,10 @@ export class UserService {
             )
     }
 
-    public update(id: string, user: IUser, options?: any) {
+    public update(id: string, user: UpdateUserDto, options?: any) {
         console.log(`updating user`);
         return this.http
-            .put<ApiResponse<IUser>>(this.endpoint + "/" + id, user, {
+            .put<ApiResponse<(IPlayer | ITrainer)>>(this.endpoint + "/" + id, user, {
                 ...options,
                 ...httpOptions,
             })

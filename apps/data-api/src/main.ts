@@ -18,7 +18,9 @@ async function bootstrap() {
   const corsOptions: CorsOptions = {};
   app.enableCors(corsOptions);
 
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(new ValidationPipe({
+    whitelist: true
+  }));
 
   app.useGlobalInterceptors(new ApiResponseInterceptor())
 

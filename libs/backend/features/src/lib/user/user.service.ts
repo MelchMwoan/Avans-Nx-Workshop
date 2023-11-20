@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { IPlayer, ITrainer } from '@avans-nx-workshop/shared/api';
 import { BehaviorSubject } from 'rxjs';
 import { Logger } from '@nestjs/common';
-import { CreatePlayerDto, CreateTrainerDto, CreateUserDto } from '@avans-nx-workshop/backend/dto';
+import { CreatePlayerDto, CreateTrainerDto, CreateUserDto, UpdatePlayerDto, UpdateTrainerDto, UpdateUserDto } from '@avans-nx-workshop/backend/dto';
 
 @Injectable()
 export class UserService {
@@ -128,30 +128,45 @@ export class UserService {
                 errorMessage += ' Trainer details are required for user type "trainer".';
             }
             throw new BadRequestException(errorMessage);
-
         }
     }
 
-    update(id: string, user: Pick<IPlayer, 'firstName' | 'telephone' | 'lastName' | 'email' | 'birthDate'| 'rating' | 'NTTBnumber' | 'playsCompetition'> | Pick<ITrainer, 'firstName' | 'telephone' | 'lastName' | 'email' | 'birthDate' | 'loan'>): IPlayer | ITrainer {
+    update(id: string, user: UpdateUserDto): IPlayer | ITrainer {
         Logger.log('update', this.TAG);
         const index = this.users$.value.findIndex((td) => td.id === id);
         if(index !== -1) {
-            if('rating' in user) {
+            if(user.userType == 'player' && user.player) {
+                const {loan, ...filteredPlayer} = this.users$.value[index] as ITrainer;
                 const newUser: IPlayer = {
-                    ...this.users$.value[index] as IPlayer,
-                    ...user,
+                    ...filteredPlayer as IPlayer,
+                    ...user.player,
                     id: id
                 };
+                if(newUser.NTTBnumber == null || newUser.rating == null || newUser.playsCompetition == null) {throw new BadRequestException("Not all required player properties are present");}
+                this.users$.value[index] = newUser;
+                return newUser;
+            } else if (user.userType === 'trainer' && user.trainer) {
+                const {NTTBnumber, rating, playsCompetition, ...filteredPlayer} = this.users$.value[index] as IPlayer;
+                const newUser: ITrainer = {
+                    ...filteredPlayer as ITrainer,
+                    ...user.trainer,
+                    id: id
+                };
+                if(newUser.loan == null) {throw new BadRequestException("Not all required trainer properties are present");}
                 this.users$.value[index] = newUser;
                 return newUser;
             } else {
-                const newUser: ITrainer = {
-                    ...this.users$.value[index] as ITrainer,
-                    ...user,
-                    id: id
-                };
-                this.users$.value[index] = newUser;
-                return newUser;
+                let errorMessage = 'Invalid user type.';
+                if (user.userType !== 'player' && user.userType !== 'trainer') {
+                    errorMessage += ' User type must be either "player" or "trainer".';
+                }
+                if (user.userType === 'player' && !user.player) {
+                    errorMessage += ' Player details are required for user type "player".';
+                }
+                if (user.userType === 'trainer' && !user.trainer) {
+                    errorMessage += ' Trainer details are required for user type "trainer".';
+                }
+                throw new BadRequestException(errorMessage);
             }
         } else {
             throw new NotFoundException("User was not found");

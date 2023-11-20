@@ -11,7 +11,8 @@ import { Type } from 'class-transformer';
 import {
     ICreatePlayer,
     ICreateTrainer,
-    IUpdateUser,
+    IUpdatePlayer,
+    IUpdateTrainer,
     IUpsertUser,
 } from '@avans-nx-workshop/shared/api';
 
@@ -150,50 +151,101 @@ export class UpsertUserDto implements IUpsertUser {
     loan = 0;
 }
 
-export class UpdateUserDto implements IUpdateUser {
+export class UpdatePlayerDto implements IUpdatePlayer {
     @IsString()
-    @IsOptional()
     @IsNotEmpty()
+    @IsOptional()
     firstName!: string;
 
     @IsString()
-    @IsOptional()
     @IsNotEmpty()
+    @IsOptional()
     lastName!: string;
 
     @IsString()
-    @IsOptional()
     @IsNotEmpty()
+    @IsOptional()
     email!: string;
     
     @IsString()
-    @IsOptional()
     @IsNotEmpty()
+    @IsOptional()
     telephone!: string;
 
     @IsString()
-    @IsOptional()
     @IsNotEmpty()
+    @IsOptional()
     birthDate!: Date;
-    
+
     @IsString()
+    @IsOptional()
     password!: string;
-    
+
     // Additional properties for IPlayer
     @IsNumber()
+    @IsNotEmpty()
     @IsOptional()
-    rating?: number;
+    rating!: number;
 
     @IsNumber()
+    @IsNotEmpty()
     @IsOptional()
-    NTTBnumber?: number;
+    NTTBnumber!: number;
     
     @IsBoolean()
+    @IsNotEmpty()
     @IsOptional()
-    playsCompetition?: boolean;
+    playsCompetition!: boolean;
+}
+
+export class UpdateTrainerDto implements IUpdateTrainer {
+    @IsString()
+    @IsNotEmpty()
+    @IsOptional()
+    firstName!: string;
+
+    @IsString()
+    @IsNotEmpty()
+    @IsOptional()
+    lastName!: string;
+
+    @IsString()
+    @IsNotEmpty()
+    @IsOptional()
+    email!: string;
+    
+    @IsString()
+    @IsNotEmpty()
+    @IsOptional()
+    telephone!: string;
+
+    @IsString()
+    @IsNotEmpty()
+    @IsOptional()
+    birthDate!: Date;
+
+    @IsString()
+    @IsOptional()
+    password!: string;
 
     // Additional properties for ITrainer
     @IsNumber()
+    @IsNotEmpty()
     @IsOptional()
-    loan = 0;
+    loan!: number;
+}
+export class UpdateUserDto {
+    @IsString()
+    @IsNotEmpty()
+    userType!: 'player' | 'trainer';
+  
+    @ValidateNested()
+    @Type(() => UpdatePlayerDto)
+    @IsOptional()
+    player?: UpdatePlayerDto;
+  
+    @ValidateNested()
+    @Type(() => UpdateTrainerDto)
+    @IsOptional()
+    trainer?: UpdateTrainerDto;
 }
