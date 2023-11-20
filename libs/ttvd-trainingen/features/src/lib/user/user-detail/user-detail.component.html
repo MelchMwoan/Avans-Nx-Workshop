@@ -1,11 +1,36 @@
 <div class="container max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
     <div>
         <h1 class="text-4xl mb-3">User Details</h1>
+        <p><b>Role:</b>
+            <ng-container *ngIf="isTrainer(user!); else playerBlock">
+                Trainer
+            </ng-container>
+            <ng-template #playerBlock>
+                <ng-container *ngIf="!isTrainer(user!); else unknownBlock">
+                    Player
+                </ng-container>
+            </ng-template>
+            <ng-template #unknownBlock>
+                Unknown
+            </ng-template>
+        </p>
         <p><b>Name:</b> {{user?.firstName}} {{user?.lastName}}</p>
         <p><b>Email:</b> {{user?.email}}</p>
         <p><b>Telephone:</b> {{user?.telephone}}</p>
         <p><b>Birthdate:</b> {{user?.birthDate | date : 'longDate' }}</p>
         <p><b>Id:</b> {{user?.id}}</p>
+
+        <div *ngIf="isTrainer(user!)">
+            <h1 class="text-2xl">Trainer Details</h1>
+            <p><b>Loan:</b> {{user?.loan}}</p>
+        </div>
+        <div *ngIf="!isTrainer(user!)">
+            <h1 class="text-2xl">Player Details</h1>
+            <p><b>NTTB Number:</b> {{user?.NTTBnumber}}</p>
+            <p><b>Rating:</b> {{user?.rating}}</p>
+            <p><b>Plays Competition:</b> {{user?.playsCompetition}}</p>
+        </div>
+
         <div class="mt-3">
             <a [routerLink]="['/user/edit', user?.id]"><button
                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Edit
