@@ -105,9 +105,13 @@ export class UserEditComponent implements OnInit, OnDestroy {
     } else {
       if(this.createUserForm.get('userType')?.value == 'player') {
         console.log(`Creating player: ${JSON.stringify(this.createUserForm.value)}`);
+        const playsCompetition = Boolean(this.createUserForm.value.playsCompetition);
         const user: CreateUserDto = {
           userType: 'player',
-          player: removeNullProperties(this.createUserForm.value) as CreatePlayerDto,
+          player: {
+            ...removeNullProperties(this.createUserForm.value) as CreatePlayerDto,
+            playsCompetition
+          }
         };
         this.subscription = this.userService.create(user).subscribe((results) => {
           console.log(`results: ${JSON.stringify(results)}`);
