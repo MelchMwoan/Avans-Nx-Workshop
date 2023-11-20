@@ -69,6 +69,13 @@ export class UserEditComponent implements OnInit, OnDestroy {
         console.log('edit')
         this.subscription = this.userService.read(params['id']).subscribe((results) => {
           console.log(`results: ${JSON.stringify(results)}`);
+          if((results as ITrainer).loan != null) {
+            this.user = results as ITrainer
+            this.createUserForm.get('userType')?.setValue('trainer');
+          } else if((results as IPlayer).NTTBnumber != null) {
+            this.user = results as IPlayer;
+            this.createUserForm.get('userType')?.setValue('player');
+          }
           this.user = results;
           this.createUserForm.markAllAsTouched();
         });
@@ -139,6 +146,31 @@ export class UserEditComponent implements OnInit, OnDestroy {
       console.log(`results: ${JSON.stringify(results)}`);
       this.router.navigate(['/users'])
     });
+  }
+
+  getLoanValue(): number | null {
+    if (this.user && 'loan' in this.user) {
+      return (this.user as ITrainer).loan;
+    }
+    return null;
+  }
+  getNTTBValue(): number | null {
+    if (this.user && 'NTTBnumber' in this.user) {
+      return (this.user as IPlayer).NTTBnumber;
+    }
+    return null;
+  }
+  getRatingValue(): number | null {
+    if (this.user && 'rating' in this.user) {
+      return (this.user as IPlayer).rating;
+    }
+    return null;
+  }
+  getPlaysCompetitionValue(): boolean | null {
+    if (this.user && 'playsCompetition' in this.user) {
+      return (this.user as IPlayer).playsCompetition;
+    }
+    return null;
   }
 }
 function removeNullProperties(obj: any): any {

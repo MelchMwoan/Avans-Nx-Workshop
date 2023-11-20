@@ -44,7 +44,7 @@
                         Trainer
                       </ng-container>
                       <ng-template #playerBlock>
-                        <ng-container *ngIf="isPlayer(user); else unknownBlock">
+                        <ng-container *ngIf="!isTrainer(user); else unknownBlock">
                           Player
                         </ng-container>
                       </ng-template>

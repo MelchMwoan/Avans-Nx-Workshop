@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { IPlayer, ITrainer, IUser } from '@avans-nx-workshop/shared/api';
+import { IPlayer, ITrainer } from '@avans-nx-workshop/shared/api';
 import { UserService } from '../user.service';
 import { Subscription } from 'rxjs';
 
@@ -28,9 +28,5 @@ export class UserListComponent implements OnInit, OnDestroy {
 
   isTrainer(user: IPlayer | ITrainer): user is ITrainer {
     return 'loan' in user;
-  }
-  
-  isPlayer(user: IPlayer | ITrainer): user is IPlayer {
-    return !this.isTrainer(user);
   }
 }
