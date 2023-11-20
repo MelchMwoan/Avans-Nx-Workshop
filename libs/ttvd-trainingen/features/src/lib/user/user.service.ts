@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Observable, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { map, catchError, tap } from 'rxjs/operators';
-import { ApiResponse, IPlayer, ITrainer, IUser } from '@avans-nx-workshop/shared/api';
+import { ApiResponse, IPlayer, ITrainer } from '@avans-nx-workshop/shared/api';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from '@avans-nx-workshop/shared/util-env';

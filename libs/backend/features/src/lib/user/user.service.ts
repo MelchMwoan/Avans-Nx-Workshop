@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { IPlayer, ITrainer } from '@avans-nx-workshop/shared/api';
 import { BehaviorSubject } from 'rxjs';

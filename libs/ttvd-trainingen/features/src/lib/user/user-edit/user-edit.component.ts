@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { UserService } from '../user.service';
 import { Subscription } from 'rxjs';
-import { IPlayer, ITrainer, IUser } from '@avans-nx-workshop/shared/api';
+import { IPlayer, ITrainer } from '@avans-nx-workshop/shared/api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Modal, ModalInterface, ModalOptions } from 'flowbite';
 import { CreatePlayerDto, CreateTrainerDto, CreateUserDto } from '@avans-nx-workshop/backend/dto';
