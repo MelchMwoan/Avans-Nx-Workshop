@@ -22,7 +22,7 @@
 
         <div *ngIf="isTrainer(user!)">
             <h1 class="text-2xl">Trainer Details</h1>
-            <p><b>Loan:</b> {{user?.loan}}</p>
+            <p><b>Loan:</b> {{user.loan}}</p>
         </div>
         <div *ngIf="!isTrainer(user!)">
             <h1 class="text-2xl">Player Details</h1>
