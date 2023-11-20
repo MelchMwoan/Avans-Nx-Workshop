@@ -20,7 +20,6 @@ export class UserDetailComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.routeSub = this.route.params.subscribe(params => {
       this.subscription = this.userService.read(params['id']).subscribe((results) => {
-        console.log(`results: ${results}`);
         this.user = results;
       });
     });

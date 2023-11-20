@@ -16,7 +16,6 @@ export class MealListComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.subscription = this.mealService.list().subscribe((results) => {
-            console.log(`results: ${results}`);
             this.meals = results;
         });
     }

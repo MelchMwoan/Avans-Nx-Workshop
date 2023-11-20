@@ -67,9 +67,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
 
     this.routeSub = this.route.params.subscribe(params => {
       if(params['id']) {
-        console.log('edit')
         this.subscription = this.userService.read(params['id']).subscribe((results) => {
-          console.log(`results: ${JSON.stringify(results)}`);
           if((results as ITrainer).loan != null) {
             this.user = results as ITrainer
             this.createUserForm.get('userType')?.setValue('trainer');
@@ -115,7 +113,6 @@ export class UserEditComponent implements OnInit, OnDestroy {
           }
         };
         this.subscription = this.userService.update(id, user).subscribe((results) => {
-          console.log(`results: ${JSON.stringify(results)}`);
           this.router.navigate(['/user/'+results.results.id])
         });
       } else {
@@ -124,7 +121,6 @@ export class UserEditComponent implements OnInit, OnDestroy {
           trainer: removeNullProperties(this.createUserForm.value) as CreateTrainerDto,
         };
         this.subscription = this.userService.update(id, user).subscribe((results) => {
-          console.log(`results: ${JSON.stringify(results)}`);
           this.router.navigate(['/user/'+results.results.id])
         });
       }
@@ -140,7 +136,6 @@ export class UserEditComponent implements OnInit, OnDestroy {
           }
         };
         this.subscription = this.userService.create(user).subscribe((results) => {
-          console.log(`results: ${JSON.stringify(results)}`);
           this.router.navigate(['/user/'+results.results.id])
         });
       } else {
@@ -150,7 +145,6 @@ export class UserEditComponent implements OnInit, OnDestroy {
           trainer: removeNullProperties(this.createUserForm.value) as CreateTrainerDto,
         };
         this.subscription = this.userService.create(user).subscribe((results) => {
-          console.log(`results: ${JSON.stringify(results)}`);
           this.router.navigate(['/user/'+results.results.id])
         });
       }
@@ -162,7 +156,6 @@ export class UserEditComponent implements OnInit, OnDestroy {
     const userId = this.user?.id;
     if(!userId) return console.log('User ID is not defined')
     this.subscription = this.userService.delete(userId).subscribe((results) => {
-      console.log(`results: ${JSON.stringify(results)}`);
       this.router.navigate(['/users'])
     });
   }
