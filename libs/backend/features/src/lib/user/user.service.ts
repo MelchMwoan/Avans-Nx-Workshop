@@ -101,7 +101,7 @@ export class UserService {
         const current = this.users$.value;
         // Use the incoming data, a randomized ID, and a default value of `false` to create the new to-do
         if(user.userType == 'player' && user.player) {
-            const newPlayer: CreatePlayerDto = user.player!;
+            const newPlayer: CreatePlayerDto = user.player;
             const newUser: IPlayer = {
                 id: `user-${Math.floor(Math.random() * 10000)}`,
                 ...newPlayer
@@ -109,7 +109,7 @@ export class UserService {
             this.users$.next([...current, newUser]);
             return newUser;
         } else if(user.userType == 'trainer' && user.trainer) {
-            const newTrainer: CreateTrainerDto = user.trainer!;
+            const newTrainer: CreateTrainerDto = user.trainer;
             const newUser: ITrainer = {
                 id: `user-${Math.floor(Math.random() * 10000)}`,
                 ...newTrainer

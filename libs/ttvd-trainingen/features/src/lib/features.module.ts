@@ -10,7 +10,7 @@ import { UserDetailComponent } from './user/user-detail/user-detail.component';
 import { UserListComponent } from './user/user-list/user-list.component';
 import { UserService } from './user/user.service';
 import { RouterModule } from '@angular/router';
-import { UserCreateComponent } from './user/user-edit/user-edit.component';
+import { UserEditComponent } from './user/user-edit/user-edit.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
@@ -22,7 +22,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     HomeComponent,
     UserDetailComponent,
     UserListComponent,
-    UserCreateComponent,
+    UserEditComponent,
   ],
   providers: [MealService, UserService],
   exports: [
@@ -32,7 +32,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     HomeComponent,
     UserDetailComponent,
     UserListComponent,
-    UserCreateComponent
+    UserEditComponent
   ],
 })
 export class FeaturesModule {}

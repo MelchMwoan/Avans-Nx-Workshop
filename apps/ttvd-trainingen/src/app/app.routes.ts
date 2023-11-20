@@ -5,7 +5,7 @@ import { MealListComponent } from 'libs/ttvd-trainingen/features/src/lib/meal/me
 import { HomeComponent } from 'libs/ttvd-trainingen/features/src/lib/home/home.component';
 import { UserListComponent } from 'libs/ttvd-trainingen/features/src/lib/user/user-list/user-list.component';
 import { UserDetailComponent } from 'libs/ttvd-trainingen/features/src/lib/user/user-detail/user-detail.component';
-import { UserCreateComponent } from 'libs/ttvd-trainingen/features/src/lib/user/user-edit/user-edit.component';
+import { UserEditComponent } from 'libs/ttvd-trainingen/features/src/lib/user/user-edit/user-edit.component';
 
 export const appRoutes: Routes = [
   {
@@ -31,12 +31,12 @@ export const appRoutes: Routes = [
   {
     path: 'user/create',
     title: 'Create User',
-    component: UserCreateComponent
+    component: UserEditComponent
   },
   {
     path: 'user/edit/:id',
     title: 'Edit User',
-    component: UserCreateComponent
+    component: UserEditComponent
   },
   {
     path: 'user/:id',

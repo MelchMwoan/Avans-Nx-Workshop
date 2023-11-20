@@ -1,10 +1,11 @@
 import { Observable, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { map, catchError, tap } from 'rxjs/operators';
-import { ApiResponse, IUser } from '@avans-nx-workshop/shared/api';
+import { ApiResponse, IPlayer, ITrainer, IUser } from '@avans-nx-workshop/shared/api';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from '@avans-nx-workshop/shared/util-env';
+import { CreateUserDto } from '@avans-nx-workshop/backend/dto';
 
 /**
  * See https://angular.io/guide/http#requesting-data-from-a-server
@@ -29,16 +30,16 @@ export class UserService {
      *
      * @options options - optional URL queryparam options
      */
-    public list(options?: any): Observable<IUser[] | null> {
+    public list(options?: any): Observable<(IPlayer | ITrainer)[] | null> {
         console.log(`list ${this.endpoint}`);
 
         return this.http
-            .get<ApiResponse<IUser[]>>(this.endpoint, {
+            .get<ApiResponse<(IPlayer | ITrainer)[]>>(this.endpoint, {
                 ...options,
                 ...httpOptions,
             })
             .pipe(
-                map((response: any) => response.results as IUser[]),
+                map((response: any) => response.results as (IPlayer | ITrainer)[]),
                 tap(console.log),
                 catchError((error) => this.handleError(error, this.router))
             );
@@ -48,24 +49,23 @@ export class UserService {
      * Get a single item from the service.
      *
      */
-    public read(id: string | null, options?: any): Observable<IUser> {
+    public read(id: string | null, options?: any): Observable<(IPlayer | ITrainer)> {
         console.log(`read ${this.endpoint}`);
         return this.http
-            .get<ApiResponse<IUser>>(this.endpoint + '/' + id, {
+            .get<ApiResponse<(IPlayer | ITrainer)>>(this.endpoint + '/' + id, {
                 ...options,
                 ...httpOptions,
             })
             .pipe(
                 tap(console.log),
-                map((response: any) => response.results as IUser),
+                map((response: any) => response.results as (IPlayer | ITrainer)),
                 catchError((error) => this.handleError(error, this.router))
             );
     }
 
-    public create(user: IUser, options?: any) {
-        console.log(`creating user`);
+    public create(user: CreateUserDto, options?: any) {
         return this.http
-            .post<ApiResponse<IUser>>(this.endpoint, user, {
+            .post<ApiResponse<(IPlayer | ITrainer)>>(this.endpoint, user, {
                 ...options,
                 ...httpOptions,
             })
