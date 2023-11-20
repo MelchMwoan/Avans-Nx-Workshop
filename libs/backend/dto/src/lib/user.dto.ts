@@ -9,7 +9,8 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import {
-    ICreateUser,
+    ICreatePlayer,
+    ICreateTrainer,
     IUpdateUser,
     IUpsertUser,
 } from '@avans-nx-workshop/shared/api';
@@ -18,7 +19,7 @@ import {
  * Use the `Pick` utility type to extract only the properties we want for
  * new to-do items
  */
-class CreatePlayerDto implements ICreateUser {
+export class CreatePlayerDto implements ICreatePlayer {
     @IsString()
     @IsNotEmpty()
     firstName!: string;
@@ -56,7 +57,7 @@ class CreatePlayerDto implements ICreateUser {
     playsCompetition!: boolean;
 }
 
-class CreateTrainerDto implements ICreateUser {
+export class CreateTrainerDto implements ICreateTrainer {
     @IsString()
     @IsNotEmpty()
     firstName!: string;
@@ -86,7 +87,7 @@ class CreateTrainerDto implements ICreateUser {
     loan!: number;
 }
 
-export class CreateUserDto implements ICreateUser {
+export class CreateUserDto {
     @IsString()
     @IsNotEmpty()
     userType!: 'player' | 'trainer';

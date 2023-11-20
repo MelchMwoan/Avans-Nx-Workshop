@@ -1,8 +1,8 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { IPlayer, ITrainer, IUser } from '@avans-nx-workshop/shared/api';
+import { IPlayer, ITrainer } from '@avans-nx-workshop/shared/api';
 import { BehaviorSubject } from 'rxjs';
 import { Logger } from '@nestjs/common';
-import { CreatePlayerDto, CreateTrainerDto } from '@avans-nx-workshop/backend/dto';
+import { CreatePlayerDto, CreateTrainerDto, CreateUserDto } from '@avans-nx-workshop/backend/dto';
 
 @Injectable()
 export class UserService {
@@ -96,28 +96,38 @@ export class UserService {
      * return signature - we still want to respond with the complete
      * object
      */
-    create(user: Pick<IPlayer, 'firstName' | 'telephone' | 'lastName' | 'email' | 'birthDate' | 'rating' | 'NTTBnumber' | 'playsCompetition'> | Pick<ITrainer, 'firstName' | 'telephone' | 'lastName' | 'email' | 'birthDate' | 'loan'>): IPlayer | ITrainer {
+    create(user: CreateUserDto): IPlayer | ITrainer {
         Logger.log('create', this.TAG);
         const current = this.users$.value;
         // Use the incoming data, a randomized ID, and a default value of `false` to create the new to-do
-        if('rating' in user) {
+        if(user.userType == 'player' && user.player) {
+            const newPlayer: CreatePlayerDto = user.player!;
             const newUser: IPlayer = {
-                ...user,
-                password: '',
                 id: `user-${Math.floor(Math.random() * 10000)}`,
+                ...newPlayer
             };
             this.users$.next([...current, newUser]);
             return newUser;
-        } else if('loan' in user) {
+        } else if(user.userType == 'trainer' && user.trainer) {
+            const newTrainer: CreateTrainerDto = user.trainer!;
             const newUser: ITrainer = {
-                ...user,
-                password: '',
                 id: `user-${Math.floor(Math.random() * 10000)}`,
+                ...newTrainer
             };
             this.users$.next([...current, newUser]);
             return newUser;
         } else {
-            throw new BadRequestException("Create either a Player (with rating, nttbnumer and playscompetition) or a Trainer (with loan)");
+            let errorMessage = 'Invalid user type.';
+            if (user.userType !== 'player' && user.userType !== 'trainer') {
+                errorMessage += ' User type must be either "player" or "trainer".';
+            }
+            if (user.userType === 'player' && !user.player) {
+                errorMessage += ' Player details are required for user type "player".';
+            }
+            if (user.userType === 'trainer' && !user.trainer) {
+                errorMessage += ' Trainer details are required for user type "trainer".';
+            }
+            throw new BadRequestException(errorMessage);
 
         }
     }

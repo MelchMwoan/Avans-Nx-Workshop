@@ -22,9 +22,8 @@ export interface ITrainer extends IUser{
     loan: number;
 }
 
-export type ICreateUser = Pick<
-    IUser,
-    'firstName' | 'lastName' | 'email' | 'birthDate' | 'password'
->;
+export type ICreatePlayer = Pick<IPlayer, 'firstName' | 'lastName' | 'email' | 'birthDate' | 'password' | 'rating' | 'NTTBnumber' | 'playsCompetition'>;
+export type ICreateTrainer = Pick<ITrainer, 'firstName' | 'lastName' | 'email' | 'birthDate' | 'password' | 'loan'>;
+export type ICreateUser = ICreatePlayer | ICreateTrainer;
 export type IUpdateUser = Partial<Omit<IUser, 'id'>>;
 export type IUpsertUser = IUser;

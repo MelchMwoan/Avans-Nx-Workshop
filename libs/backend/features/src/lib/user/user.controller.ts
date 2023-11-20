@@ -1,8 +1,8 @@
 import { Controller, Delete, Put } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Get, Param, Post, Body } from '@nestjs/common';
-import { IPlayer, ITrainer, IUser } from '@avans-nx-workshop/shared/api';
-import { CreatePlayerDto, CreateTrainerDto, UpdateUserDto } from '@avans-nx-workshop/backend/dto';
+import { IPlayer, ITrainer } from '@avans-nx-workshop/shared/api';
+import { CreateUserDto, UpdateUserDto } from '@avans-nx-workshop/backend/dto';
 
 @Controller('user')
 export class UserController {
@@ -19,12 +19,8 @@ export class UserController {
     }
 
     @Post('')
-    create(@Body() data: CreatePlayerDto | CreateTrainerDto): (IPlayer | ITrainer) {
-        if ('rating' in data) {
-            return this.userService.create(data);
-        } else {
-            return this.userService.create(data);
-        }
+    create(@Body() data: CreateUserDto): (IPlayer | ITrainer) {
+        return this.userService.create(data);
     }
 
     @Delete(':id')
