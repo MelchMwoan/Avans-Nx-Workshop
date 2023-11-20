@@ -14,6 +14,9 @@
                     Name
                 </th>
                 <th scope="col" class="px-6 py-3">
+                    Role
+                </th>
+                <th scope="col" class="px-6 py-3">
                     Email
                 </th>
                 <th scope="col" class="px-6 py-3">
@@ -35,6 +38,19 @@
                 </th>
                 <td class="px-6 py-4">
                     {{ user.firstName }} {{ user.lastName}}
+                </td>
+                <td class="px-6 py-4">
+                    <ng-container *ngIf="isTrainer(user); else playerBlock">
+                        Trainer
+                      </ng-container>
+                      <ng-template #playerBlock>
+                        <ng-container *ngIf="isPlayer(user); else unknownBlock">
+                          Player
+                        </ng-container>
+                      </ng-template>
+                      <ng-template #unknownBlock>
+                        Unknown
+                      </ng-template>
                 </td>
                 <td class="px-6 py-4">
                     {{ user.email}}

@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { IUser } from '@avans-nx-workshop/shared/api';
+import { IPlayer, ITrainer, IUser } from '@avans-nx-workshop/shared/api';
 import { UserService } from '../user.service';
 import { Subscription } from 'rxjs';
 
@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs';
   styles: [],
 })
 export class UserListComponent implements OnInit, OnDestroy {
-  users: IUser[] | null = null;
+  users: (IPlayer | ITrainer)[] | null = null;
   subscription: Subscription | undefined = undefined;
 
   constructor(private userService: UserService) {}
@@ -26,4 +26,11 @@ export class UserListComponent implements OnInit, OnDestroy {
       if(this.subscription) this.subscription.unsubscribe();
   }
 
+  isTrainer(user: IPlayer | ITrainer): user is ITrainer {
+    return 'loan' in user;
+  }
+  
+  isPlayer(user: IPlayer | ITrainer): user is IPlayer {
+    return !this.isTrainer(user);
+  }
 }
