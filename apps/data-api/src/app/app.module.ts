@@ -5,9 +5,10 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule, BackendFeaturesMealModule } from '@avans-nx-workshop/backend/features';
 import { BackendFeaturesUserModule } from '@avans-nx-workshop/backend/features';
+import { environment } from '@avans-nx-workshop/shared/util-env';
 
 @Module({
-  imports: [BackendFeaturesMealModule, BackendFeaturesUserModule, MongooseModule.forRoot('mongodb://127.0.0.1:27017/ttvd'), AuthModule],
+  imports: [BackendFeaturesMealModule, BackendFeaturesUserModule, MongooseModule.forRoot(environment.databaseUrl), AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })
