@@ -96,7 +96,7 @@ export class UserService {
     return createdUser as ITrainer | IPlayer;
   }
 
-  async update(identifier: string, user: UpdateUserDto): Promise<IPlayer | ITrainer> {
+  async update(identifier: string, user: UpdateUserDto, req: any): Promise<IPlayer | ITrainer> {
     Logger.log('update', this.TAG);
     try {
         const existingUser = await this.userModel.findOne({ email: identifier});
@@ -104,6 +104,7 @@ export class UserService {
             Logger.warn('User not found', this.TAG);
             throw new NotFoundException('User was not found');
         }
+        if(req['user'].email != existingUser.email) throw new UnauthorizedException("You are not the owner of this entity");
         let updatedUser: IPlayer | ITrainer;
         if (user.userType === 'player' && user.player) {
             existingUser.set({

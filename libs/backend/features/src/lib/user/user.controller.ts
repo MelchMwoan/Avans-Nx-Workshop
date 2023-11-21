@@ -36,8 +36,8 @@ export class UserController {
     }
 
     @Put(':id')
-    @Public()
-    async update(@Param('id') id: string, @Body() data: UpdateUserDto): Promise<(IPlayer | ITrainer)> {
-        return await this.userService.update(id, data);
+    @UseGuards(AuthGuard)
+    async update(@Param('id') id: string, @Body() data: UpdateUserDto, @Request() req: any): Promise<(IPlayer | ITrainer)> {
+        return await this.userService.update(id, data, req);
     }
 }
