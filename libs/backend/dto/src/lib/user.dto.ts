@@ -123,7 +123,7 @@ export class UpsertUserDto implements IUpsertUser {
 
     @IsString()
     @IsNotEmpty()
-    id!: string;
+    id!: number;
 
     @IsDate()
     @IsNotEmpty()

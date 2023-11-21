@@ -6,6 +6,8 @@ import { HomeComponent } from 'libs/ttvd-trainingen/features/src/lib/home/home.c
 import { UserListComponent } from 'libs/ttvd-trainingen/features/src/lib/user/user-list/user-list.component';
 import { UserDetailComponent } from 'libs/ttvd-trainingen/features/src/lib/user/user-detail/user-detail.component';
 import { UserEditComponent } from 'libs/ttvd-trainingen/features/src/lib/user/user-edit/user-edit.component';
+import { LoginComponent } from 'libs/ttvd-trainingen/features/src/lib/auth/login/login.component';
+import { RegisterComponent } from 'libs/ttvd-trainingen/features/src/lib/auth/register/register.component';
 
 export const appRoutes: Routes = [
   {
@@ -42,6 +44,16 @@ export const appRoutes: Routes = [
     path: 'user/:id',
     title: 'User Details',
     component: UserDetailComponent
+  },
+  {
+    path: 'login',
+    title: 'Login',
+    component: LoginComponent
+  },
+  {
+    path: 'register',
+    title: 'Register',
+    component: RegisterComponent
   },
   {
     path: '**',

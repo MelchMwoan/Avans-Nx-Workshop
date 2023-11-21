@@ -24,7 +24,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
     email: ['', [Validators.required, Validators.email]],
       telephone: ['', [Validators.required]],
       birthDate: [null, [Validators.required]],
-    id: `user-${Math.floor(Math.random() * 10000)}`,
+    id: Math.floor(Math.random() * 10000),
     password: '',
     userType: ['', [Validators.required]],
     rating: [null, []],

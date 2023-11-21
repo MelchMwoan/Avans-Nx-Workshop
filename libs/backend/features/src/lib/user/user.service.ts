@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import * as bcrypt from 'bcrypt';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { IPlayer, ITrainer } from '@avans-nx-workshop/shared/api';
 import { BehaviorSubject } from 'rxjs';
@@ -16,7 +17,7 @@ export class UserService {
 
     private users$ = new BehaviorSubject<( IPlayer | ITrainer)[]>([
         {
-            id: '0',
+            id: 0,
             firstName: 'Melchior',
             lastName: 'Willenborg',
             email: 'mw@test.nl',
@@ -26,19 +27,19 @@ export class UserService {
             loan: 0
         },
         {
-            id: '1',
+            id: 1,
             firstName: 'Henk',
             lastName: 'Hoogerheiden',
             email: 'hh@test.nl',
             telephone: '06-11122233',
             birthDate: new Date('12-10-2002'),
-            password: '',
+            password: 'Test123!',
             playsCompetition: true,
             NTTBnumber: 1,
             rating: 3
         },
         {
-            id: '2',
+            id: 2,
             firstName: 'Jan',
             lastName: 'Hoogerheiden',
             email: 'jh@test.nl',
@@ -50,7 +51,7 @@ export class UserService {
             rating: 13
         },
         {
-            id: '3',
+            id: 3,
             firstName: 'Paas',
             lastName: 'Haas',
             email: 'ph@test.nl',
@@ -62,7 +63,7 @@ export class UserService {
             rating: 213
         },
         {
-            id: '4',
+            id: 4,
             firstName: 'Pieter',
             lastName: 'Klaassen',
             email: 'pk@test.nl',
@@ -75,19 +76,22 @@ export class UserService {
 
     getAll(): (IPlayer | ITrainer)[] {
         Logger.log('getAll', this.TAG);
+        Logger.log(`users$: ${JSON.stringify(this.users$.value)}`, this.TAG);
         return this.users$.value;
     }
 
-    getOne(id: string): IPlayer | ITrainer {
-        Logger.log(`getOne(${id})`, this.TAG);
-        const user = this.users$.value.find((td) => td.id === id);
+    getOne(identifier: string): IPlayer | ITrainer {
+        Logger.log(`getOne(${identifier})`, this.TAG);
+        console.log(identifier) 
+        const user = this.users$.value.find((td) => td.id == parseInt(identifier) || td.email == identifier);
+        console.log(user)
         if (!user) {
             throw new NotFoundException(`User could not be found!`);
         }
         return user;
     }
 
-    delete(id: string): void {
+    delete(id: number): void {
         Logger.log(`Delete(${id})`, this.TAG);
         const userIndex = this.users$.value.findIndex((td) => td.id === id);
 
@@ -102,7 +106,7 @@ export class UserService {
      * return signature - we still want to respond with the complete
      * object
      */
-    create(user: CreateUserDto): IPlayer | ITrainer {
+    async create(user: CreateUserDto): Promise<IPlayer | ITrainer> {
         Logger.log('create', this.TAG);
         const current = this.users$.value;
         // TODO: implement database
@@ -111,9 +115,10 @@ export class UserService {
             // createdUser.save();
             const newPlayer: CreatePlayerDto = user.player;
             const newUser: IPlayer = {
-                id: `user-${Math.floor(Math.random() * 10000)}`,
+                id: Math.floor(Math.random() * 10000),
                 ...newPlayer
             };
+            newUser.password = await this.generateHashedPassword(newUser.password!);
             this.users$.next([...current, newUser]);
             return newUser;
         } else if(user.userType == 'trainer' && user.trainer) {
@@ -121,7 +126,7 @@ export class UserService {
             // createdUser.save();
             const newTrainer: CreateTrainerDto = user.trainer;
             const newUser: ITrainer = {
-                id: `user-${Math.floor(Math.random() * 10000)}`,
+                id: Math.floor(Math.random() * 10000),
                 ...newTrainer
             };
             this.users$.next([...current, newUser]);
@@ -141,7 +146,7 @@ export class UserService {
         }
     }
 
-    update(id: string, user: UpdateUserDto): IPlayer | ITrainer {
+    update(id: number, user: UpdateUserDto): IPlayer | ITrainer {
         Logger.log('update', this.TAG);
         const index = this.users$.value.findIndex((td) => td.id === id);
         if(index !== -1) {
@@ -181,5 +186,14 @@ export class UserService {
         } else {
             throw new NotFoundException("User was not found");
         }
+    }
+
+    async generateHashedPassword(plainTextPassword: string): Promise<string> {
+        const saltOrRounds = 10;
+        return await bcrypt.hash(plainTextPassword, saltOrRounds);
+    }
+
+    async validatePassword(givenPassword: string, passwordHash: string): Promise<boolean> {
+        return await bcrypt.compare(givenPassword, passwordHash);
     }
 }

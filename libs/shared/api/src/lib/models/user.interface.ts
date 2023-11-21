@@ -9,7 +9,8 @@ export interface IUser {
     email: string;
     telephone: string;
     birthDate: Date;
-    password: string;
+    password?: string;
+    token?: string;
 }
 
 export interface IPlayer extends IUser{
