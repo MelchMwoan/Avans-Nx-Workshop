@@ -5,6 +5,7 @@ import {
   ConflictException,
   Injectable,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { IPlayer, ITrainer } from '@avans-nx-workshop/shared/api';
 import { BehaviorSubject } from 'rxjs';
@@ -45,16 +46,15 @@ export class UserService {
     return user as IPlayer | ITrainer;
   }
 
-  async delete(identifier: string): Promise<void> {
+  async delete(identifier: string, req: any): Promise<void> {
     Logger.log(`Delete(${identifier})`, this.TAG);
     try {
+      const user = await this.userModel.findOne({ email: identifier })
+      if (!user) throw new NotFoundException(`User could not be found!`);
+      if(req['user'].email != user?.email) throw new UnauthorizedException("You are not the owner of this entity");
       const result = await this.userModel
         .deleteOne({ email: identifier })
         .exec();
-      if (result.deletedCount === 0) {
-        Logger.warn('No user found', this.TAG);
-        throw new NotFoundException(`User could not be found!`);
-      }
       Logger.log(`User deleted successfully`, this.TAG);
     } catch (error) {
       Logger.error(`Error deleting user: ${error}`, this.TAG);

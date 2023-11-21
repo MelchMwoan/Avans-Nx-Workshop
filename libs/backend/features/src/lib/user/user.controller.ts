@@ -1,9 +1,10 @@
-import { Controller, Delete, Put } from '@nestjs/common';
+import { Controller, Delete, Put, Request, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Get, Param, Post, Body } from '@nestjs/common';
 import { IPlayer, ITrainer } from '@avans-nx-workshop/shared/api';
 import { CreateUserDto, UpdateUserDto } from '@avans-nx-workshop/backend/dto';
 import { Public } from '../auth/decorators/public.decorator';
+import { AuthGuard } from '../auth/auth.guard';
 
 @Controller('user')
 //TODO: Remove public where not needed
@@ -29,9 +30,9 @@ export class UserController {
     }
 
     @Delete(':id')
-    @Public()
-    delete(@Param('id') id: string): void {
-        this.userService.delete(id);
+    @UseGuards(AuthGuard)
+    async delete(@Param('id') id: string, @Request() req: any): Promise<void> {
+        return await this.userService.delete(id, req);
     }
 
     @Put(':id')

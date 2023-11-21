@@ -1,6 +1,7 @@
-import { Injectable, Logger, UnauthorizedException } from "@nestjs/common";
+import { ExecutionContext, Injectable, Logger, UnauthorizedException } from "@nestjs/common";
 import { UserService } from "../user/user.service";
 import { JwtService } from '@nestjs/jwt';
+import { IUser } from "@avans-nx-workshop/shared/api";
 
 @Injectable()
 export class AuthService {
@@ -17,9 +18,14 @@ export class AuthService {
       throw new UnauthorizedException();
     }
 
-    const payload = { sub: (await user).id, user: user };
+    const payload = { sub: (await user).id, email: (await user).email };
     return {
       access_token: await this.jwtService.signAsync(payload),
     };
+  }
+  
+  async checkOwner(context: ExecutionContext, user: IUser) {
+    const request = context.switchToHttp().getRequest();
+    if(request['email'] != user.email) throw new UnauthorizedException("You are not the owner");
   }
 }
