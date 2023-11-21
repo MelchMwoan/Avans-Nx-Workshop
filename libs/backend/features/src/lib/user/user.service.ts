@@ -17,7 +17,7 @@ export class UserService {
 
     private users$ = new BehaviorSubject<( IPlayer | ITrainer)[]>([
         {
-            id: 0,
+            _id: 0,
             firstName: 'Melchior',
             lastName: 'Willenborg',
             email: 'mw@test.nl',
@@ -27,7 +27,7 @@ export class UserService {
             loan: 0
         },
         {
-            id: 1,
+            _id: 1,
             firstName: 'Henk',
             lastName: 'Hoogerheiden',
             email: 'hh@test.nl',
@@ -39,7 +39,7 @@ export class UserService {
             rating: 3
         },
         {
-            id: 2,
+            _id: 2,
             firstName: 'Jan',
             lastName: 'Hoogerheiden',
             email: 'jh@test.nl',
@@ -51,7 +51,7 @@ export class UserService {
             rating: 13
         },
         {
-            id: 3,
+            _id: 3,
             firstName: 'Paas',
             lastName: 'Haas',
             email: 'ph@test.nl',
@@ -63,7 +63,7 @@ export class UserService {
             rating: 213
         },
         {
-            id: 4,
+            _id: 4,
             firstName: 'Pieter',
             lastName: 'Klaassen',
             email: 'pk@test.nl',
@@ -83,7 +83,7 @@ export class UserService {
     getOne(identifier: string): IPlayer | ITrainer {
         Logger.log(`getOne(${identifier})`, this.TAG);
         console.log(identifier) 
-        const user = this.users$.value.find((td) => td.id == parseInt(identifier) || td.email == identifier);
+        const user = this.users$.value.find((td) => td._id == parseInt(identifier) || td.email == identifier);
         console.log(user)
         if (!user) {
             throw new NotFoundException(`User could not be found!`);
@@ -93,7 +93,7 @@ export class UserService {
 
     delete(id: number): void {
         Logger.log(`Delete(${id})`, this.TAG);
-        const userIndex = this.users$.value.findIndex((td) => td.id === id);
+        const userIndex = this.users$.value.findIndex((td) => td._id === id);
 
     if (userIndex === -1) {
         throw new NotFoundException(`User could not be found!`);
@@ -111,22 +111,18 @@ export class UserService {
         const current = this.users$.value;
         // TODO: implement database
         if(user.userType == 'player' && user.player) {
-            // const createdUser = new this.userModel(user.player);
-            // createdUser.save();
             const newPlayer: CreatePlayerDto = user.player;
-            const newUser: IPlayer = {
-                id: Math.floor(Math.random() * 10000),
-                ...newPlayer
-            };
-            newUser.password = await this.generateHashedPassword(newUser.password!);
-            this.users$.next([...current, newUser]);
-            return newUser;
+            newPlayer.password = await this.generateHashedPassword(newPlayer.password!);
+            const createdUser = new this.userModel(newPlayer);
+            createdUser.save();
+            // this.users$.next([...current, newPlayer]);
+            return newPlayer as IPlayer;
         } else if(user.userType == 'trainer' && user.trainer) {
             // const createdUser = new this.userModel(user.trainer);
             // createdUser.save();
             const newTrainer: CreateTrainerDto = user.trainer;
             const newUser: ITrainer = {
-                id: Math.floor(Math.random() * 10000),
+                _id: Math.floor(Math.random() * 10000),
                 ...newTrainer
             };
             this.users$.next([...current, newUser]);
@@ -148,14 +144,14 @@ export class UserService {
 
     update(id: number, user: UpdateUserDto): IPlayer | ITrainer {
         Logger.log('update', this.TAG);
-        const index = this.users$.value.findIndex((td) => td.id === id);
+        const index = this.users$.value.findIndex((td) => td._id === id);
         if(index !== -1) {
             if(user.userType == 'player' && user.player) {
                 const {loan, ...filteredPlayer} = this.users$.value[index] as ITrainer;
                 const newUser: IPlayer = {
                     ...filteredPlayer as IPlayer,
                     ...user.player,
-                    id: id
+                    _id: id
                 };
                 if(newUser.NTTBnumber == null || newUser.rating == null || newUser.playsCompetition == null) {throw new BadRequestException("Not all required player properties are present");}
                 this.users$.value[index] = newUser;
@@ -165,7 +161,7 @@ export class UserService {
                 const newUser: ITrainer = {
                     ...filteredPlayer as ITrainer,
                     ...user.trainer,
-                    id: id
+                    _id: id
                 };
                 if(newUser.loan == null) {throw new BadRequestException("Not all required trainer properties are present");}
                 this.users$.value[index] = newUser;

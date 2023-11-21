@@ -12,9 +12,19 @@ export class User {
   @Prop()
   email!: string;
   @Prop()
-  phone!: string;
+  telephone!: string;
   @Prop()
   birthDate!: Date;
+  @Prop()
+  password!: string;
+  @Prop()
+  rating?: number;
+  @Prop()
+  playsCompetition?: boolean;
+  @Prop()
+  NTTBnumber?: number;
+  @Prop()
+  loan?: number;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
