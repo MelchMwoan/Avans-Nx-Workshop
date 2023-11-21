@@ -36,12 +36,9 @@ export class UserService {
 
   async getOne(identifier: string): Promise<IPlayer | ITrainer> {
     Logger.log(`getOne(${identifier})`, this.TAG);
-    console.log(identifier);
-    //TODO: login functionality
     const user = await this.userModel
       .findOne({ $or: [{ email: identifier }] })
       .exec();
-    console.log(user);
     if (!user) {
       throw new NotFoundException(`User could not be found!`);
     }

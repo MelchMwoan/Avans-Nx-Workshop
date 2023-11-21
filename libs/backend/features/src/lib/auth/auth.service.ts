@@ -12,10 +12,7 @@ export class AuthService {
 
   async signIn(email: string, pass: any) {
     const user = this.usersService.getOne(email);
-
     this.logger.log(`email: ${email} trying to authenticate...`);
-
-    console.log(user)
     if (!await this.usersService.validatePassword(pass, (await user).password!)) {
       throw new UnauthorizedException();
     }
