@@ -4,10 +4,15 @@ import { IPlayer, ITrainer } from '@avans-nx-workshop/shared/api';
 import { BehaviorSubject } from 'rxjs';
 import { Logger } from '@nestjs/common';
 import { CreatePlayerDto, CreateTrainerDto, CreateUserDto, UpdatePlayerDto, UpdateTrainerDto, UpdateUserDto } from '@avans-nx-workshop/backend/dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { User } from './user.schema';
 
 @Injectable()
 export class UserService {
     TAG = 'UserService';
+
+    constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
     private users$ = new BehaviorSubject<( IPlayer | ITrainer)[]>([
         {
@@ -100,8 +105,10 @@ export class UserService {
     create(user: CreateUserDto): IPlayer | ITrainer {
         Logger.log('create', this.TAG);
         const current = this.users$.value;
-        // Use the incoming data, a randomized ID, and a default value of `false` to create the new to-do
+        // TODO: implement database
         if(user.userType == 'player' && user.player) {
+            // const createdUser = new this.userModel(user.player);
+            // createdUser.save();
             const newPlayer: CreatePlayerDto = user.player;
             const newUser: IPlayer = {
                 id: `user-${Math.floor(Math.random() * 10000)}`,
@@ -110,6 +117,8 @@ export class UserService {
             this.users$.next([...current, newUser]);
             return newUser;
         } else if(user.userType == 'trainer' && user.trainer) {
+            // const createdUser = new this.userModel(user.trainer);
+            // createdUser.save();
             const newTrainer: CreateTrainerDto = user.trainer;
             const newUser: ITrainer = {
                 id: `user-${Math.floor(Math.random() * 10000)}`,
