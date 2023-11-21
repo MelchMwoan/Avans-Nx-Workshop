@@ -16,11 +16,11 @@ export class AuthService {
     this.logger.log(`email: ${email} trying to authenticate...`);
 
     console.log(user)
-    if (!await this.usersService.validatePassword(pass, user.password!)) {
+    if (!await this.usersService.validatePassword(pass, (await user).password!)) {
       throw new UnauthorizedException();
     }
 
-    const payload = { sub: user.id, user: user };
+    const payload = { sub: (await user).id, user: user };
     return {
       access_token: await this.jwtService.signAsync(payload),
     };

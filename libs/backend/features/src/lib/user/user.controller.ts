@@ -6,19 +6,20 @@ import { CreateUserDto, UpdateUserDto } from '@avans-nx-workshop/backend/dto';
 import { Public } from '../auth/decorators/public.decorator';
 
 @Controller('user')
+//TODO: Remove public where not needed
 export class UserController {
     constructor(private userService: UserService) {}
 
     @Get('')
     @Public()
-    getAll(): (IPlayer | ITrainer)[] {
-        return this.userService.getAll();
+    async getAll(): Promise<(IPlayer | ITrainer)[]> {
+        return await this.userService.getAll();
     }
 
     @Get(':id')
     @Public()
-    getOne(@Param('id') id: string): (IPlayer | ITrainer) {
-        return this.userService.getOne(id);
+    async getOne(@Param('id') id: string): Promise<(IPlayer | ITrainer)> {
+        return await this.userService.getOne(id);
     }
 
     @Post('')
@@ -28,12 +29,14 @@ export class UserController {
     }
 
     @Delete(':id')
-    delete(@Param('id') id: number): void {
+    @Public()
+    delete(@Param('id') id: string): void {
         this.userService.delete(id);
     }
 
     @Put(':id')
-    update(@Param('id') id: number, @Body() data: UpdateUserDto): (IPlayer | ITrainer) {
-        return this.userService.update(id, data);
+    @Public()
+    async update(@Param('id') id: string, @Body() data: UpdateUserDto): Promise<(IPlayer | ITrainer)> {
+        return await this.userService.update(id, data);
     }
 }
