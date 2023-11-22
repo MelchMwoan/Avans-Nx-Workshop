@@ -62,7 +62,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         });
     } else {
       this.submitted = false;
-      console.error('loginForm invalid');
+      this.loginForm.markAllAsTouched();
     }
   }
 
