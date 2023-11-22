@@ -102,10 +102,20 @@ export class UserService {
     
     public delete(id: string | null, options?: any) {
         console.log(`deleting`)
+        const authOptions = {
+            ...httpOptions,
+            headers: new HttpHeaders({
+                'Content-type': 'application/json',
+            })
+        }
+        this.authService.getUserFromLocalStorage().subscribe((result) => {
+             const accessToken = (result as any).results.access_token;
+             authOptions.headers = authOptions.headers.set('Authorization', 'Bearer ' + accessToken);
+        })
         return this.http
             .delete<ApiResponse<any>>(this.endpoint + '/' + id, {
                 ...options,
-                ...httpOptions,
+                ...authOptions,
             })
             .pipe(
                 tap(console.log),

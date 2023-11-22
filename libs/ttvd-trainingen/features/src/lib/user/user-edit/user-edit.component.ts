@@ -161,10 +161,11 @@ export class UserEditComponent implements OnInit, OnDestroy {
 
   deleteUser() {
     console.log(`Delete: ${this.user?.id}`);
-    const userId = this.user?.id;
+    const userId = this.user?.email;
     if(!userId) return console.log('User ID is not defined')
     this.subscription = this.userService.delete(userId).subscribe((results) => {
       this.router.navigate(['/users'])
+      this.authService.logout();
     });
   }
 
