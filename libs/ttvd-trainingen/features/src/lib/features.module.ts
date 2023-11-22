@@ -12,7 +12,6 @@ import { RouterModule } from '@angular/router';
 import { UserEditComponent } from './user/user-edit/user-edit.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './auth/login/login.component';
-import { RegisterComponent } from './auth/register/register.component';
 import { UiModule } from '@avans-nx-workshop/ttvd-trainingen/ui';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from './auth/auth.service';
@@ -28,7 +27,6 @@ import { AuthService } from './auth/auth.service';
     UserListComponent,
     UserEditComponent,
     LoginComponent,
-    RegisterComponent
   ],
   providers: [MealService, UserService, AuthService],
   exports: [
@@ -40,7 +38,6 @@ import { AuthService } from './auth/auth.service';
     UserListComponent,
     UserEditComponent,
     LoginComponent,
-    RegisterComponent
   ],
 })
 export class FeaturesModule {}

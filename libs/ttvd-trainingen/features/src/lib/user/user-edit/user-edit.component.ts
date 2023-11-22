@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { UserService } from '../user.service';
 import { Subscription } from 'rxjs';
 import { IPlayer, ITrainer } from '@avans-nx-workshop/shared/api';
@@ -21,11 +21,11 @@ export class UserEditComponent implements OnInit, OnDestroy {
   createUserForm = this.formBuilder.group({
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
-    email: ['', [Validators.required, Validators.email]],
+    email: ['', [Validators.required, Validators.email, this.validEmail.bind(this)]],
       telephone: ['', [Validators.required]],
       birthDate: [null, [Validators.required]],
     id: Math.floor(Math.random() * 10000),
-    password: '',
+    password: ['', [Validators.required, this.validPassword.bind(this)]],
     userType: ['', [Validators.required]],
     rating: [null, []],
     NTTBnumber: [null, []],
@@ -76,6 +76,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
             this.createUserForm.get('userType')?.setValue('player');
           }
           this.user = results;
+          this.createUserForm.get('password')?.disable();
           this.createUserForm.markAllAsTouched();
         });
         const $modalElement: HTMLElement | null = document.querySelector('#popup-modal');
@@ -183,6 +184,29 @@ export class UserEditComponent implements OnInit, OnDestroy {
       return (this.user as IPlayer).playsCompetition;
     }
     return null;
+  }
+
+  validEmail(control: FormControl): { [s: string]: boolean } | null {
+    const email = control.value;
+    const regexp = new RegExp(
+      '^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$'
+    );
+    if (regexp.test(email) !== true) {
+      return { email: false };
+    } else {
+      return null;
+    }
+  }
+
+  validPassword(control: FormControl): { [s: string]: boolean } | null {
+    const password = control.value;
+    const regexp = new RegExp('^[a-zA-Z]([a-zA-Z0-9]){2,14}');
+    const test = regexp.test(password);
+    if (regexp.test(password) !== true) {
+      return { password: false };
+    } else {
+      return null;
+    }
   }
 }
 function removeNullProperties(obj: any): any {
