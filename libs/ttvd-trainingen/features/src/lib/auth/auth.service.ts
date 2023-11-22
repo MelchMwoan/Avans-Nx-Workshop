@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
-import { IUser } from '../../../../../shared/api/src';
+import { IUser } from '@avans-nx-workshop/shared/api';
 import { Router } from '@angular/router';
-import { environment } from '../../../../../shared/util-env/src';
+import { environment } from '@avans-nx-workshop/shared/util-env';
 import { map, tap, catchError, switchMap } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { AlertService } from '../../../../../shared/alert/alert.service';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +17,6 @@ export class AuthService {
   });
 
   constructor(
-    private alertService: AlertService,
     private http: HttpClient,
     private router: Router
   ) {
@@ -49,7 +47,7 @@ export class AuthService {
 
     return this.http
       .post<IUser>(
-        `${environment.dataApiUrl}auth/login`,
+        `${environment.dataApiUrl}/auth/login`,
         { email: email, password: password },
         { headers: this.headers }
       )
@@ -57,14 +55,12 @@ export class AuthService {
         map((user) => {
           this.saveUserToLocalStorage(user);
           this.currentUser$.next(user);
-          this.alertService.success('You have been logged in');
           return user;
         }),
         catchError((error: any) => {
           console.log('error:', error);
           console.log('error.message:', error.message);
           console.log('error.error.message:', error.error.message);
-          this.alertService.error(error.error.message || error.message);
           return of(undefined);
         })
       );
@@ -83,14 +79,12 @@ export class AuthService {
           console.dir(user);
           this.saveUserToLocalStorage(user);
           this.currentUser$.next(user);
-          this.alertService.success('You have been registered');
           return user;
         }),
         catchError((error: any) => {
           console.log('error:', error);
           console.log('error.message:', error.message);
           console.log('error.error.message:', error.error.message);
-          this.alertService.error(error.error.message || error.message);
           return of(undefined);
         })
       );
@@ -134,7 +128,6 @@ export class AuthService {
           console.log('logout - removing local user info');
           localStorage.removeItem(this.CURRENT_USER);
           this.currentUser$.next(undefined);
-          this.alertService.success('You have been logged out.');
         } else {
           console.log('navigate result:', success);
         }

@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { MealListComponent } from './meal/meal-list/meal-list.component';
 import { MealDetailComponent } from './meal/meal-detail/meal-detail.component';
 import { MealService } from './meal/meal.service';
-import { HttpClientModule } from '@angular/common/http';
 import { AboutComponent } from './about/about.component';
 import { HomeComponent } from './home/home.component';
 import { UserDetailComponent } from './user/user-detail/user-detail.component';
@@ -14,9 +13,12 @@ import { UserEditComponent } from './user/user-edit/user-edit.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
+import { UiModule } from '@avans-nx-workshop/ttvd-trainingen/ui';
+import { HttpClientModule } from '@angular/common/http';
+import { AuthService } from './auth/auth.service';
 
 @NgModule({
-  imports: [CommonModule, HttpClientModule, RouterModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, UiModule, HttpClientModule],
   declarations: [
     MealListComponent,
     MealDetailComponent,
@@ -28,7 +30,7 @@ import { RegisterComponent } from './auth/register/register.component';
     LoginComponent,
     RegisterComponent
   ],
-  providers: [MealService, UserService],
+  providers: [MealService, UserService, AuthService],
   exports: [
     MealListComponent,
     MealDetailComponent,
