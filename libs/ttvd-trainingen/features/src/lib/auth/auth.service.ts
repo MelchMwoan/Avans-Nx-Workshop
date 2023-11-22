@@ -146,10 +146,6 @@ export class AuthService {
 
   userMayEdit(itemUserId: string): Observable<boolean> {
     return this.currentUser$.pipe(
-      tap((user: any) => {
-        console.log(user.results.user._id);
-        console.log(itemUserId);
-      }),
       map((user: any) => (user ? user.results.user._id === itemUserId : false))
     );
   }
