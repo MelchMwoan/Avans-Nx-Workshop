@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Observable, throwError } from 'rxjs';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { map, catchError, tap } from 'rxjs/operators';
 import { ApiResponse, IPlayer, ITrainer } from '@avans-nx-workshop/shared/api';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from '@avans-nx-workshop/shared/util-env';
 import { CreateUserDto, UpdateUserDto } from '@avans-nx-workshop/backend/dto';
+import { AuthService } from '../auth/auth.service';
 
 /**
  * See https://angular.io/guide/http#requesting-data-from-a-server
@@ -24,7 +25,7 @@ export const httpOptions = {
 export class UserService {
     endpoint = environment.dataApiUrl + '/user';
 
-    constructor(private readonly http: HttpClient, private router: Router) {}
+    constructor(private readonly http: HttpClient, private router: Router, private authService: AuthService) {}
 
     /**
      * Get all items.
@@ -78,15 +79,25 @@ export class UserService {
 
     public update(id: string, user: UpdateUserDto, options?: any) {
         console.log(`updating user`);
-        return this.http
-            .put<ApiResponse<(IPlayer | ITrainer)>>(this.endpoint + "/" + id, user, {
-                ...options,
-                ...httpOptions,
+        const authOptions = {
+            ...httpOptions,
+            headers: new HttpHeaders({
+                'Content-type': 'application/json',
             })
-            .pipe(
-                tap(console.log),
-                catchError((error) => this.handleError(error, this.router))
-            )
+        }
+        this.authService.getUserFromLocalStorage().subscribe((result) => {
+             const accessToken = (result as any).results.access_token;
+             authOptions.headers = authOptions.headers.set('Authorization', 'Bearer ' + accessToken);
+        })
+        return this.http
+        .put<ApiResponse<(IPlayer | ITrainer)>>(this.endpoint + "/" + id, user, {
+            ...options,
+            ...authOptions,
+        })
+        .pipe(
+            tap(console.log),
+            catchError((error) => this.handleError(error, this.router))
+        )
     }
     
     public delete(id: string | null, options?: any) {

@@ -108,7 +108,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
     if(this.createUserForm.invalid) return this.createUserForm.markAllAsTouched();
     if(this.user != null) {
       console.log(`Updating: ${this.createUserForm}`);
-      const id = this.user.id;
+      const id = this.user.email;
       if(this.createUserForm.get('userType')?.value == 'player') {
         const playsCompetition = Boolean(this.createUserForm.value.playsCompetition);
         const user: CreateUserDto = {
@@ -119,7 +119,8 @@ export class UserEditComponent implements OnInit, OnDestroy {
           }
         };
         this.subscription = this.userService.update(id, user).subscribe((results) => {
-          this.router.navigate(['/user/'+results.results.id])
+          console.log(results);
+          this.router.navigate(['/user/'+results.results.email])
         });
       } else {
         const user: CreateUserDto = {
@@ -127,7 +128,8 @@ export class UserEditComponent implements OnInit, OnDestroy {
           trainer: removeNullProperties(this.createUserForm.value) as CreateTrainerDto,
         };
         this.subscription = this.userService.update(id, user).subscribe((results) => {
-          this.router.navigate(['/user/'+results.results.id])
+          console.log(results);
+          this.router.navigate(['/user/'+results.results.email])
         });
       }
     } else {
