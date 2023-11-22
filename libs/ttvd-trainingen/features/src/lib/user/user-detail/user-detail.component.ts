@@ -17,7 +17,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
   routeSub: Subscription | undefined = undefined;
   mayEdit = false;
 
-  constructor(private userService: UserService, private route: ActivatedRoute, public authService: AuthService) {}
+  constructor(private userService: UserService, private route: ActivatedRoute, private authService: AuthService) {}
 
   ngOnInit(): void {
     this.routeSub = this.route.params.subscribe(params => {

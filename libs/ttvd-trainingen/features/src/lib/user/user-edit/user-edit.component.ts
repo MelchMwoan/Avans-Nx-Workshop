@@ -7,6 +7,7 @@ import { IPlayer, ITrainer } from '@avans-nx-workshop/shared/api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Modal, ModalInterface, ModalOptions } from 'flowbite';
 import { CreatePlayerDto, CreateTrainerDto, CreateUserDto } from '@avans-nx-workshop/backend/dto';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'avans-nx-workshop-user-edit',
@@ -33,7 +34,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
     loan: [null, []]
   })
 
-  constructor(private userService: UserService, private formBuilder: FormBuilder, private router: Router, private route: ActivatedRoute) {}
+  constructor(private userService: UserService, private formBuilder: FormBuilder, private router: Router, private route: ActivatedRoute, private authService: AuthService) {}
 
   ngOnInit(): void {
     this.createUserForm.get('userType')?.valueChanges.subscribe((type) => {
@@ -68,6 +69,10 @@ export class UserEditComponent implements OnInit, OnDestroy {
     this.routeSub = this.route.params.subscribe(params => {
       if(params['id']) {
         this.subscription = this.userService.read(params['id']).subscribe((results) => {
+          this.authService.userMayEdit((results as any)._id).subscribe((result) => {
+            console.log(result)
+            if(!result) this.router.navigate(['/'])
+          })
           if((results as ITrainer).loan != null) {
             this.user = results as ITrainer
             this.createUserForm.get('userType')?.setValue('trainer');
