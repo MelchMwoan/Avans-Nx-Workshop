@@ -14,7 +14,7 @@ export class MealController {
     }
 
     @Get(':id')
-    getOne(@Param('id') id: number): IMeal {
+    getOne(@Param('id') id: string): IMeal {
         return this.mealService.getOne(id);
     }
 

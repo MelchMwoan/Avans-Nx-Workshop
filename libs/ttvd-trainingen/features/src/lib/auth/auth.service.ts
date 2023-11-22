@@ -144,9 +144,13 @@ export class AuthService {
     localStorage.setItem(this.CURRENT_USER, JSON.stringify(user));
   }
 
-  userMayEdit(itemUserId: number): Observable<boolean> {
+  userMayEdit(itemUserId: string): Observable<boolean> {
     return this.currentUser$.pipe(
-      map((user: IUser | undefined) => (user ? user.id === itemUserId : false))
+      tap((user: any) => {
+        console.log(user.results.user._id);
+        console.log(itemUserId);
+      }),
+      map((user: any) => (user ? user.results.user._id === itemUserId : false))
     );
   }
 }

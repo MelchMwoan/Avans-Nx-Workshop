@@ -50,7 +50,7 @@ export class UserService {
      * Get a single item from the service.
      *
      */
-    public read(id: number | null, options?: any): Observable<(IPlayer | ITrainer)> {
+    public read(id: string | null, options?: any): Observable<(IPlayer | ITrainer)> {
         console.log(`read ${this.endpoint}`);
         return this.http
             .get<ApiResponse<(IPlayer | ITrainer)>>(this.endpoint + '/' + id, {
@@ -76,7 +76,7 @@ export class UserService {
             )
     }
 
-    public update(id: number, user: UpdateUserDto, options?: any) {
+    public update(id: string, user: UpdateUserDto, options?: any) {
         console.log(`updating user`);
         return this.http
             .put<ApiResponse<(IPlayer | ITrainer)>>(this.endpoint + "/" + id, user, {
@@ -89,7 +89,7 @@ export class UserService {
             )
     }
     
-    public delete(id: number | null, options?: any) {
+    public delete(id: string | null, options?: any) {
         console.log(`deleting`)
         return this.http
             .delete<ApiResponse<any>>(this.endpoint + '/' + id, {

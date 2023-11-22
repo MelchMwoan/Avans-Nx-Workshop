@@ -1,7 +1,7 @@
 import { ExecutionContext, Injectable, Logger, UnauthorizedException } from "@nestjs/common";
 import { UserService } from "../user/user.service";
 import { JwtService } from '@nestjs/jwt';
-import { IUser } from "@avans-nx-workshop/shared/api";
+import { IPlayer, ITrainer, IUser } from "@avans-nx-workshop/shared/api";
 
 @Injectable()
 export class AuthService {
@@ -19,8 +19,10 @@ export class AuthService {
     }
 
     const payload = { sub: (await user).id, email: (await user).email };
+    const {password, ...returnUser} = JSON.parse(JSON.stringify(await user)) as unknown as IPlayer | ITrainer;
     return {
       access_token: await this.jwtService.signAsync(payload),
+      user: returnUser,
     };
   }
   
