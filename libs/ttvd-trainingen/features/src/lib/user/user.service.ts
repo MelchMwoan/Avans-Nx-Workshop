@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
 import { environment } from '@avans-nx-workshop/shared/util-env';
 import { CreateUserDto, UpdateUserDto } from '@avans-nx-workshop/backend/dto';
 import { AuthService } from '../auth/auth.service';
+// eslint-disable-next-line @nx/enforce-module-boundaries
+import { Alert, AlertService } from 'libs/ttvd-trainingen/ui/src/lib/alert/alert.service';
 
 /**
  * See https://angular.io/guide/http#requesting-data-from-a-server
@@ -25,7 +27,7 @@ export const httpOptions = {
 export class UserService {
     endpoint = environment.dataApiUrl + '/user';
 
-    constructor(private readonly http: HttpClient, private router: Router, private authService: AuthService) {}
+    constructor(private readonly http: HttpClient, private router: Router, private authService: AuthService, private alertService: AlertService) {}
 
     /**
      * Get all items.
@@ -129,9 +131,15 @@ export class UserService {
     public handleError(error: HttpErrorResponse, router: Router): Observable<any> {
         console.log('handleError in UserService', error);
         
+        const errorResponse: Alert = {
+            type: 'danger',
+            message: error.error.message || error.message
+        }
         if (error.status === 404) {
+            errorResponse.dismissOnRouteChange = false;
             this.router.navigate(['/users']);
         }
-        return throwError(() => new Error(error.message));
+        this.alertService.show(errorResponse.type, errorResponse.message, errorResponse.dismissOnRouteChange)
+        return throwError(errorResponse);
     }
 }

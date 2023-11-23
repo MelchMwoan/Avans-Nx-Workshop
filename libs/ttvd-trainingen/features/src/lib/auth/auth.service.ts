@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, of, Subscription, throwError } from 'rxjs';
 import { IUser } from '@avans-nx-workshop/shared/api';
 import { Router } from '@angular/router';
 import { environment } from '@avans-nx-workshop/shared/util-env';
 import { map, tap, catchError, switchMap } from 'rxjs/operators';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+// eslint-disable-next-line @nx/enforce-module-boundaries
+import { Alert, AlertService } from 'libs/ttvd-trainingen/ui/src/lib/alert/alert.service';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +20,7 @@ export class AuthService {
 
   constructor(
     private http: HttpClient,
-    private router: Router
+    private router: Router, private alertService: AlertService
   ) {
     // Check of we al een ingelogde user hebben
     // Zo ja, check dan op de backend of het token nog valid is.
@@ -55,13 +57,19 @@ export class AuthService {
         map((user) => {
           this.saveUserToLocalStorage(user);
           this.currentUser$.next(user);
+          const errorResponse: Alert = {
+              type: 'success',
+              message: "Succesfully logged in",
+              dismissOnRouteChange: false
+          }
+          this.alertService.show(errorResponse.type, errorResponse.message, errorResponse.dismissOnRouteChange)
           return user;
         }),
         catchError((error: any) => {
           console.log('error:', error);
           console.log('error.message:', error.message);
           console.log('error.error.message:', error.error.message);
-          return of(undefined);
+          return this.handleError(error, this.router)
         })
       );
   }
@@ -85,7 +93,7 @@ export class AuthService {
           console.log('error:', error);
           console.log('error.message:', error.message);
           console.log('error.error.message:', error.error.message);
-          return of(undefined);
+          return this.handleError(error, this.router)
         })
       );
   }
@@ -114,7 +122,7 @@ export class AuthService {
         console.log('Validate token Failed');
         this.logout();
         this.currentUser$.next(undefined);
-        return of(undefined);
+        return this.handleError(error, this.router)
       })
     );
   }
@@ -128,11 +136,17 @@ export class AuthService {
           console.log('logout - removing local user info');
           localStorage.removeItem(this.CURRENT_USER);
           this.currentUser$.next(undefined);
+          const errorResponse: Alert = {
+              type: 'warning',
+              message: "Succesfully logged out",
+              dismissOnRouteChange: false
+          }
+          this.alertService.show(errorResponse.type, errorResponse.message, errorResponse.dismissOnRouteChange)
         } else {
           console.log('navigate result:', success);
         }
       })
-      .catch((error) => console.log('not logged out!'));
+      .catch((error) => this.handleError(error, this.router));
   }
 
   getUserFromLocalStorage(): Observable<IUser> {
@@ -149,4 +163,15 @@ export class AuthService {
       map((user: any) => (user ? user.results.user._id === itemUserId : false))
     );
   }
+  
+  public handleError(error: HttpErrorResponse, router: Router): Observable<any> {
+    console.log('handleError in UserService', error);
+    
+    const errorResponse: Alert = {
+        type: 'danger',
+        message: error.error.message || error.message
+    }
+    this.alertService.show(errorResponse.type, errorResponse.message, errorResponse.dismissOnRouteChange)
+    return throwError(errorResponse);
+}
 }
