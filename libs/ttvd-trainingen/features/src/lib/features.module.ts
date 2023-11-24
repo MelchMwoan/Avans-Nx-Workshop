@@ -12,9 +12,14 @@ import { RouterModule } from '@angular/router';
 import { UserEditComponent } from './user/user-edit/user-edit.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './auth/login/login.component';
+// eslint-disable-next-line @nx/enforce-module-boundaries
 import { UiModule } from '@avans-nx-workshop/ttvd-trainingen/ui';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from './auth/auth.service';
+import { RoomListComponent } from './room/room-list/room-list.component';
+import { RoomService } from './room/room.service';
+import { RoomDetailComponent } from './room/room-detail/room-detail.component';
+import { RoomEditComponent } from './room/room-edit/room-edit.component';
 
 @NgModule({
   imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, UiModule, HttpClientModule],
@@ -27,8 +32,11 @@ import { AuthService } from './auth/auth.service';
     UserListComponent,
     UserEditComponent,
     LoginComponent,
+    RoomListComponent,
+    RoomDetailComponent,
+    RoomEditComponent
   ],
-  providers: [MealService, UserService, AuthService],
+  providers: [MealService, UserService, AuthService, RoomService],
   exports: [
     MealListComponent,
     MealDetailComponent,
@@ -38,6 +46,9 @@ import { AuthService } from './auth/auth.service';
     UserListComponent,
     UserEditComponent,
     LoginComponent,
+    RoomListComponent,
+    RoomDetailComponent,
+    RoomEditComponent
   ],
 })
 export class FeaturesModule {}

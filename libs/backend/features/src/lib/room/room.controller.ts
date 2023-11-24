@@ -23,7 +23,7 @@ export class RoomController {
     }
 
     @Post('')
-    @Public()
+    @UseGuards(AuthGuard)
     create(@Body() data: CreateRoomDto): Promise<IRoom> {
         return this.roomService.create(data);
     }

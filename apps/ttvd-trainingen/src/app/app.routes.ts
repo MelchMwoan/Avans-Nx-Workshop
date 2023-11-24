@@ -7,6 +7,9 @@ import { UserListComponent } from 'libs/ttvd-trainingen/features/src/lib/user/us
 import { UserDetailComponent } from 'libs/ttvd-trainingen/features/src/lib/user/user-detail/user-detail.component';
 import { UserEditComponent } from 'libs/ttvd-trainingen/features/src/lib/user/user-edit/user-edit.component';
 import { LoginComponent } from 'libs/ttvd-trainingen/features/src/lib/auth/login/login.component';
+import { RoomListComponent } from 'libs/ttvd-trainingen/features/src/lib/room/room-list/room-list.component';
+import { RoomDetailComponent } from 'libs/ttvd-trainingen/features/src/lib/room/room-detail/room-detail.component';
+import { RoomEditComponent } from 'libs/ttvd-trainingen/features/src/lib/room/room-edit/room-edit.component';
 
 export const appRoutes: Routes = [
   {
@@ -43,6 +46,26 @@ export const appRoutes: Routes = [
     path: 'user/:id',
     title: 'User Details',
     component: UserDetailComponent
+  },
+  {
+    path: 'rooms',
+    title: 'Room List',
+    component: RoomListComponent
+  },
+  {
+    path: 'room/create',
+    title: 'Create Room',
+    component: RoomEditComponent
+  },
+  {
+    path: 'room/edit/:id',
+    title: 'Edit Room',
+    component: RoomEditComponent
+  },
+  {
+    path: 'room/:id',
+    title: 'Room Details',
+    component: RoomDetailComponent
   },
   {
     path: 'login',

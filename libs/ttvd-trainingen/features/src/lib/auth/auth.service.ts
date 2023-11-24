@@ -163,6 +163,12 @@ export class AuthService {
       map((user: any) => (user ? user.results.user._id === itemUserId : false))
     );
   }
+
+  userIsTrainer(): Observable<boolean> {
+    return this.currentUser$.pipe(
+      map((user: any) => (user ? user.results.user.loan != null : false))
+    );
+  }
   
   public handleError(error: HttpErrorResponse, router: Router): Observable<any> {
     console.log('handleError in UserService', error);
