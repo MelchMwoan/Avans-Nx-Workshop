@@ -10,6 +10,9 @@ import { LoginComponent } from 'libs/ttvd-trainingen/features/src/lib/auth/login
 import { RoomListComponent } from 'libs/ttvd-trainingen/features/src/lib/room/room-list/room-list.component';
 import { RoomDetailComponent } from 'libs/ttvd-trainingen/features/src/lib/room/room-detail/room-detail.component';
 import { RoomEditComponent } from 'libs/ttvd-trainingen/features/src/lib/room/room-edit/room-edit.component';
+import { ExerciseListComponent } from 'libs/ttvd-trainingen/features/src/lib/exercise/exercise-list/exercise-list.component';
+import { ExerciseDetailComponent } from 'libs/ttvd-trainingen/features/src/lib/exercise/exercise-detail/exercise-detail.component';
+import { ExerciseEditComponent } from 'libs/ttvd-trainingen/features/src/lib/exercise/exercise-edit/exercise-edit.component';
 
 export const appRoutes: Routes = [
   {
@@ -66,6 +69,26 @@ export const appRoutes: Routes = [
     path: 'room/:id',
     title: 'Room Details',
     component: RoomDetailComponent
+  },
+  {
+    path: 'exercises',
+    title: 'Exercise List',
+    component: ExerciseListComponent
+  },
+  {
+    path: 'exercise/create',
+    title: 'Create Exercise',
+    component: ExerciseEditComponent
+  },
+  {
+    path: 'exercise/edit/:id',
+    title: 'Edit Exercise',
+    component: ExerciseEditComponent
+  },
+  {
+    path: 'exercise/:id',
+    title: 'Exercise Details',
+    component: ExerciseDetailComponent
   },
   {
     path: 'login',

@@ -20,6 +20,10 @@ import { RoomListComponent } from './room/room-list/room-list.component';
 import { RoomService } from './room/room.service';
 import { RoomDetailComponent } from './room/room-detail/room-detail.component';
 import { RoomEditComponent } from './room/room-edit/room-edit.component';
+import { ExerciseListComponent } from './exercise/exercise-list/exercise-list.component';
+import { ExerciseService } from './exercise/exercise.service';
+import { ExerciseDetailComponent } from './exercise/exercise-detail/exercise-detail.component';
+import { ExerciseEditComponent } from './exercise/exercise-edit/exercise-edit.component';
 
 @NgModule({
   imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, UiModule, HttpClientModule],
@@ -34,9 +38,12 @@ import { RoomEditComponent } from './room/room-edit/room-edit.component';
     LoginComponent,
     RoomListComponent,
     RoomDetailComponent,
-    RoomEditComponent
+    RoomEditComponent,
+    ExerciseListComponent,
+    ExerciseDetailComponent,
+    ExerciseEditComponent
   ],
-  providers: [MealService, UserService, AuthService, RoomService],
+  providers: [MealService, UserService, AuthService, RoomService, ExerciseService],
   exports: [
     MealListComponent,
     MealDetailComponent,
@@ -48,7 +55,10 @@ import { RoomEditComponent } from './room/room-edit/room-edit.component';
     LoginComponent,
     RoomListComponent,
     RoomDetailComponent,
-    RoomEditComponent
+    RoomEditComponent,
+    ExerciseListComponent,
+    ExerciseDetailComponent,
+    ExerciseEditComponent
   ],
 })
 export class FeaturesModule {}
