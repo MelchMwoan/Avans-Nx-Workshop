@@ -118,18 +118,26 @@ export class UserEditComponent implements OnInit, OnDestroy {
             playsCompetition
           }
         };
-        this.subscription = this.userService.update(id, user).subscribe((results) => {
+        this.subscription = this.userService.update(id, user).subscribe(async (results) => {
           console.log(results);
-          this.router.navigate(['/user/'+results.results.email])
+          if (this.authService.currentUser$ != null) {
+            this.authService.logout();
+          } else {
+            this.router.navigate(['/user/' + results.results.email]);
+          }
         });
       } else {
         const user: CreateUserDto = {
           userType: 'trainer',
           trainer: removeNullProperties(this.createUserForm.value) as CreateTrainerDto,
         };
-        this.subscription = this.userService.update(id, user).subscribe((results) => {
+        this.subscription = this.userService.update(id, user).subscribe(async (results) => {
           console.log(results);
-          this.router.navigate(['/user/'+results.results.email])
+          if (this.authService.currentUser$ != null) {
+            this.authService.logout();
+          } else {
+            this.router.navigate(['/user/' + results.results.email]);
+          }
         });
       }
     } else {
