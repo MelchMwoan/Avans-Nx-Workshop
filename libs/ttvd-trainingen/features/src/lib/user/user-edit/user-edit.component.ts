@@ -144,7 +144,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
           }
         };
         this.subscription = this.userService.create(user).subscribe((results) => {
-          this.router.navigate(['/user/'+results.results.id])
+          this.router.navigate(['/user/'+results.results.email])
         });
       } else {
         console.log(`Creating trainer: ${JSON.stringify(this.createUserForm.value)}`);
@@ -153,7 +153,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
           trainer: removeNullProperties(this.createUserForm.value) as CreateTrainerDto,
         };
         this.subscription = this.userService.create(user).subscribe((results) => {
-          this.router.navigate(['/user/'+results.results.id])
+          this.router.navigate(['/user/'+results.results.email])
         });
       }
     }
