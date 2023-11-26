@@ -3,7 +3,7 @@
         <h1 class="text-4xl mb-3">Room Details</h1>
         <p><b>Name:</b> {{room?.name}}</p>
         <p><b>Max Tables:</b> {{room?.maxAmountOfTables}}</p>
-        <p><b>In Maintenance?</b> {{room?.isInMaintenance}}</p>
+        <p><b>In Maintenance:</b> {{room?.isInMaintenance ? "Yes" : "No" }}</p>
 
         <div class="mt-3">
             <a [routerLink]="['/room/edit', room?.name]" ><button

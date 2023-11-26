@@ -28,7 +28,7 @@
             <h1 class="text-2xl">Player Details</h1>
             <p><b>NTTB Number:</b> {{user?.NTTBnumber}}</p>
             <p><b>Rating:</b> {{user?.rating}}</p>
-            <p><b>Plays Competition:</b> {{user?.playsCompetition}}</p>
+            <p><b>Plays Competition:</b> {{user?.playsCompetition ? "Yes" : "No"}}</p>
         </div>
 
         <div class="mt-3" *ngIf="mayEdit">
