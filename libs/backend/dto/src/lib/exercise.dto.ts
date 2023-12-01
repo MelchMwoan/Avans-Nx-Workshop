@@ -31,7 +31,7 @@ export class CreateExerciseDto implements ICreateExercise {
 export class UpsertExerciseDto implements IUpsertExercise {
     @IsString()
     @IsNotEmpty()
-    id!: string;
+    _id!: string;
 
     @IsString()
     @IsNotEmpty()

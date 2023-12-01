@@ -9,7 +9,7 @@ export enum Difficulty {
 }
 
 export interface IExercise {
-    id: Id;
+    _id: Id;
     name: string;
     description: string;
     difficulty: Difficulty;

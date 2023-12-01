@@ -78,7 +78,7 @@ export class RoomEditComponent implements OnInit, OnDestroy {
   }
 
   deleteRoom() {
-    console.log(`Delete: ${this.room?.id}`);
+    console.log(`Delete: ${this.room?._id}`);
     const roomId = this.room?.name;
     if(!roomId) return console.log('Room ID is not defined')
     this.subscription = this.roomService.delete(roomId).subscribe((results) => {

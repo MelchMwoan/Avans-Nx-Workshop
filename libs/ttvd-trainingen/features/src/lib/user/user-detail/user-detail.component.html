@@ -18,7 +18,7 @@
         <p><b>Email:</b> {{user?.email}}</p>
         <p><b>Telephone:</b> {{user?.telephone}}</p>
         <p><b>Birthdate:</b> {{user?.birthDate | date : 'longDate' }}</p>
-        <p><b>Id:</b> {{user?.id}}</p>
+        <p><b>Id:</b> {{user?._id}}</p>
 
         <div *ngIf="isTrainer(user!)">
             <h1 class="text-2xl">Trainer Details</h1>

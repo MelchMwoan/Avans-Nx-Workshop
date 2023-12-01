@@ -4,7 +4,7 @@ import { IRoom } from './room.interface';
 import { IUser } from './user.interface';
 
 export interface ITraining {
-    id: Id;
+    _id: Id;
     name: string;
     dateTime: Date
     description: string;

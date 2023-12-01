@@ -8,7 +8,7 @@ export type ExerciseDocument = HydratedDocument<Exercise>;
 @Schema()
 export class Exercise {
   @IsMongoId()
-  id!: string;
+  _id!: string;
   @Prop({required: true, unique: true, index: true})
   name!: string;
   @Prop()

@@ -11,7 +11,7 @@ import {
   UpdateRoomDto,
 } from '@avans-nx-workshop/backend/dto';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import { Room } from './room.schema';
 
 @Injectable()
@@ -29,8 +29,11 @@ export class RoomService {
 
   async getOne(identifier: string): Promise<IRoom> {
     Logger.log(`getOne(${identifier})`, this.TAG);
+    const isObjectId = mongoose.Types.ObjectId.isValid(identifier);
     const room = await this.roomModel
-      .findOne({ $or: [{ name: identifier }] })
+      .findOne(isObjectId
+        ? { _id: identifier }
+        : { name: identifier })
       .exec();
     if (!room) {
       throw new NotFoundException(`Room could not be found!`);

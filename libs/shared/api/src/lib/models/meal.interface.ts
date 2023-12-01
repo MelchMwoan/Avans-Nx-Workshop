@@ -11,7 +11,7 @@ export enum MealSort {
 type User = string;
 
 export interface IMeal {
-    id: Id;
+    _id: Id;
     title: string;
     description: string;
     isVega: boolean;

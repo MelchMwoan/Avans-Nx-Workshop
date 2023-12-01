@@ -55,7 +55,7 @@ export class CreateTrainingDto implements ICreateTraining {
 export class UpsertTrainingDto implements IUpsertTraining {
     @IsString()
     @IsNotEmpty()
-    id!: string;
+    _id!: string;
 
     @IsString()
     @IsNotEmpty()

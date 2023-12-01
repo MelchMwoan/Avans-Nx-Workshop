@@ -11,7 +11,7 @@ import {
   UpdateExerciseDto,
 } from '@avans-nx-workshop/backend/dto';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import { Exercise } from './exercise.schema';
 
 @Injectable()
@@ -29,8 +29,11 @@ export class ExerciseService {
 
   async getOne(identifier: string): Promise<IExercise> {
     Logger.log(`getOne(${identifier})`, this.TAG);
+    const isObjectId = mongoose.Types.ObjectId.isValid(identifier);
     const exercise = await this.exerciseModel
-      .findOne({ $or: [{ name: identifier }] })
+      .findOne(isObjectId
+        ? { _id: identifier }
+        : { name: identifier })
       .exec();
     if (!exercise) {
       throw new NotFoundException(`Exercise could not be found!`);

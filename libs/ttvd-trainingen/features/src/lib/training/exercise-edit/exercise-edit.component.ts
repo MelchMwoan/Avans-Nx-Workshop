@@ -7,7 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Modal, ModalInterface, ModalOptions } from 'flowbite';
 import { CreateExerciseDto, UpdateExerciseDto } from '@avans-nx-workshop/backend/dto';
 import { AuthService } from '../../auth/auth.service';
-import { ExerciseService } from '../exercise.service';
+import { ExerciseService } from '../training.service';
 
 @Component({
   selector: 'avans-nx-workshop-user-edit',

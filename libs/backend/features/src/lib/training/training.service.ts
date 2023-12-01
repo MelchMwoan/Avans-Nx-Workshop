@@ -13,7 +13,7 @@ import {
   UpdateTrainingDto,
 } from '@avans-nx-workshop/backend/dto';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import { Training } from './training.schema';
 import { User } from '../user/user.schema';
 import { Exercise } from '../exercise/exercise.schema';
@@ -34,8 +34,11 @@ export class TrainingService {
 
   async getOne(identifier: string): Promise<ITraining> {
     Logger.log(`getOne(${identifier})`, this.TAG);
+    const isObjectId = mongoose.Types.ObjectId.isValid(identifier);
     const training = await this.trainingModel
-      .findOne({ $or: [{ name: identifier }] })
+      .findOne(isObjectId
+        ? { _id: identifier }
+        : { name: identifier })
       .exec();
     if (!training) {
       throw new NotFoundException(`Training could not be found!`);

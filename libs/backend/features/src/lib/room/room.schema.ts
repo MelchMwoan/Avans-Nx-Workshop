@@ -7,7 +7,7 @@ export type RoomDocument = HydratedDocument<Room>;
 @Schema()
 export class Room {
   @IsMongoId()
-  id!: string;
+  _id!: string;
   @Prop({required: true, unique: true, index: true})
   name!: string;
   @Prop()

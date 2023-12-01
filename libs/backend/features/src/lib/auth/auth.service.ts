@@ -12,13 +12,13 @@ export class AuthService {
   ) {}
 
   async signIn(email: string, pass: any) {
-    const user = this.usersService.getOne(email);
+    const user = await this.usersService.getOne(email);
     this.logger.log(`email: ${email} trying to authenticate...`);
     if (!await this.usersService.validatePassword(pass, (await user).password!)) {
       throw new UnauthorizedException();
     }
 
-    const payload = { sub: (await user).id, email: (await user).email };
+    const payload = { sub: (await user)._id, email: (await user).email };
     const {password, ...returnUser} = JSON.parse(JSON.stringify(await user)) as unknown as IPlayer | ITrainer;
     return {
       access_token: await this.jwtService.signAsync(payload),

@@ -45,7 +45,7 @@ export class UpsertMealDto implements IUpsertMeal {
 
     @IsString()
     @IsNotEmpty()
-    id!: string;
+    _id!: string;
 
     @IsBoolean()
     @IsNotEmpty()

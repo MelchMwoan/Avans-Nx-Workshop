@@ -31,7 +31,7 @@ export class CreateRoomDto implements ICreateRoom {
 export class UpsertRoomDto implements IUpsertRoom {
     @IsString()
     @IsNotEmpty()
-    id!: string;
+    _id!: string;
 
     @IsString()
     @IsNotEmpty()

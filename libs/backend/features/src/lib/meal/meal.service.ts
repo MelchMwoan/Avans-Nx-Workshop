@@ -9,7 +9,7 @@ export class MealService {
 
     private meals$ = new BehaviorSubject<IMeal[]>([
         {
-            id: ''+0,
+            _id: ''+0,
             title: 'Spaghetti con funghi',
             description: 'Vega version of the famous spaghetti recipe.',
             isVega: true,
@@ -26,7 +26,7 @@ export class MealService {
 
     getOne(id: string): IMeal {
         Logger.log(`getOne(${id})`, this.TAG);
-        const meal = this.meals$.value.find((td) => td.id === id);
+        const meal = this.meals$.value.find((td) => td._id === id);
         if (!meal) {
             throw new NotFoundException(`Meal could not be found!`);
         }
@@ -44,7 +44,7 @@ export class MealService {
         // Use the incoming data, a randomized ID, and a default value of `false` to create the new to-do
         const newMeal: IMeal = {
             ...meal,
-            id: '' + Math.floor(Math.random() * 10000),
+            _id: '' + Math.floor(Math.random() * 10000),
             isVega: false,
             dateServed: new Date(),
             sort: MealSort.Other,

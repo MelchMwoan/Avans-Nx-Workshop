@@ -6,7 +6,7 @@
   </div>
   <div *ngIf="user">
     <p class="text-4xl text-left">Edit User</p>
-    <p class="text-left">Update your data and submit it to edit the user with id: {{ user.id }}.</p>
+    <p class="text-left">Update your data and submit it to edit the user with id: {{ user._id }}.</p>
     <br>
   </div>
   <form [formGroup]="createUserForm" (ngSubmit)="onSubmit()" class="w-full group">

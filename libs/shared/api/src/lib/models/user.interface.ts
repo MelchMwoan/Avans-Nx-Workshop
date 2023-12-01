@@ -3,7 +3,7 @@ import { Id } from './id.type';
 // Voor nu is onze user een string; later zullen we hier een User object van maken.
 //TODO: implement password through authentication
 export interface IUser {
-    id: Id;
+    _id: Id;
     firstName: string;
     lastName: string;
     email: string;
