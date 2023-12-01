@@ -6,7 +6,7 @@
   </div>
   <div *ngIf="exercise">
     <p class="text-4xl text-left">Edit Exercise</p>
-    <p class="text-left">Update your data and submit it to edit the exercise with name: {{ exercise?.name }}.</p>
+    <p class="text-left">Update your data and submit it to edit the exercise with name: {{ exercise.name }}.</p>
     <br>
   </div>
   <form [formGroup]="createExerciseForm" (ngSubmit)="onSubmit()" class="w-full group">

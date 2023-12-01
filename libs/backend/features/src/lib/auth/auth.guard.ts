@@ -11,12 +11,15 @@ import { jwtConstants } from './constants';
 import { Request } from 'express';
 import { Reflector } from "@nestjs/core";
 import { IS_PUBLIC_KEY } from "./decorators/public.decorator";
+import { IS_TRAINER_KEY } from "./decorators/trainer.decorator";
+import { UserService } from '../user/user.service';
+import { ITrainer } from '@avans-nx-workshop/shared/api';
 
 
 @Injectable()
 export class AuthGuard implements CanActivate {
   TAG = 'AuthGuard';
-  constructor(private jwtService: JwtService, private reflector: Reflector) {}
+  constructor(private jwtService: JwtService, private reflector: Reflector, private userService: UserService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
@@ -38,8 +41,26 @@ export class AuthGuard implements CanActivate {
         secret: jwtConstants.secret,
       });
       request['user'] = payload;
-    } catch {
-      Logger.warn("Illegal token", this.TAG);
+
+      const isTrainer = this.reflector.getAllAndOverride<boolean>(
+        IS_TRAINER_KEY,
+        [context.getHandler(), context.getClass()],
+      );
+
+      if (isTrainer) {
+        const userDetails = await this.userService.getOne(payload.email);
+        console.log(userDetails)
+        if (!userDetails || !(userDetails as ITrainer).loan) {
+          Logger.warn('User is not a trainer', this.TAG);
+          throw new UnauthorizedException('User is not a trainer');
+        }
+      }
+    } catch (error: any){
+      if(error.message == 'User is not a trainer') {
+        Logger.warn('User is not a trainer', this.TAG);
+        throw new UnauthorizedException('Only Trainers are allowed to do this');
+      }
+      Logger.warn("Illegal token" + error, this.TAG);
       throw new UnauthorizedException();
     }
     return true;

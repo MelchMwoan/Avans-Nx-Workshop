@@ -11,9 +11,7 @@ export enum Difficulty {
 export interface IExercise {
     id: Id;
     name: string;
-    // dateTime: Date
     description: string;
-    // minPlayers: number;
     difficulty: Difficulty;
 }
 

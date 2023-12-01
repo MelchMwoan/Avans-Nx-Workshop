@@ -13,10 +13,6 @@ export class Exercise {
   name!: string;
   @Prop()
   description!: string;
-  @Prop()
-  dateTime!: Date;
-  @Prop()
-  minPlayers!: number;
   @Prop({ type: String, enum: Difficulty})
   difficulty!: Difficulty;
 }
