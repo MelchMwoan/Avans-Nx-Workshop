@@ -15,6 +15,7 @@ import { ExerciseDetailComponent } from 'libs/ttvd-trainingen/features/src/lib/e
 import { ExerciseEditComponent } from 'libs/ttvd-trainingen/features/src/lib/exercise/exercise-edit/exercise-edit.component';
 import { TrainingListComponent } from 'libs/ttvd-trainingen/features/src/lib/training/training-list/training-list.component';
 import { TrainingDetailComponent } from 'libs/ttvd-trainingen/features/src/lib/training/training-detail/training-detail.component';
+import { TrainingEditComponent } from 'libs/ttvd-trainingen/features/src/lib/training/training-edit/training-edit.component';
 
 export const appRoutes: Routes = [
   {
@@ -100,12 +101,12 @@ export const appRoutes: Routes = [
   {
     path: 'training/create',
     title: 'Create Training',
-    component: ExerciseEditComponent
+    component: TrainingEditComponent
   },
   {
     path: 'training/edit/:id',
     title: 'Edit Training',
-    component: ExerciseEditComponent
+    component: TrainingEditComponent
   },
   {
     path: 'training/:id',

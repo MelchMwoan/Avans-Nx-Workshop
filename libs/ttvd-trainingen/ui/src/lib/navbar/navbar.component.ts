@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+// eslint-disable-next-line @nx/enforce-module-boundaries
 import { AuthService } from 'libs/ttvd-trainingen/features/src/lib/auth/auth.service';
 
 @Component({

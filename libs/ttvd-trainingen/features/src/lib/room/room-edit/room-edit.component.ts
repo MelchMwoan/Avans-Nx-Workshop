@@ -8,6 +8,8 @@ import { Modal, ModalInterface, ModalOptions } from 'flowbite';
 import { CreateRoomDto, UpdateRoomDto } from '@avans-nx-workshop/backend/dto';
 import { AuthService } from '../../auth/auth.service';
 import { RoomService } from '../room.service';
+// eslint-disable-next-line @nx/enforce-module-boundaries
+import { AlertService } from 'libs/ttvd-trainingen/ui/src/lib/alert/alert.service';
 
 @Component({
   selector: 'avans-nx-workshop-user-edit',
@@ -25,16 +27,18 @@ export class RoomEditComponent implements OnInit, OnDestroy {
     isInMaintenance: '',
   })
 
-  constructor(private roomService: RoomService, private formBuilder: FormBuilder, private router: Router, private route: ActivatedRoute, private authService: AuthService) {}
+  constructor(private roomService: RoomService, private formBuilder: FormBuilder, private router: Router, private route: ActivatedRoute, private authService: AuthService, private alertService: AlertService) {}
 
   ngOnInit(): void {
+    this.authService.userIsTrainer().subscribe((result) => {
+      if(!result) {
+        this.router.navigate(['/']);
+        this.alertService.show("warning", "Only trainers are allowed to do this.");
+      }
+    })
     this.routeSub = this.route.params.subscribe(params => {
       if(params['id']) {
         this.subscription = this.roomService.read(params['id']).subscribe((results) => {
-          this.authService.userIsTrainer().subscribe((result) => {
-            console.log(result)
-            if(!result) this.router.navigate(['/'])
-          })
           this.room = results;
           this.createRoomForm.markAllAsTouched();
         });

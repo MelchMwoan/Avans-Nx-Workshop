@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of, Subscription, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { IUser } from '@avans-nx-workshop/shared/api';
 import { Router } from '@angular/router';
 import { environment } from '@avans-nx-workshop/shared/util-env';
-import { map, tap, catchError, switchMap } from 'rxjs/operators';
+import { map, catchError, switchMap } from 'rxjs/operators';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import { Alert, AlertService } from 'libs/ttvd-trainingen/ui/src/lib/alert/alert.service';
@@ -128,11 +128,13 @@ export class AuthService {
   }
 
   logout(): void {
+    const url = this.router.url;
+    console.log(url)
     this.router
-      .navigate(['/'])
+      .navigate(['/login'])
       .then((success) => {
-        // true when canDeactivate allows us to leave the page.
         if (success) {
+          this.router.navigate([url]);
           console.log('logout - removing local user info');
           localStorage.removeItem(this.CURRENT_USER);
           this.currentUser$.next(undefined);
@@ -145,6 +147,7 @@ export class AuthService {
         } else {
           console.log('navigate result:', success);
         }
+        console.log(this.router.events)
       })
       .catch((error) => this.handleError(error, this.router));
   }

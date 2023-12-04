@@ -27,6 +27,7 @@ import { ExerciseEditComponent } from './exercise/exercise-edit/exercise-edit.co
 import { TrainingListComponent } from './training/training-list/training-list.component';
 import { TrainingService } from './training/training.service';
 import { TrainingDetailComponent } from './training/training-detail/training-detail.component';
+import { TrainingEditComponent } from './training/training-edit/training-edit.component';
 
 @NgModule({
   imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, UiModule, HttpClientModule],
@@ -46,7 +47,8 @@ import { TrainingDetailComponent } from './training/training-detail/training-det
     ExerciseDetailComponent,
     ExerciseEditComponent,
     TrainingListComponent,
-    TrainingDetailComponent
+    TrainingDetailComponent,
+    TrainingEditComponent
   ],
   providers: [MealService, UserService, AuthService, RoomService, ExerciseService, TrainingService],
   exports: [
@@ -65,7 +67,8 @@ import { TrainingDetailComponent } from './training/training-detail/training-det
     ExerciseDetailComponent,
     ExerciseEditComponent,
     TrainingListComponent,
-    TrainingDetailComponent
+    TrainingDetailComponent,
+    TrainingEditComponent
   ],
 })
 export class FeaturesModule {}

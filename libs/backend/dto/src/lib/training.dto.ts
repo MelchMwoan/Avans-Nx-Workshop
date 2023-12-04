@@ -50,6 +50,11 @@ export class CreateTrainingDto implements ICreateTraining {
     @IsNotEmpty()
     @IsOptional()
     trainers!: string[];
+
+    @IsString()
+    @IsNotEmpty()
+    @IsOptional()
+    room?: string;
 }
 
 export class UpsertTrainingDto implements IUpsertTraining {
