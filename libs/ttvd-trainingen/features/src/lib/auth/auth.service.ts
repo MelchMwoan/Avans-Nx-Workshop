@@ -129,7 +129,6 @@ export class AuthService {
 
   logout(): void {
     const url = this.router.url;
-    console.log(url)
     this.router
       .navigate(['/login'])
       .then((success) => {

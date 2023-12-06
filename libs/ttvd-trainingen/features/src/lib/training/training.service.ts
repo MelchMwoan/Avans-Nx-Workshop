@@ -2,7 +2,7 @@
 import { Observable, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { map, catchError, tap } from 'rxjs/operators';
-import { ApiResponse, ITraining } from '@avans-nx-workshop/shared/api';
+import { ApiResponse, IEnrollment, ITraining } from '@avans-nx-workshop/shared/api';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from '@avans-nx-workshop/shared/util-env';
@@ -135,6 +135,65 @@ export class TrainingService {
             );
     }
 
+    public join(id: string | null, options?: any) {
+        console.log(`joining`)
+        const authOptions = {
+            ...httpOptions,
+            headers: new HttpHeaders({
+                'Content-type': 'application/json',
+            })
+        }
+        this.authService.getUserFromLocalStorage().subscribe((result) => {
+             const accessToken = (result as any).results.access_token;
+             authOptions.headers = authOptions.headers.set('Authorization', 'Bearer ' + accessToken);
+        })
+        console.log(authOptions);
+        return this.http
+            .post<ApiResponse<IEnrollment>>(this.endpoint + '/join/' + id, null, {
+                ...options,
+                ...authOptions,
+            })
+            .pipe(
+                tap(console.log),
+                catchError((error) => this.handleError(error, this.router))
+            );
+    }
+
+    public leave(id: string | null, options?: any) {
+        console.log(`leaving`)
+        const authOptions = {
+            ...httpOptions,
+            headers: new HttpHeaders({
+                'Content-type': 'application/json',
+            })
+        }
+        this.authService.getUserFromLocalStorage().subscribe((result) => {
+             const accessToken = (result as any).results.access_token;
+             authOptions.headers = authOptions.headers.set('Authorization', 'Bearer ' + accessToken);
+        })
+        return this.http
+            .delete<ApiResponse<any>>(this.endpoint + '/leave/' + id, {
+                ...options,
+                ...authOptions,
+            })
+            .pipe(
+                tap(console.log),
+                catchError((error) => this.handleError(error, this.router))
+            );
+    }
+
+    public getEnrollments(id: string | null, options?: any) {
+        console.log(`getting enrollments`)
+        return this.http
+            .get<ApiResponse<any>>(this.endpoint + '/' + id + '/enrollments', {
+                ...options,
+            })
+            .pipe(
+                tap(console.log),
+                catchError((error) => this.handleError(error, this.router))
+            );
+    }
+
     /**
      * Handle errors.
      */
@@ -145,7 +204,7 @@ export class TrainingService {
             type: 'danger',
             message: error.error.message || error.message
         }
-        if (error.status === 404) {
+        if (error.status === 404 && error.error.message.includes("training")) {
             errorResponse.dismissOnRouteChange = false;
             this.router.navigate(['/trainings']);
         }

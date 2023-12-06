@@ -191,4 +191,22 @@ export class TrainingService {
       throw new BadRequestException(error.message);
     }
   }
+  
+  async getEnrollmentsByTraining(identifier: string, req: any): Promise<IEnrollment[]> {
+    Logger.log('get Enrollments by training', this.TAG);
+    const isObjectId = mongoose.Types.ObjectId.isValid(identifier);
+    const training = await this.trainingModel
+      .findOne(isObjectId
+        ? { _id: identifier }
+        : { name: identifier })
+      .exec();
+    if(!training) throw new NotFoundException("Training not found");
+    try {
+      const result = await this.enrollmentModel.find({training: training._id});
+      return result;
+    } catch (error:any) {
+      Logger.error('Unexpected Error:', error);
+      throw new BadRequestException(error.message);
+    }
+  }
 }

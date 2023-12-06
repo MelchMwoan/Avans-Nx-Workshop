@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { IExercise, ITraining, IUser } from '@avans-nx-workshop/shared/api';
+import { IEnrollment, IExercise, IPlayer, ITraining, IUser } from '@avans-nx-workshop/shared/api';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../auth/auth.service';
@@ -20,6 +20,9 @@ export class TrainingDetailComponent implements OnInit, OnDestroy {
   subscription: Subscription | undefined = undefined;
   routeSub: Subscription | undefined = undefined;
   mayEdit = false;
+  enrollments: IEnrollment[] = [];
+  mayJoin = false;
+  mayLeave = false;
   curUser?: any | null;
 
   constructor(
@@ -38,30 +41,74 @@ export class TrainingDetailComponent implements OnInit, OnDestroy {
       this.subscription = this.trainingService
         .read(params['id'])
         .subscribe(async (results) => {
-          await this.authService.getUserFromLocalStorage().subscribe((res: any) => {this.mayEdit = results.trainers.some(x => x === res?.results.user._id)});
+          this.authService.getUserFromLocalStorage().subscribe((res: any) => {
+            this.mayEdit = results.trainers.some(x => x === res?.results.user._id);
+            this.curUser = res?.results.user;
+          });
           ;
           const newTrainers: IUser[] = [];
           results.trainers.forEach(async (trainer) => {
-            await this.userService.read(trainer as any).subscribe((results) => {
+            this.userService.read(trainer as any).subscribe((results) => {
               newTrainers.push(results);
             });
             results.trainers = newTrainers;
           });
-          await this.roomService.read(results.room as any).subscribe((res) => {
+          this.roomService.read(results.room as any).subscribe((res) => {
             results.room = res;
           });
           const newExercises: IExercise[] = [];
           results.exercises.forEach(async (exercise) => {
-            await this.exerciseService
+            this.exerciseService
               .read(exercise as any)
               .subscribe((results) => {
                 newExercises.push(results);
               });
             results.exercises = newExercises;
           });
+          this.trainingService.getEnrollments(results._id).subscribe(async (res) => {
+            this.enrollments = res?.results;
+            this.mayLeave = this.enrollments.some((x: any) => x.player === this.curUser?._id);
+            this.mayJoin = results.room.maxAmountOfTables * 2 > this.enrollments.length && !this.mayEdit && !this.mayLeave;
+            this.enrollments.forEach(async (enroll) => {
+              console.log(enroll);
+              this.userService.read((enroll.player as any)).subscribe((play) => {
+                enroll.player = play as IPlayer;
+              });
+            })
+            document.getElementById("loading")?.classList.add("hidden");
+            if(this.enrollments.length == 0) {
+              document.getElementById("noEnrolls")?.classList.remove("hidden");
+            }
+          });
           this.training = results;
+          
         });
     });
+  }
+
+  joinTraining() {
+    console.log(`Join: ${this.training?.name}`);
+    const url = this.router.url;
+    const trainingId = this.training?.name;
+    if (!trainingId) return console.log('Training ID is not defined');
+    this.subscription = (this.trainingService
+      .join(trainingId))
+      .subscribe((results) => {
+        console.log("shfiosfjiofjiodsjf"+results)
+        this.router.navigate(['/']).then((success) => {this.router.navigate([url])});
+      });
+  }
+  leaveTraining() {
+    console.log(`Leave: ${this.training?.name}`);
+    const url = this.router.url;
+    const trainingId = this.training?.name;
+    if (!trainingId) return console.log('Training ID is not defined');
+    this.subscription = this.trainingService
+      .leave(trainingId)
+      .subscribe((results) => {
+        console.log("shfiosfjiofjiodsjf"+results)
+        this.router.navigate(['/']).then((success) => {this.router.navigate([url])});
+      });
   }
 
   ngOnDestroy(): void {

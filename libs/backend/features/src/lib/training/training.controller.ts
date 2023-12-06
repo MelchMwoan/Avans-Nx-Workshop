@@ -55,4 +55,10 @@ export class TrainingController {
     leave(@Param('id') id: string, @Request() req: any): Promise<void> {
         return this.trainingService.leave(id, req);
     }
+
+    @Get(':id/enrollments')
+    @Public()
+    getEnrollmentsByTraining(@Param('id') id: string, @Request() req: any): Promise<IEnrollment[]> {
+        return this.trainingService.getEnrollmentsByTraining(id, req);
+    }
 }
