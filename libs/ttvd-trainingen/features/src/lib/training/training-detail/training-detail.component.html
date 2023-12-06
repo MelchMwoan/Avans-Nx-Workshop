@@ -5,7 +5,7 @@
         <p><b>Description:</b> {{training?.description}}</p>
         <p><b>Difficulty:</b> {{training?.difficulty}}</p>
         <p><b>Minimum Players to start:</b> {{training?.minPlayers}}</p>
-        <p><b>DateTime:</b> {{training?.dateTime}}</p>
+        <p><b>DateTime:</b> {{training?.dateTime | date : 'medium'}}</p>
         <p><b>Trainers:</b> <span *ngFor="let trainer of training?.trainers">
             <br>{{ trainer.firstName + " " + trainer.lastName}}
         </span></p>

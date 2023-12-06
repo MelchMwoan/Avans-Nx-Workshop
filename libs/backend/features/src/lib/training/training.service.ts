@@ -6,7 +6,7 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { ITraining } from '@avans-nx-workshop/shared/api';
+import { IExercise, ITraining } from '@avans-nx-workshop/shared/api';
 import { Logger } from '@nestjs/common';
 import {
   CreateTrainingDto,
@@ -115,12 +115,18 @@ export class TrainingService {
             Logger.warn('Training not found', this.TAG);
             throw new NotFoundException('Training was not found');
         }
-        // if(req['user'].email != existingUser.email) throw new UnauthorizedException("You are not the owner of this entity");
+        if(!existingTraining.trainers.includes(req['user'].sub)) throw new UnauthorizedException("You are not an owner of this entity");
+        
+  
+        await this.validateReferencesExist([training.roomId], "Room not found", this.roomModel);
+        await this.validateReferencesExist(training.exercises, "One or more exercises not found", this.exerciseModel);
+        await this.validateReferencesExist(training.trainers, "One or more trainers not found", this.userModel);
         
         existingTraining.set({
           ...existingTraining.toObject() as ITraining,
           ...training,
       });
+      Logger.log(existingTraining);
         const updatedTraining = await existingTraining.save();
         return updatedTraining as ITraining;
     } catch (error) {

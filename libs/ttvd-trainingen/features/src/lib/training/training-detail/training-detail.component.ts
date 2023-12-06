@@ -20,6 +20,7 @@ export class TrainingDetailComponent implements OnInit, OnDestroy {
   subscription: Subscription | undefined = undefined;
   routeSub: Subscription | undefined = undefined;
   mayEdit = false;
+  curUser?: any | null;
 
   constructor(
     private trainingService: TrainingService,
@@ -33,13 +34,12 @@ export class TrainingDetailComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.authService
-      .userIsTrainer()
-      .subscribe((isTrainer) => (this.mayEdit = isTrainer));
     this.routeSub = this.route.params.subscribe((params) => {
       this.subscription = this.trainingService
         .read(params['id'])
         .subscribe(async (results) => {
+          await this.authService.getUserFromLocalStorage().subscribe((res: any) => {this.mayEdit = results.trainers.some(x => x === res?.results.user._id)});
+          ;
           const newTrainers: IUser[] = [];
           results.trainers.forEach(async (trainer) => {
             await this.userService.read(trainer as any).subscribe((results) => {

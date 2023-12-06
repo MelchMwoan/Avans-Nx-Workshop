@@ -32,12 +32,14 @@ export class TrainingController {
 
     @Delete(':id')
     @UseGuards(AuthGuard)
+    @Trainer()
     async delete(@Param('id') id: string, @Request() req: any): Promise<void> {
         return await this.trainingService.delete(id, req);
     }
 
     @Put(':id')
     @UseGuards(AuthGuard)
+    @Trainer()
     async update(@Param('id') id: string, @Body() data: UpdateTrainingDto, @Request() req: any): Promise<IExercise> {
         return await this.trainingService.update(id, data, req);
     }

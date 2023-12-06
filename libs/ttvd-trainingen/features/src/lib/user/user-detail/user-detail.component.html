@@ -17,7 +17,7 @@
         <p><b>Name:</b> {{user?.firstName}} {{user?.lastName}}</p>
         <p><b>Email:</b> {{user?.email}}</p>
         <p><b>Telephone:</b> {{user?.telephone}}</p>
-        <p><b>Birthdate:</b> {{user?.birthDate | date : 'longDate' }}</p>
+        <p><b>Birthdate:</b> {{user?.birthDate | date : 'fullDate' }}</p>
         <p><b>Id:</b> {{user?._id}}</p>
 
         <div *ngIf="isTrainer(user!)">

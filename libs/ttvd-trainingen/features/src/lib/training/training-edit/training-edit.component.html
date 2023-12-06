@@ -65,7 +65,7 @@
         </label>
         <input formControlName="dateTime"
           [ngClass]="{'border-red-500 bg-red-50 text-red-900': createTrainingForm.controls['dateTime'].invalid && createTrainingForm.controls['dateTime'].touched}"
-          [ngModel]="training?.dateTime"
+          [ngModel]="training?.dateTime | date:'yyyy-MM-dd hh:mm'"
           class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
           id="grid-dateTime" type="datetime-local">
           <script>

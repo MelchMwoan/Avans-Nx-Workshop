@@ -16,5 +16,5 @@ export interface ITraining {
 }
 
 export type ICreateTraining = Pick<ITraining, 'name' | 'description' | 'difficulty' | 'dateTime' | 'minPlayers'> & { roomId: string; };
-export type IUpdateTraining = Partial<Omit<ITraining, 'id'>>;
+export type IUpdateTraining = Partial<Omit<ITraining, 'id' | 'trainers' | 'exercises'>> & { roomId: string; };
 export type IUpsertTraining = ITraining;

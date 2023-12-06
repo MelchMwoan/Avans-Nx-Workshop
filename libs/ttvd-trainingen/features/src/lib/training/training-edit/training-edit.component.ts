@@ -50,7 +50,10 @@ export class TrainingEditComponent implements OnInit, OnDestroy {
       }
     })
     this.routeSub = this.route.params.subscribe(async params => {
-      await this.authService.getUserFromLocalStorage().subscribe((results: any) => {console.log(results);this.curUser = results.results.user});
+      await this.authService.getUserFromLocalStorage().subscribe((results: any) => {this.curUser = results.results.user});
+      await this.userService.list().subscribe((results) => {
+        this.trainerChoices = results? results.filter((x: ITrainer | IPlayer): x is ITrainer => (x as ITrainer).loan !== undefined && x._id != this.curUser._id): [];
+      })
       this.createTrainingForm.get('trainers')?.setValue([this.curUser._id]);
       await this.roomService.list().subscribe((results) => {
         this.roomChoices = results;
@@ -58,16 +61,14 @@ export class TrainingEditComponent implements OnInit, OnDestroy {
       await this.exerciseService.list().subscribe((results) => {
         this.exerciseChoices = results;
       })
-      await this.userService.list().subscribe((results) => {
-        this.trainerChoices = results? results.filter((x: ITrainer | IPlayer): x is ITrainer => (x as ITrainer).loan !== undefined && x._id != this.curUser._id): [];
-      })
       if(params['id']) {
         this.subscription = this.trainingService.read(params['id']).subscribe((results) => {
-          this.authService.userIsTrainer().subscribe((result) => {
-            console.log(result)
-            if(!result) this.router.navigate(['/'])
-          })
+          console.log(results)
           this.training = results;
+          if(!this.training.trainers.includes(this.curUser._id)) {
+            this.router.navigate(['/trainings']);
+            this.alertService.show("warning", "You are not authorized to edit this training.");
+          }
           this.createTrainingForm.markAllAsTouched();
         });
         const $modalElement: HTMLElement | null = document.querySelector('#popup-modal');
@@ -84,8 +85,8 @@ export class TrainingEditComponent implements OnInit, OnDestroy {
       }
     });
     this.createTrainingForm.get('trainers')?.valueChanges.subscribe((selectedTrainers: string[]) => {
-      if (!selectedTrainers.includes(this.curUser?._id)) {
-        selectedTrainers.push(this.curUser?._id);
+      if (!selectedTrainers?.includes(this.curUser?._id)) {
+        selectedTrainers?.push(this.curUser?._id);
         this.createTrainingForm.get('trainers')?.setValue(selectedTrainers);
       }
     }); 

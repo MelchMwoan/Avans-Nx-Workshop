@@ -9,12 +9,9 @@ import {
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthService } from './auth.service';
+// eslint-disable-next-line @nx/enforce-module-boundaries
 import { IUser } from '../../../../../shared/api/src';
 
-/**
- * Verifies that user is logged in before navigating to routes.
- *
- */
 @Injectable()
 export class LoggedInAuthGuard implements CanActivate, CanActivateChild {
   //
@@ -43,15 +40,3 @@ export class LoggedInAuthGuard implements CanActivate, CanActivateChild {
     return this.canActivate();
   }
 }
-
-// @Injectable()
-// export class SaveEditedWorkGuard {
-//   constructor(private modalService: NgbModal) {}
-
-//   canDeactivate(): Promise<boolean> {
-//     return this.modalService
-//       .open(ModalLeaveYesNoComponent)
-//       .result.then((result) => true)
-//       .catch(() => false);
-//   }
-// }

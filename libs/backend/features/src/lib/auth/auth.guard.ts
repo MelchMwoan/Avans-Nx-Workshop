@@ -49,7 +49,6 @@ export class AuthGuard implements CanActivate {
 
       if (isTrainer) {
         const userDetails = await this.userService.getOne(payload.email);
-        console.log(userDetails)
         if (!userDetails || !(userDetails as ITrainer).loan) {
           Logger.warn('User is not a trainer', this.TAG);
           throw new UnauthorizedException('User is not a trainer');

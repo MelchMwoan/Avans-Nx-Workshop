@@ -112,8 +112,7 @@ export class UpdateTrainingDto implements IUpdateTraining {
     @IsNotEmpty()
     @IsOptional()
     difficulty!: Difficulty;
-    
-    @IsDate()
+
     @IsNotEmpty()
     @IsOptional()
     dateTime!: Date;
@@ -123,19 +122,17 @@ export class UpdateTrainingDto implements IUpdateTraining {
     @IsOptional()
     minPlayers!: number;
     
-    @IsObject()
+    @IsString()
     @IsNotEmpty()
-    @IsOptional()
     roomId!: string;
     
     @IsArray()
     @IsNotEmpty()
-    @ValidateNested({ each: true})
     @IsOptional()
-    trainerIds!: string[];
+    trainers!: string[];
     
     @IsArray()
     @IsNotEmpty()
     @IsOptional()
-    exerciseIds!: string[];
+    exercises!: string[];
 }
