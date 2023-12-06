@@ -1,6 +1,6 @@
 import { Controller, Delete, Put, Request, UseGuards } from '@nestjs/common';
 import { Get, Param, Post, Body } from '@nestjs/common';
-import { IExercise, ITraining } from '@avans-nx-workshop/shared/api';
+import { IEnrollment, IExercise, ITraining } from '@avans-nx-workshop/shared/api';
 import { CreateTrainingDto, UpdateTrainingDto } from '@avans-nx-workshop/backend/dto';
 import { Public } from '../auth/decorators/public.decorator';
 import { AuthGuard } from '../auth/auth.guard';
@@ -42,5 +42,17 @@ export class TrainingController {
     @Trainer()
     async update(@Param('id') id: string, @Body() data: UpdateTrainingDto, @Request() req: any): Promise<IExercise> {
         return await this.trainingService.update(id, data, req);
+    }
+    
+    @Post('join/:id')
+    @UseGuards(AuthGuard)
+    join(@Param('id') id: string, @Request() req: any): Promise<IEnrollment> {
+        return this.trainingService.join(id, req);
+    }
+    
+    @Delete('leave/:id')
+    @UseGuards(AuthGuard)
+    leave(@Param('id') id: string, @Request() req: any): Promise<void> {
+        return this.trainingService.leave(id, req);
     }
 }

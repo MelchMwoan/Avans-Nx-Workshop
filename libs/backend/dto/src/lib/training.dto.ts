@@ -6,12 +6,11 @@ import {
     IsDate,
     IsNumber,
     IsObject,
-    IsArray,
-    ValidateNested} from 'class-validator';
+    IsArray} from 'class-validator';
 import {
-    Difficulty, ICreateTraining, IExercise, IRoom, ITrainer, IUpdateTraining, IUpsertTraining, IUser,
+    Difficulty, ICreateTraining, IExercise, IRoom, ITrainer, IUpdateTraining, IUpsertTraining,
 } from '@avans-nx-workshop/shared/api';
-import { ObjectId } from 'mongoose';
+import { IEnrollment } from '@avans-nx-workshop/shared/api';
 
 /**
  * Use the `Pick` utility type to extract only the properties we want for
@@ -88,12 +87,10 @@ export class UpsertTrainingDto implements IUpsertTraining {
     
     @IsArray()
     @IsNotEmpty()
-    @ValidateNested({ each: true})
     trainers!: ITrainer[];
     
     @IsArray()
     @IsNotEmpty()
-    @ValidateNested({ each: true})
     exercises!: IExercise[];
 }
 

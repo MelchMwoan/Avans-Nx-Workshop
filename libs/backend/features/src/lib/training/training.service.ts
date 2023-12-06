@@ -6,7 +6,7 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { IExercise, ITraining } from '@avans-nx-workshop/shared/api';
+import { ICreateEnrollment, IEnrollment, IExercise, IPlayer, ITraining } from '@avans-nx-workshop/shared/api';
 import { Logger } from '@nestjs/common';
 import {
   CreateTrainingDto,
@@ -18,12 +18,13 @@ import { Training } from './training.schema';
 import { User } from '../user/user.schema';
 import { Exercise } from '../exercise/exercise.schema';
 import { Room } from '../room/room.schema';
+import { Enrollment } from './enrollment.schema';
 
 @Injectable()
 export class TrainingService {
   TAG = 'TrainingService';
 
-  constructor(@InjectModel(Training.name) private trainingModel: Model<Training>, @InjectModel(Room.name) private roomModel: Model<Room>, @InjectModel(User.name) private userModel: Model<User>, @InjectModel(Exercise.name) private exerciseModel: Model<Exercise>) {}
+  constructor(@InjectModel(Training.name) private trainingModel: Model<Training>, @InjectModel(Room.name) private roomModel: Model<Room>, @InjectModel(User.name) private userModel: Model<User>, @InjectModel(Exercise.name) private exerciseModel: Model<Exercise>, @InjectModel(Enrollment.name) private enrollmentModel: Model<Enrollment>) {}
 
   async getAll(): Promise<ITraining[]> {
     Logger.log('getAll', this.TAG);
@@ -135,6 +136,59 @@ export class TrainingService {
           throw new ConflictException('Training with this name already exists');
         }
         throw error;
+    }
+  }
+
+  async join(identifier: string, req: any): Promise<IEnrollment> {
+    Logger.log('join', this.TAG);
+    const isObjectId = mongoose.Types.ObjectId.isValid(identifier);
+    const training = await this.trainingModel
+      .findOne(isObjectId
+        ? { _id: identifier }
+        : { name: identifier })
+      .exec();
+    if(!training) throw new NotFoundException("Training not found");
+    const player = await this.userModel.findOne({_id: req['user']?.sub});
+    if(!player) throw new NotFoundException("Player not found");
+    const enrollment = await this.enrollmentModel.findOne({training: training._id, player: player._id})
+    if(enrollment) throw new ConflictException("You already joined this training.")
+    try {
+      const newEnrollment = {
+        training: training,
+        player: player,
+        enrollDateTime: new Date()
+      };
+      const createdEnrollment = new this.enrollmentModel(newEnrollment);
+      await createdEnrollment.save();
+      return createdEnrollment as IEnrollment;
+
+    } catch (error:any) {
+      Logger.error('Unexpected Error:', error);
+      throw new BadRequestException(error.message);
+    }
+  }
+
+  async leave(identifier: string, req: any): Promise<void> {
+    Logger.log('leave', this.TAG);
+    const isObjectId = mongoose.Types.ObjectId.isValid(identifier);
+    const training = await this.trainingModel
+      .findOne(isObjectId
+        ? { _id: identifier }
+        : { name: identifier })
+      .exec();
+    if(!training) throw new NotFoundException("Training not found");
+    const player = await this.userModel.findOne({_id: req['user']?.sub});
+    if(!player) throw new NotFoundException("Player not found");
+    const enrollment = await this.enrollmentModel.findOne({training: training._id, player: player._id})
+    if (!enrollment) throw new NotFoundException(`Enrollment could not be found!`);
+    try {
+      const result = await this.enrollmentModel
+        .deleteOne({ _id: enrollment._id })
+        .exec();
+      Logger.log(`Enrollment deleted successfully`, this.TAG);
+    } catch (error:any) {
+      Logger.error('Unexpected Error:', error);
+      throw new BadRequestException(error.message);
     }
   }
 }

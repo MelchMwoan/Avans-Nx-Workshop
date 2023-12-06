@@ -7,6 +7,7 @@ import { User, UserSchema } from '../user/user.schema';
 import { Exercise, ExerciseSchema } from '../exercise/exercise.schema';
 import { Room, RoomSchema } from '../room/room.schema';
 import { UserModule } from '../user.module';
+import { Enrollment, EnrollmentSchema } from './enrollment.schema';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { UserModule } from '../user.module';
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     MongooseModule.forFeature([{ name: Exercise.name, schema: ExerciseSchema }]),
     MongooseModule.forFeature([{ name: Room.name, schema: RoomSchema }]),
+    MongooseModule.forFeature([{ name: Enrollment.name, schema: EnrollmentSchema }]),
     UserModule
   ],
   controllers: [TrainingController],
