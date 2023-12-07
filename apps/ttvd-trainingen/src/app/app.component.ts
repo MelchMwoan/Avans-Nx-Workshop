@@ -8,6 +8,8 @@ import {
 import { FeaturesModule } from '@avans-nx-workshop/ttvd-trainingen/features';
 import { UiModule } from '@avans-nx-workshop/ttvd-trainingen/ui';
 import { initFlowbite } from 'flowbite';
+// eslint-disable-next-line @nx/enforce-module-boundaries
+import { AuthService } from 'libs/ttvd-trainingen/features/src/lib/auth/auth.service';
 
 @Component({
   standalone: true,
@@ -25,7 +27,11 @@ import { initFlowbite } from 'flowbite';
 })
 export class AppComponent implements OnInit {
   title = 'ttvd-trainingen';
+
+  constructor(private authService: AuthService){};
+
   ngOnInit(): void {
     initFlowbite();
+    this.authService.getUserFromLocalStorage().subscribe((res) => this.authService.validateToken(res).subscribe());
   }
 }

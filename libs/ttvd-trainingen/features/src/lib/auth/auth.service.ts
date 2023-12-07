@@ -103,12 +103,12 @@ export class AuthService {
    * als response komt is het token nog valid. We doen dan verder niets.
    * Als het token niet valid is loggen we de user uit.
    */
-  validateToken(userData: IUser): Observable<IUser | undefined> {
-    const url = `${environment.dataApiUrl}auth/profile`;
+  validateToken(userData: any): Observable<IUser | undefined> {
+    const url = `${environment.dataApiUrl}/auth/profile`;
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + userData.token,
+        Authorization: 'Bearer ' + userData.results.access_token,
       }),
     };
 
