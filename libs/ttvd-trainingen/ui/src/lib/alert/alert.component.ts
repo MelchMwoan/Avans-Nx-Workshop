@@ -27,7 +27,7 @@ export class AlertComponent implements OnInit, OnDestroy {
       this.targetEl = document.getElementById('alert');
       if (this.targetEl == null) return;
       this.dismissInstance = new Dismiss(this.targetEl);
-      setTimeout(() => (this.dismissPreviousAlert()), 6000);
+      setTimeout(() => (this.dismissPreviousAlert()), alert.duration);
     });
 
     this.router.events.subscribe((event) => {

@@ -5,6 +5,7 @@ export interface Alert {
   type: string;
   message: string;
   dismissOnRouteChange?: boolean;
+  duration?: number;
 }
 
 @Injectable({
@@ -13,7 +14,7 @@ export interface Alert {
 export class AlertService {
   public alert$ = new Subject<Alert>();
 
-  show(type: string, msg: string, dismissOnRouteChange?: boolean): void {
-    this.alert$.next({ type: type, message: msg, dismissOnRouteChange: dismissOnRouteChange !== undefined ? dismissOnRouteChange : true});
+  show(type: string, msg: string, dismissOnRouteChange?: boolean, duration?: number): void {
+    this.alert$.next({ type: type, message: msg, dismissOnRouteChange: dismissOnRouteChange !== undefined ? dismissOnRouteChange : true, duration: duration !== undefined ? duration : 6000});
   }
 }

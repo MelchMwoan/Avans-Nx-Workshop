@@ -120,6 +120,7 @@ export class AuthService {
       }),
       catchError((error: any) => {
         console.log('Validate token Failed');
+        this.alertService.show("danger", "You were logged out due to inactivity, please log back in", false, 20000)
         this.logout();
         this.currentUser$.next(undefined);
         return this.handleError(error, this.router)
