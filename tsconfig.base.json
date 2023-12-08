@@ -19,6 +19,9 @@
       "@avans-nx-workshop/backend/features": [
         "libs/backend/features/src/index.ts"
       ],
+      "@avans-nx-workshop/backend/neo4j": [
+        "libs/backend/neo4j/src/index.ts"
+      ],
       "@avans-nx-workshop/backend/schemas": [
         "libs/backend/schemas/src/index.ts"
       ],
