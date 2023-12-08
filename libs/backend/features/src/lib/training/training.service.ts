@@ -90,7 +90,6 @@ export class TrainingService {
       }
       const createdTraining = new this.trainingModel(newTraining);
       await createdTraining.save();
-      console.log(createdTraining.trainers.map(objectId => String(objectId)));
     const res = await this.neo4jService.write('MERGE (t:Training {name: $trainingName}) ON CREATE SET t.id = $trainingId, t.difficulty = $trainingDifficulty WITH t MATCH (u:User) WHERE u.id IN $trainingTrainers MERGE (u)-[r:HOST]->(t)', {
       trainingId: String(createdTraining._id),
       trainingDifficulty: createdTraining.difficulty,
@@ -128,19 +127,24 @@ export class TrainingService {
             Logger.warn('Training not found', this.TAG);
             throw new NotFoundException('Training was not found');
         }
+        const oldName = existingTraining.name;
         if(!existingTraining.trainers.includes(req['user'].sub)) throw new UnauthorizedException("You are not an owner of this entity");
         
   
-        await this.validateReferencesExist([training.roomId], "Room not found", this.roomModel);
-        await this.validateReferencesExist(training.exercises, "One or more exercises not found", this.exerciseModel);
-        await this.validateReferencesExist(training.trainers, "One or more trainers not found", this.userModel);
+        if(training.roomId != null) await this.validateReferencesExist([training.roomId], "Room not found", this.roomModel);
+        if(training.exercises != null) await this.validateReferencesExist(training.exercises, "One or more exercises not found", this.exerciseModel);
+        if(training.trainers != null) await this.validateReferencesExist(training.trainers, "One or more trainers not found", this.userModel);
         
         existingTraining.set({
           ...existingTraining.toObject() as ITraining,
           ...training,
       });
-      Logger.log(existingTraining);
         const updatedTraining = await existingTraining.save();
+        const res = await this.neo4jService.write('MATCH(t:Training {name:$trainingOldName}) SET t.name = $trainingNewName, t.difficulty = $trainingNewDifficulty', {
+          trainingOldName: oldName,
+          trainingNewName: updatedTraining.name,
+          trainingNewDifficulty: updatedTraining.difficulty,
+        });
         return updatedTraining as ITraining;
     } catch (error) {
         Logger.error(`Error updating training: ${error}`, this.TAG);

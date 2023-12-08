@@ -120,6 +120,7 @@ export class UserService {
             throw new NotFoundException('User was not found');
         }
         if(req['user'].email != existingUser.email) throw new UnauthorizedException("You are not the owner of this entity");
+        const oldEmail = existingUser.email;
         let updatedUser: IPlayer | ITrainer;
         if (user.userType === 'player' && user.player) {
             existingUser.set({
@@ -157,6 +158,12 @@ export class UserService {
             throw new BadRequestException('Invalid user type or missing details.');
         }
 
+        
+        const res = await this.neo4jService.write('MATCH(u:User {email:$userOldEmail}) SET u.name = $userNewName, u.email = $userNewEmail', {
+          userOldEmail: oldEmail,
+          userNewName: updatedUser.firstName + " " + updatedUser.lastName,
+          userNewEmail: updatedUser.email,
+        });
         return updatedUser as IPlayer | ITrainer;
     } catch (error) {
         Logger.error(`Error updating user: ${error}`, this.TAG);

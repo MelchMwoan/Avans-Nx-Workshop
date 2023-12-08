@@ -93,6 +93,7 @@ export class ExerciseService {
             Logger.warn('Exercise not found', this.TAG);
             throw new NotFoundException('Exercise was not found');
         }
+        const oldName = existingExercise.name;
         if(req['user'].sub != existingExercise.owner) throw new UnauthorizedException("You are not the owner of this entity");
         
         existingExercise.set({
@@ -100,6 +101,12 @@ export class ExerciseService {
           ...exercise,
       });
         const updatedExercise = await existingExercise.save();
+        
+        const res = await this.neo4jService.write('MATCH(e:Exercise {name:$exerciseOldName}) SET e.name = $exerciseNewName, e.difficulty = $exerciseNewDifficulty', {
+          exerciseOldName: oldName,
+          exerciseNewName: updatedExercise.name,
+          exerciseNewDifficulty: updatedExercise.difficulty,
+        });
         return updatedExercise as unknown as IExercise;
     } catch (error) {
         Logger.error(`Error updating exercise: ${error}`, this.TAG);

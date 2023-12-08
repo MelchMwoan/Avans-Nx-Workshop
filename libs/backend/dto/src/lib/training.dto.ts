@@ -121,6 +121,7 @@ export class UpdateTrainingDto implements IUpdateTraining {
     
     @IsString()
     @IsNotEmpty()
+    @IsOptional()
     roomId!: string;
     
     @IsArray()
