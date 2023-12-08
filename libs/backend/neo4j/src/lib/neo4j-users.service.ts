@@ -10,10 +10,10 @@ export class Neo4JUserService {
     async findAll(): Promise<any> {
         this.logger.log('findAll users');
         const results = await this.neo4jService.read(
-            `MATCH people=()-[:WorksIn]->(t:Team {name:'Informatica'}) RETURN people;`
+            `MATCH (p:User) RETURN p;`
         );
         const users = results.records.map(
-            (record: any) => record._fields[0].start.properties
+            (record: any) => record._fields[0].properties
         );
         return users;
     }

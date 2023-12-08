@@ -19,12 +19,13 @@ import { User } from '../user/user.schema';
 import { Exercise } from '../exercise/exercise.schema';
 import { Room } from '../room/room.schema';
 import { Enrollment } from './enrollment.schema';
+import { Neo4jService } from 'nest-neo4j/dist';
 
 @Injectable()
 export class TrainingService {
   TAG = 'TrainingService';
 
-  constructor(@InjectModel(Training.name) private trainingModel: Model<Training>, @InjectModel(Room.name) private roomModel: Model<Room>, @InjectModel(User.name) private userModel: Model<User>, @InjectModel(Exercise.name) private exerciseModel: Model<Exercise>, @InjectModel(Enrollment.name) private enrollmentModel: Model<Enrollment>) {}
+  constructor(@InjectModel(Training.name) private trainingModel: Model<Training>, @InjectModel(Room.name) private roomModel: Model<Room>, @InjectModel(User.name) private userModel: Model<User>, @InjectModel(Exercise.name) private exerciseModel: Model<Exercise>, @InjectModel(Enrollment.name) private enrollmentModel: Model<Enrollment>, private readonly neo4jService: Neo4jService) {}
 
   async getAll(): Promise<ITraining[]> {
     Logger.log('getAll', this.TAG);
@@ -56,6 +57,9 @@ export class TrainingService {
       const result = await this.trainingModel
         .deleteOne({ name: identifier })
         .exec();
+        const res = await this.neo4jService.write('MATCH (t:Training {name: $trainingName}) DELETE t', {
+          trainingName: identifier
+        });
       Logger.log(`Training deleted successfully`, this.TAG);
     } catch (error) {
       Logger.error(`Error deleting training: ${error}`, this.TAG);
@@ -86,6 +90,13 @@ export class TrainingService {
       }
       const createdTraining = new this.trainingModel(newTraining);
       await createdTraining.save();
+      
+    const res = await this.neo4jService.write('MERGE (t:Training {name: $trainingName}) ON CREATE SET t.id = $trainingId, t.difficulty = $trainingDifficulty', {
+      trainingId: String(createdTraining._id),
+      trainingDifficulty: createdTraining.difficulty,
+      trainingName: createdTraining.name
+    });
+
       return createdTraining as ITraining;
 
     } catch (error:any) {
@@ -160,6 +171,12 @@ export class TrainingService {
       };
       const createdEnrollment = new this.enrollmentModel(newEnrollment);
       await createdEnrollment.save();
+
+      const res = await this.neo4jService.write('MATCH (u:User {email: $playerEmail}) MATCH (t:Training {name: $trainingName}) MERGE (u)-[role:PLAYED]->(t)', {
+        playerEmail: player.email,
+        trainingName: training.name
+      });
+      
       return createdEnrollment as IEnrollment;
 
     } catch (error:any) {
@@ -185,6 +202,10 @@ export class TrainingService {
       const result = await this.enrollmentModel
         .deleteOne({ _id: enrollment._id })
         .exec();
+        const res = await this.neo4jService.write('MATCH (u:User {email: $userEmail}) -[r:PLAYED]->(t:Training {name: $trainingName}) DELETE r', {
+          userEmail: player.email,
+          trainingName: training.name,
+        });
       Logger.log(`Enrollment deleted successfully`, this.TAG);
     } catch (error:any) {
       Logger.error('Unexpected Error:', error);
