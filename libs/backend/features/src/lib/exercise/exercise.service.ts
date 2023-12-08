@@ -13,12 +13,13 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
 import { Exercise } from './exercise.schema';
+import { Neo4jService } from 'nest-neo4j/dist';
 
 @Injectable()
 export class ExerciseService {
   TAG = 'ExerciseService';
 
-  constructor(@InjectModel(Exercise.name) private exerciseModel: Model<Exercise>) {}
+  constructor(@InjectModel(Exercise.name) private exerciseModel: Model<Exercise>, private readonly neo4jService: Neo4jService) {}
 
   async getAll(): Promise<IExercise[]> {
     Logger.log('getAll', this.TAG);
@@ -51,6 +52,9 @@ export class ExerciseService {
       const result = await this.exerciseModel
         .deleteOne({ name: identifier })
         .exec();
+      const res = await this.neo4jService.write('MATCH (e:Exercise {name: $exerName}) DELETE e', {
+        exerName: identifier
+      });
       Logger.log(`Exercise deleted successfully`, this.TAG);
     } catch (error) {
       Logger.error(`Error deleting exercise: ${error}`, this.TAG);
@@ -68,6 +72,13 @@ export class ExerciseService {
     const newExercise = exercise;
     const createdExercies = new this.exerciseModel(newExercise);
     createdExercies.save();
+    
+    const res = await this.neo4jService.write('MERGE (e:Exercise {name: $exerName}) ON CREATE SET e.id = $exerId, e.difficulty = $exerDifficulty', {
+      exerId: String(createdExercies._id),
+      exerDifficulty: createdExercies.difficulty,
+      exerName: createdExercies.name
+    });
+
     return createdExercies as IExercise;
   }
 
