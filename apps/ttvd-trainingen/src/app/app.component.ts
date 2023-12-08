@@ -32,6 +32,8 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     initFlowbite();
-    this.authService.getUserFromLocalStorage().subscribe((res) => this.authService.validateToken(res).subscribe());
+    this.authService.getUserFromLocalStorage().subscribe((res) => {
+      if(res != null) this.authService.validateToken(res).subscribe();
+    });
   }
 }
