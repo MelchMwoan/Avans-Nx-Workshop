@@ -57,7 +57,7 @@ export class TrainingService {
       const result = await this.trainingModel
         .deleteOne({ name: identifier })
         .exec();
-        const res = await this.neo4jService.write('MATCH (t:Training {name: $trainingName}) DELETE t', {
+        const res = await this.neo4jService.write('MATCH (t:Training {name: $trainingName}) OPTIONAL MATCH (t)-[r]-() DELETE t,r', {
           trainingName: identifier
         });
       Logger.log(`Training deleted successfully`, this.TAG);
@@ -90,11 +90,12 @@ export class TrainingService {
       }
       const createdTraining = new this.trainingModel(newTraining);
       await createdTraining.save();
-      
-    const res = await this.neo4jService.write('MERGE (t:Training {name: $trainingName}) ON CREATE SET t.id = $trainingId, t.difficulty = $trainingDifficulty', {
+      console.log(createdTraining.trainers.map(objectId => String(objectId)));
+    const res = await this.neo4jService.write('MERGE (t:Training {name: $trainingName}) ON CREATE SET t.id = $trainingId, t.difficulty = $trainingDifficulty WITH t MATCH (u:User) WHERE u.id IN $trainingTrainers MERGE (u)-[r:HOST]->(t)', {
       trainingId: String(createdTraining._id),
       trainingDifficulty: createdTraining.difficulty,
-      trainingName: createdTraining.name
+      trainingName: createdTraining.name,
+      trainingTrainers: createdTraining.trainers.map(objectId => String(objectId))
     });
 
       return createdTraining as ITraining;
