@@ -21,12 +21,13 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
 import { User } from './user.schema';
+import { Neo4jService } from 'nest-neo4j/dist';
 
 @Injectable()
 export class UserService {
   TAG = 'UserService';
 
-  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
+  constructor(@InjectModel(User.name) private userModel: Model<User>, private readonly neo4jService: Neo4jService) {}
 
   async getAll(): Promise<(IPlayer | ITrainer)[]> {
     Logger.log('getAll', this.TAG);
@@ -58,6 +59,10 @@ export class UserService {
       const result = await this.userModel
         .deleteOne({ email: identifier })
         .exec();
+        
+      const res = await this.neo4jService.write('MATCH (u1:User {email: $userEmail}) DELETE u1', {
+        userEmail: identifier
+      });
       Logger.log(`User deleted successfully`, this.TAG);
     } catch (error) {
       Logger.error(`Error deleting user: ${error}`, this.TAG);
@@ -96,6 +101,13 @@ export class UserService {
     newUser.password = await this.generateHashedPassword(newUser.password!);
     const createdUser = new this.userModel(newUser);
     createdUser.save();
+
+    const res = await this.neo4jService.write('MERGE (u1:User {email: $userEmail}) ON CREATE SET u1.id = $userId, u1.name = $userName', {
+      userId: String(createdUser._id),
+      userEmail: createdUser.email,
+      userName: createdUser.firstName + " " + createdUser.lastName
+    });
+
     return createdUser as ITrainer | IPlayer;
   }
 
