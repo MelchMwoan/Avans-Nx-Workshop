@@ -2,10 +2,12 @@ import {
     IsNotEmpty,
     IsString,
     IsOptional,
-    IsEnum} from 'class-validator';
+    IsEnum,
+    IsObject} from 'class-validator';
 import {
     Difficulty,
     ICreateExercise,
+    ITrainer,
     IUpdateExercise,
     IUpsertExercise,
 } from '@avans-nx-workshop/shared/api';
@@ -26,6 +28,11 @@ export class CreateExerciseDto implements ICreateExercise {
     @IsEnum(Difficulty)
     @IsNotEmpty()
     difficulty!: Difficulty;
+
+    @IsString()
+    @IsNotEmpty()
+    @IsOptional()
+    owner?: ITrainer;
 }
 
 export class UpsertExerciseDto implements IUpsertExercise {
@@ -44,6 +51,10 @@ export class UpsertExerciseDto implements IUpsertExercise {
     @IsEnum(Difficulty)
     @IsNotEmpty()
     difficulty!: Difficulty;
+    
+    @IsObject()
+    @IsNotEmpty()
+    owner!: ITrainer;
 }
 
 export class UpdateExerciseDto implements IUpdateExercise {

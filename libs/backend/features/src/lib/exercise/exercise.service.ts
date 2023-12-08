@@ -3,6 +3,7 @@ import {
   ConflictException,
   Injectable,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { IExercise, IRoom } from '@avans-nx-workshop/shared/api';
 import { Logger } from '@nestjs/common';
@@ -24,7 +25,7 @@ export class ExerciseService {
   async getAll(): Promise<IExercise[]> {
     Logger.log('getAll', this.TAG);
     return (await this.exerciseModel.find().exec()).map((exercisesFromDb) => {
-      return exercisesFromDb as IExercise;
+      return exercisesFromDb as unknown as IExercise;
     });
   }
 
@@ -39,7 +40,7 @@ export class ExerciseService {
     if (!exercise) {
       throw new NotFoundException(`Exercise could not be found!`);
     }
-    return exercise as IExercise;
+    return exercise as unknown as IExercise;
   }
 
   async delete(identifier: string, req: any): Promise<void> {
@@ -48,7 +49,7 @@ export class ExerciseService {
     try {
       const exercise = await this.exerciseModel.findOne({ name: identifier })
       if (!exercise) throw new NotFoundException(`Exercise could not be found!`);
-      // if(req['user'].email != user?.email) throw new UnauthorizedException("You are not the owner of this entity");
+      if(req['user'].sub != exercise.owner) throw new UnauthorizedException("You are not the owner of this entity");
       const result = await this.exerciseModel
         .deleteOne({ name: identifier })
         .exec();
@@ -62,13 +63,14 @@ export class ExerciseService {
     }
   }
 
-  async create(exercise: CreateExerciseDto): Promise<IExercise> {
+  async create(exercise: CreateExerciseDto, req: any): Promise<IExercise> {
     Logger.log('create', this.TAG);
     const existingExercise = await this.exerciseModel.findOne({ name: exercise.name });
     if (existingExercise) {
       Logger.warn('Duplicate exercise', this.TAG);
       throw new ConflictException('Exercise with this name already exists');
     }
+    exercise.owner = req.user.sub;
     const newExercise = exercise;
     const createdExercies = new this.exerciseModel(newExercise);
     createdExercies.save();
@@ -79,7 +81,7 @@ export class ExerciseService {
       exerName: createdExercies.name
     });
 
-    return createdExercies as IExercise;
+    return createdExercies as unknown as IExercise;
   }
 
   async update(identifier: string, exercise: UpdateExerciseDto, req: any): Promise<IExercise> {
@@ -90,14 +92,14 @@ export class ExerciseService {
             Logger.warn('Exercise not found', this.TAG);
             throw new NotFoundException('Exercise was not found');
         }
-        // if(req['user'].email != existingUser.email) throw new UnauthorizedException("You are not the owner of this entity");
+        if(req['user'].sub != existingExercise.owner) throw new UnauthorizedException("You are not the owner of this entity");
         
         existingExercise.set({
           ...existingExercise.toObject() as IRoom,
           ...exercise,
       });
         const updatedExercise = await existingExercise.save();
-        return updatedExercise as IExercise;
+        return updatedExercise as unknown as IExercise;
     } catch (error) {
         Logger.error(`Error updating exercise: ${error}`, this.TAG);
         if((error as Error).message.includes("E11000")) {

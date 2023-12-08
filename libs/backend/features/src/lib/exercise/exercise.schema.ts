@@ -1,7 +1,7 @@
-import { Difficulty } from '@avans-nx-workshop/shared/api';
+import { Difficulty, IUser } from '@avans-nx-workshop/shared/api';
 import { Prop, Schema, SchemaFactory, } from '@nestjs/mongoose';
 import { IsMongoId } from 'class-validator';
-import { HydratedDocument } from 'mongoose';
+import { HydratedDocument, Schema as MongooseSchema } from 'mongoose';
 
 export type ExerciseDocument = HydratedDocument<Exercise>;
 
@@ -15,6 +15,11 @@ export class Exercise {
   description!: string;
   @Prop({ type: String, enum: Difficulty})
   difficulty!: Difficulty;
+  @Prop({
+    type: MongooseSchema.Types.ObjectId,
+    ref: 'User'
+  })
+  owner!: IUser;
 }
 
 export const ExerciseSchema = SchemaFactory.createForClass(Exercise);

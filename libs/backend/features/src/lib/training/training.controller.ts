@@ -40,7 +40,7 @@ export class TrainingController {
     @Put(':id')
     @UseGuards(AuthGuard)
     @Trainer()
-    async update(@Param('id') id: string, @Body() data: UpdateTrainingDto, @Request() req: any): Promise<IExercise> {
+    async update(@Param('id') id: string, @Body() data: UpdateTrainingDto, @Request() req: any): Promise<ITraining> {
         return await this.trainingService.update(id, data, req);
     }
     

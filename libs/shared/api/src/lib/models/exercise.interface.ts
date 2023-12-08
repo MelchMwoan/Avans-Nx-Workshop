@@ -1,4 +1,5 @@
 import { Id } from './id.type';
+import { ITrainer } from './user.interface';
 
 export enum Difficulty {
     Basic = 'Basic',
@@ -13,8 +14,9 @@ export interface IExercise {
     name: string;
     description: string;
     difficulty: Difficulty;
+    owner: ITrainer;
 }
 
 export type ICreateExercise = Pick<IExercise, 'name' | 'description' | 'difficulty'>;
-export type IUpdateExercise = Partial<Omit<IExercise, 'id'>>;
+export type IUpdateExercise = Partial<Omit<IExercise, 'id' | 'owner'>>;
 export type IUpsertExercise = IExercise;
