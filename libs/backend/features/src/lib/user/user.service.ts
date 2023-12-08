@@ -60,7 +60,7 @@ export class UserService {
         .deleteOne({ email: identifier })
         .exec();
         
-      const res = await this.neo4jService.write('MATCH (u1:User {email: $userEmail}) DELETE u1', {
+      const res = await this.neo4jService.write('MATCH (u1:User {email: $userEmail}) OPTIONAL MATCH (u1)-[r]-() DELETE u1,r', {
         userEmail: identifier
       });
       Logger.log(`User deleted successfully`, this.TAG);

@@ -53,7 +53,7 @@ export class ExerciseService {
       const result = await this.exerciseModel
         .deleteOne({ name: identifier })
         .exec();
-      const res = await this.neo4jService.write('MATCH (e:Exercise {name: $exerName}) DELETE e', {
+      const res = await this.neo4jService.write('MATCH (e:Exercise {name: $exerName})  OPTIONAL MATCH (u1)-[r]-() DELETE e,r', {
         exerName: identifier
       });
       Logger.log(`Exercise deleted successfully`, this.TAG);
@@ -75,10 +75,11 @@ export class ExerciseService {
     const createdExercies = new this.exerciseModel(newExercise);
     createdExercies.save();
     
-    const res = await this.neo4jService.write('MERGE (e:Exercise {name: $exerName}) ON CREATE SET e.id = $exerId, e.difficulty = $exerDifficulty', {
+    const res = await this.neo4jService.write('MERGE (e:Exercise {name: $exerName}) ON CREATE SET e.id = $exerId, e.difficulty = $exerDifficulty WITH e MATCH (u:User {id:$userId}) MERGE (u)-[role:CREATED]->(e)', {
       exerId: String(createdExercies._id),
       exerDifficulty: createdExercies.difficulty,
-      exerName: createdExercies.name
+      exerName: createdExercies.name,
+      userId: String(createdExercies.owner)
     });
 
     return createdExercies as unknown as IExercise;
