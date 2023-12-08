@@ -1,8 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MealListComponent } from './meal/meal-list/meal-list.component';
-import { MealDetailComponent } from './meal/meal-detail/meal-detail.component';
-import { MealService } from './meal/meal.service';
 import { AboutComponent } from './about/about.component';
 import { HomeComponent } from './home/home.component';
 import { UserDetailComponent } from './user/user-detail/user-detail.component';
@@ -32,8 +29,6 @@ import { TrainingEditComponent } from './training/training-edit/training-edit.co
 @NgModule({
   imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, UiModule, HttpClientModule],
   declarations: [
-    MealListComponent,
-    MealDetailComponent,
     AboutComponent,
     HomeComponent,
     UserDetailComponent,
@@ -50,10 +45,8 @@ import { TrainingEditComponent } from './training/training-edit/training-edit.co
     TrainingDetailComponent,
     TrainingEditComponent
   ],
-  providers: [MealService, UserService, AuthService, RoomService, ExerciseService, TrainingService],
+  providers: [UserService, AuthService, RoomService, ExerciseService, TrainingService],
   exports: [
-    MealListComponent,
-    MealDetailComponent,
     AboutComponent,
     HomeComponent,
     UserDetailComponent,

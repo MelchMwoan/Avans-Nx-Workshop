@@ -6,7 +6,6 @@ import { AppService } from './app.service';
 import {
   AuthModule,
   BackendFeaturesExerciseModule,
-  BackendFeaturesMealModule,
   BackendFeaturesRoomModule,
   BackendFeaturesTrainingModule,
 } from '@avans-nx-workshop/backend/features';
@@ -15,7 +14,6 @@ import { environment } from '@avans-nx-workshop/shared/util-env';
 
 @Module({
   imports: [
-    BackendFeaturesMealModule,
     BackendFeaturesUserModule,
     MongooseModule.forRoot(environment.databaseUrl),
     AuthModule,
