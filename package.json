@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "build": "nx run-many --target=build -p data-api ttvd-trainingen"
+    "build": "nx run-many --target=build -p data-api ttvd-trainingen rcmnd-api"
   },
   "private": true,
   "dependencies": {
