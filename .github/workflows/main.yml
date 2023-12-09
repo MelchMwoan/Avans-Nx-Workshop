@@ -27,6 +27,7 @@ jobs:
           echo ${GITHUB_WORKSPACE}
           cd ${GITHUB_WORKSPACE}/dist/apps/data-api/ && zip ${GITHUB_WORKSPACE}/data-api-release.zip ./* -r
           cd ${GITHUB_WORKSPACE}/dist/apps/ttvd-trainingen/ && zip ${GITHUB_WORKSPACE}/ttvd-trainingen-release.zip ./* -r
+          cd ${GITHUB_WORKSPACE}/dist/apps/rcmnd-api/ && zip ${GITHUB_WORKSPACE}/rcmnd-api-release.zip ./* -r
 
       - name: Upload angular app for deployment
         uses: actions/upload-artifact@v3
@@ -39,6 +40,12 @@ jobs:
         with:
           name: data-api
           path: data-api-release.zip
+
+      - name: Upload rcmnd api for deployment
+        uses: actions/upload-artifact@v3
+        with:
+          name: rcmnd-api
+          path: rcmnd-api-release.zip
           
   deploy-angular:
     runs-on: ubuntu-latest
@@ -65,7 +72,7 @@ jobs:
           api_location: ""
           output_location: ""
           
-  deploy-api:
+  deploy-data-api:
     runs-on: ubuntu-latest
     needs: build
     environment:
@@ -90,4 +97,31 @@ jobs:
         with:
           app-name: 'TTVD-Trainingen-API-NestJS'
           publish-profile: ${{ secrets.NEXTJS_PUBLISHPROFILE }}
+          package: .
+
+  deploy-rcmnd-api:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+      - name: Download nestjs artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: rcmnd-api
+
+      - name: Unzip angular artifact
+        run: unzip rcmnd-api-release.zip
+
+      - name: Install npm dependencies
+        run: npm install
+
+      - name: Deploy to azure web app
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'TTVD-Trainingen-API-rcmnd'
+          publish-profile: ${{ secrets.RCMND_NEXTJS_PUBLISHPROFILE }}
           package: .

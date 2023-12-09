@@ -44,7 +44,6 @@ export class ExerciseService {
   }
 
   async delete(identifier: string, req: any): Promise<void> {
-    //TODO: Authentication
     Logger.log(`Delete(${identifier})`, this.TAG);
     try {
       const exercise = await this.exerciseModel.findOne({ name: identifier })

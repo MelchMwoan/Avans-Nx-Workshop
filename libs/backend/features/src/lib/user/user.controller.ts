@@ -7,7 +7,6 @@ import { Public } from '../auth/decorators/public.decorator';
 import { AuthGuard } from '../auth/auth.guard';
 
 @Controller('user')
-//TODO: Remove public where not needed
 export class UserController {
     constructor(private userService: UserService) {}
 
