@@ -33,6 +33,7 @@ export class TrainingListComponent implements OnInit, OnDestroy {
           })
         })
         document.getElementById("loading")?.classList.add("hidden");
+        if(this.trainings?.length == 0) document.getElementById("noInput")?.classList.remove("hidden");
       });
   }
 

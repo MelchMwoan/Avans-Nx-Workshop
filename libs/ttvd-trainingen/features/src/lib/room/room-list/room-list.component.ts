@@ -19,6 +19,7 @@ export class RoomListComponent implements OnInit, OnDestroy {
       this.subscription = this.roomService.list().subscribe((results) => {
         this.rooms = results;
         document.getElementById("loading")?.classList.add("hidden");
+        if(this.rooms?.length == 0) document.getElementById("noInput")?.classList.remove("hidden");
       });
   }
 

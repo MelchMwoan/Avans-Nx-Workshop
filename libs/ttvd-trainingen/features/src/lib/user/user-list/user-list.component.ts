@@ -18,6 +18,7 @@ export class UserListComponent implements OnInit, OnDestroy {
       this.subscription = this.userService.list().subscribe((results) => {
         this.users = results;
         document.getElementById("loading")?.classList.add("hidden");
+        if(this.users?.length == 0) document.getElementById("noInput")?.classList.remove("hidden");
       });
   }
 

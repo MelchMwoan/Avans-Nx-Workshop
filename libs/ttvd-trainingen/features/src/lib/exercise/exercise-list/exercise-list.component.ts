@@ -19,6 +19,7 @@ export class ExerciseListComponent implements OnInit, OnDestroy {
       this.subscription = this.exerciseService.list().subscribe((results) => {
         this.exercises = results;
         document.getElementById("loading")?.classList.add("hidden");
+        if(this.exercises?.length == 0) document.getElementById("noInput")?.classList.remove("hidden");
       });
   }
 
