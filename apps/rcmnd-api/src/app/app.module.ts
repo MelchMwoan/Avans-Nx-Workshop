@@ -10,8 +10,8 @@ import { Neo4jModule } from 'nest-neo4j/dist'
       scheme: 'bolt+s',
       host: '92d8bfad.databases.neo4j.io',
       port: 7687,
-      username: process.env.NEO4J_USER,
-      password: process.env.NEO4J_PASSWORD
+      username: "neo4j",
+      password: "22tg5FOtu_8jNwsdwkBBMrPxLfGmL3XKeUdYYxXh8dQ"
     }),
     Neo4jBackendModule
   ],
