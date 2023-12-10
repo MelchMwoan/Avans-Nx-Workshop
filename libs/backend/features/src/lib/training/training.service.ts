@@ -121,6 +121,15 @@ export class TrainingService {
           : null;
       }
       newTraining.room = newTraining.roomId;
+      const startDate = new Date(newTraining.dateTime);
+      startDate.setHours(startDate.getHours()-2);
+      const endDate = new Date(newTraining.dateTime);
+      endDate.setHours(startDate.getHours()+2);
+      const dateTrainings = await this.trainingModel.find({dateTime: { $gte: startDate, $lte: endDate}, room: newTraining.roomId}).exec();
+      if(dateTrainings.length != 0) {
+        Logger.warn('Training already exist on this date', this.TAG);
+        throw new ConflictException('There is already a training on this Date, Time and this Room');
+      }
       const createdTraining = new this.trainingModel(newTraining);
       await createdTraining.save();
       const res = await this.neo4jService.write(
