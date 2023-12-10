@@ -3,9 +3,11 @@ import {
     IsString,
     IsBoolean,
     IsOptional,
-    IsNumber} from 'class-validator';
+    IsNumber,
+    IsObject} from 'class-validator';
 import {
     ICreateRoom,
+    ITrainer,
     IUpdateRoom,
     IUpsertRoom,
 } from '@avans-nx-workshop/shared/api';
@@ -26,6 +28,11 @@ export class CreateRoomDto implements ICreateRoom {
     @IsBoolean()
     @IsOptional()
     isInMaintenance = false;
+
+    @IsString()
+    @IsNotEmpty()
+    @IsOptional()
+    owner?: ITrainer;
 }
 
 export class UpsertRoomDto implements IUpsertRoom {
@@ -44,6 +51,10 @@ export class UpsertRoomDto implements IUpsertRoom {
     @IsBoolean()
     @IsOptional()
     isInMaintenance!: boolean;
+    
+    @IsObject()
+    @IsNotEmpty()
+    owner!: ITrainer;
 }
 
 export class UpdateRoomDto implements IUpdateRoom {

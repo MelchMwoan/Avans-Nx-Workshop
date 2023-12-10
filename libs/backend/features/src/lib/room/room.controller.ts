@@ -5,6 +5,7 @@ import { CreateRoomDto, UpdateRoomDto } from '@avans-nx-workshop/backend/dto';
 import { Public } from '../auth/decorators/public.decorator';
 import { AuthGuard } from '../auth/auth.guard';
 import { RoomService } from './room.service';
+import { Trainer } from '../auth/decorators/trainer.decorator';
 
 @Controller('room')
 export class RoomController {
@@ -24,8 +25,9 @@ export class RoomController {
 
     @Post('')
     @UseGuards(AuthGuard)
-    create(@Body() data: CreateRoomDto): Promise<IRoom> {
-        return this.roomService.create(data);
+    @Trainer()
+    create(@Body() data: CreateRoomDto, @Request() req: any): Promise<IRoom> {
+        return this.roomService.create(data, req);
     }
 
     @Delete(':id')
