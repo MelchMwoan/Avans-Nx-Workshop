@@ -94,7 +94,8 @@ export class TrainingEditComponent implements OnInit, OnDestroy {
       });
       this.createTrainingForm.get('trainers')?.setValue([this.curUser._id]);
       await this.roomService.list().subscribe((results) => {
-        this.roomChoices = results;
+        this.roomChoices = results
+          ? results.filter((x: IRoom) => !x.isInMaintenance): [];
       });
       await this.exerciseService.list().subscribe((results) => {
         this.exerciseChoices = results;
