@@ -74,7 +74,7 @@ export class TrainingEditComponent implements OnInit, OnDestroy {
         this.router.navigate(['/']);
         this.alertService.show(
           'warning',
-          'Only trainers are allowed to do this.'
+          'Alleen trainers mogen dit doen.'
         );
       }
     });
@@ -110,7 +110,7 @@ export class TrainingEditComponent implements OnInit, OnDestroy {
               this.router.navigate(['/trainings']);
               this.alertService.show(
                 'warning',
-                'You are not authorized to edit this training.'
+                'Jij mag deze training niet bewerken.'
               );
             }
             this.createTrainingForm.markAllAsTouched();

@@ -2,11 +2,11 @@ import { Id } from './id.type';
 import { ITrainer } from './user.interface';
 
 export enum Difficulty {
-    Basic = 'Basic',
-    Advanced = 'Advanced',
+    Basic = 'Basis',
+    Advanced = 'Gevorderd',
     Expert = 'Expert',
-    YouthBasic = 'Youth Basic',
-    YouthExpert = 'Youth Expert'
+    YouthBasic = 'Jeugd Basis',
+    YouthExpert = 'Jeugd Selectie'
 }
 
 export interface IExercise {

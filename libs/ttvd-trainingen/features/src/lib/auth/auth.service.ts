@@ -59,7 +59,7 @@ export class AuthService {
           this.currentUser$.next(user);
           const errorResponse: Alert = {
               type: 'success',
-              message: "Succesfully logged in",
+              message: "Succesvol ingelogd",
               dismissOnRouteChange: false
           }
           this.alertService.show(errorResponse.type, errorResponse.message, errorResponse.dismissOnRouteChange)
@@ -120,7 +120,7 @@ export class AuthService {
       }),
       catchError((error: any) => {
         console.log('Validate token Failed');
-        this.alertService.show("danger", "You were logged out due to inactivity, please log back in", false, 20000)
+        this.alertService.show("danger", "Je was uitgelogd door inactiviteit, log alstublieft opnieuw in.", false, 20000)
         this.logout();
         this.currentUser$.next(undefined);
         return this.handleError(error, this.router)
@@ -140,7 +140,7 @@ export class AuthService {
           this.currentUser$.next(undefined);
           const errorResponse: Alert = {
               type: 'warning',
-              message: "Succesfully logged out",
+              message: "Succesvol uitgelogd",
               dismissOnRouteChange: false
           }
           this.alertService.show(errorResponse.type, errorResponse.message, errorResponse.dismissOnRouteChange)
