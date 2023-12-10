@@ -184,21 +184,107 @@ Dat werkt niet lekker, daarom ga ik een eigen systeem maken.
           <li>Een trainer kan een zaal training via een pagina met een form</li>
           <li>Het form moet worden gevalideerd met feedback naar de gebruiker</li>
           <li>Alleen trainers kunnen trainingen bewerken</li>
-          <li>Alleen de trainer die dezelfde oefening heeft aangemaakt kan de training bewerken</li>
+          <li>Alleen de trainer die een trainer is bij de gevraagde training kan de training bewerken</li>
         </ul>
       </td>
       <td class="px-6 py-4">M</td>
     </tr>
     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
       <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">15</td>
-      <td class="px-6 py-4">Als gebruiker wil ik oefeningen bekijken zodat ik weet wat de bedoeling gaat zijn</td>
+      <td class="px-6 py-4">Als gebruiker wil ik trainingen bekijken zodat ik weet wat de bedoeling gaat zijn</td>
       <td class="px-6 py-4">
         <ul class="list-inside list-disc">
-          <li>Er is een overzichtspagina voor de oefeningen en elke oefening heeft ook een detailpagina</li>
-          <li>Alleen als de gebruiker de oefening kan bewerken moet er een knop zijn om naar de bewerkpagina te gaan</li>
+          <li>Er is een overzichtspagina voor de trainingen en elke training heeft ook een detailpagina</li>
+          <li>Alleen als de gebruiker de training kan bewerken moet er een knop zijn om naar de bewerkpagina te gaan</li>
         </ul>
       </td>
       <td class="px-6 py-4">M</td>
+    </tr>
+    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+      <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">16</td>
+      <td class="px-6 py-4">Als gebruiker wil ik deelnames aan traingen bekijken zodat ik weet wie er allemaal deelnemen</td>
+      <td class="px-6 py-4">
+        <ul class="list-inside list-disc">
+          <li>Op de detailpagina van een training is te zien wie er allemaal zijn aangemeld</li>
+        </ul>
+      </td>
+      <td class="px-6 py-4">S</td>
+    </tr>
+    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+      <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">17</td>
+      <td class="px-6 py-4">Als speler wil ik trainingen om aan deel te nemen aanbevolen krijgen op basis van mijn inschrijvingen zodat ik zie welke trainingen nog meer leuk kunnen zijn</td>
+      <td class="px-6 py-4">
+        <ul class="list-inside list-disc">
+          <li>Er is een pagina met een lijst van trainingen die allemaal voor mij zijn aanbevolen</li>
+        </ul>
+      </td>
+      <td class="px-6 py-4">S</td>
+    </tr>
+    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+      <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">18</td>
+      <td class="px-6 py-4">Als gebruiker kan ik mijn eigen gegevens verwijderen</td>
+      <td class="px-6 py-4">
+        <ul class="list-inside list-disc">
+          <li>Op de bewerkpagina kan een gebruiker zijn eigen gegevens uit het systeem laten verwijderen</li>
+          <li>Je kan alleen je eigen gegevens verwijderen</li>
+        </ul>
+      </td>
+      <td class="px-6 py-4">M</td>
+    </tr>
+    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+      <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">19</td>
+      <td class="px-6 py-4">Als trainer kan ik mijn eigen oefeningen verwijderen</td>
+      <td class="px-6 py-4">
+        <ul class="list-inside list-disc">
+          <li>Op de bewerkpagina kan een trainer zijn eigen oefning uit het systeem laten verwijderen</li>
+          <li>Een trainer kan alleen de oefening verwijderen die die zelf heeft aangemaakt</li>
+        </ul>
+      </td>
+      <td class="px-6 py-4">M</td>
+    </tr>
+    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+      <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">19</td>
+      <td class="px-6 py-4">Als trainer kan ik mijn eigen zalen verwijderen</td>
+      <td class="px-6 py-4">
+        <ul class="list-inside list-disc">
+          <li>Op de bewerkpagina kan een trainer zijn eigen zaal uit het systeem laten verwijderen</li>
+          <li>Een trainer kan alleen de zaal verwijderen die die zelf heeft aangemaakt</li>
+        </ul>
+      </td>
+      <td class="px-6 py-4">M</td>
+    </tr>
+    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+      <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">20</td>
+      <td class="px-6 py-4">Als trainer kan ik mijn eigen training verwijderen</td>
+      <td class="px-6 py-4">
+        <ul class="list-inside list-disc">
+          <li>Op de bewerkpagina kan een trainer zijn eigen training uit het systeem laten verwijderen</li>
+          <li>Een trainer kan alleen de training verwijderen waar die een trainer van is</li>
+        </ul>
+      </td>
+      <td class="px-6 py-4">M</td>
+    </tr>
+    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+      <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">21</td>
+      <td class="px-6 py-4">Als speler kan ik me inschrijven bij een training zodat anderen kunnen zien dat ik kom</td>
+      <td class="px-6 py-4">
+        <ul class="list-inside list-disc">
+          <li>Op de detailpagina van een training is er een inschrijfknop als de speler zich kan inschrijven</li>
+          <li>Een speler kan zich alleen inschrijven als de training nog niet vol is</li>
+        </ul>
+      </td>
+      <td class="px-6 py-4">M</td>
+    </tr>
+    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+      <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">22</td>
+      <td class="px-6 py-4">Als speler kan ik me uitschrijven bij een training zodat anderen kunnen zien dat ik niet meer kom</td>
+      <td class="px-6 py-4">
+        <ul class="list-inside list-disc">
+          <li>Op de detailpagina van een training is er een uitschrijfknop als de speler zich kan uitschrijven</li>
+          <li>Een speler kan zich alleen uitschrijven als hij wel al is ingeschreven</li>
+        </ul>
+      </td>
+      <td class="px-6 py-4">S</td>
     </tr>
     
   </table>
