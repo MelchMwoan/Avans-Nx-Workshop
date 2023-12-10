@@ -34,7 +34,7 @@ export class RoomEditComponent implements OnInit, OnDestroy {
     this.authService.userIsTrainer().subscribe((result) => {
       if(!result) {
         this.router.navigate(['/']);
-        this.alertService.show("warning", "Only trainers are allowed to do this.");
+        this.alertService.show("warning", "Alleen trainers mogen dit doen.");
       }
     })
     this.routeSub = this.route.params.subscribe(async params => {
@@ -50,7 +50,7 @@ export class RoomEditComponent implements OnInit, OnDestroy {
             this.router.navigate(['/rooms']);
             this.alertService.show(
               'warning',
-              'You are not authorized to edit this room.'
+              'Jij mag deze zaal niet bewerken.'
             );
           }
           this.createRoomForm.markAllAsTouched();

@@ -230,7 +230,7 @@ export class TrainingService {
              authOptions.headers = authOptions.headers.set('Authorization', 'Bearer ' + accessToken);
         })
         return this.http
-            .get<ApiResponse<any>>(this.endpoint + '/training/enrollments', {
+            .get<ApiResponse<any>>(this.endpoint + '/enrollments', {
                 ...options,
                 ...authOptions,
             })

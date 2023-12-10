@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ITraining, IUser } from '@avans-nx-workshop/shared/api';
+import { IEnrollment, ITraining, IUser } from '@avans-nx-workshop/shared/api';
 import { Subscription, Observable } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { RoomService } from '../room/room.service';
@@ -13,7 +13,8 @@ import { UserService } from '../user/user.service';
 })
 export class HomeComponent implements OnInit, OnDestroy {
   trainings: ITraining[] | null = null;
-  enrolledTrainings: ITraining[] | null = null;
+  enrollments: IEnrollment[] | null = null;
+  enrolledTrainings: ITraining[] | null = [];
   subscription: Subscription | undefined = undefined;
 
   constructor(
@@ -25,10 +26,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   async ngOnInit(): Promise<void> {
     await this.authService.getUserFromLocalStorage().subscribe((res) => {
-      if(res == null) {
-        document.getElementById('loading')?.classList.add('hidden');
-        document.getElementById('loadingEnrolls')?.classList.add('hidden');
-      }
       if (res !== null) {
         this.subscription = this.trainingService
           .rcmnd()
@@ -57,25 +54,32 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.subscription = this.trainingService
           .getEnrollmentsPlayer()
           .subscribe((results) => {
-            this.enrolledTrainings = results;
-            // this.trainings?.forEach((training) => {
-            //   const newTrainers: IUser[] = [];
-            //   training.trainers.forEach(async (trainer) => {
-            //     await this.userService.read(trainer as any).subscribe((results) => {
-            //       newTrainers.push(results);
-            //     });
-            //     training.trainers = newTrainers;
-            //     await this.roomService.read(training.room as any).subscribe((results) => {
-            //       training.room = results;
-            //     })
-            //   })
-            // })
+            this.enrollments = results.results;
+            results?.results.forEach((enrollment: IEnrollment) => {
+              this.trainingService.read(enrollment.training as any).subscribe((training) => {
+                const newTrainers: IUser[] = [];
+                training.trainers.forEach(async (trainer) => {
+                  await this.userService
+                    .read(trainer as any)
+                    .subscribe((results) => {
+                      newTrainers.push(results);
+                    });
+                  training.trainers = newTrainers;
+                  await this.roomService
+                    .read(training.room as any)
+                    .subscribe((results) => {
+                      training.room = results;
+                    });
+                });
+                this.enrolledTrainings?.push(training);
+              })
+            });
             document.getElementById('loadingEnrolls')?.classList.add('hidden');
-            if (this.enrolledTrainings?.length == 0)
-              document
-                .getElementById('noInputEnrolls')
-                ?.classList.remove('hidden');
+            if (this.enrollments?.length == 0) document.getElementById('noInputEnrolls')?.classList.remove('hidden');
           });
+      } else {
+        document.getElementById('loading')?.classList.add('hidden');
+        document.getElementById('loadingEnrolls')?.classList.add('hidden');
       }
     });
   }

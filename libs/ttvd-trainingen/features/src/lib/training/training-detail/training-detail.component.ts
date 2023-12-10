@@ -93,7 +93,6 @@ export class TrainingDetailComponent implements OnInit, OnDestroy {
     this.subscription = (this.trainingService
       .join(trainingId))
       .subscribe((results) => {
-        console.log("shfiosfjiofjiodsjf"+results)
         this.router.navigate(['/']).then((success) => {this.router.navigate([url])});
       });
   }
@@ -105,7 +104,6 @@ export class TrainingDetailComponent implements OnInit, OnDestroy {
     this.subscription = this.trainingService
       .leave(trainingId)
       .subscribe((results) => {
-        console.log("shfiosfjiofjiodsjf"+results)
         this.router.navigate(['/']).then((success) => {this.router.navigate([url])});
       });
   }
