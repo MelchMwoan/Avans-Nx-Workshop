@@ -10,10 +10,10 @@
                 <th scope="col" class="px-6 py-3">
                     Name
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" class="px-6 py-3 hidden lg:table-cell">
                     Max Tables
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" class="px-6 py-3 hidden lg:table-cell">
                     Maintenance
                 </th>
                 <th scope="col" class="px-6 py-3" *ngIf="(isTrainer() | async) === true">
@@ -34,10 +34,10 @@
                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     {{ room.name }}
                 </th>
-                <td class="px-6 py-4">
+                <td class="px-6 py-4 hidden lg:table-cell">
                     {{ room.maxAmountOfTables }}
                 </td>
-                <td class="px-6 py-4">
+                <td class="px-6 py-4 hidden lg:table-cell">
                     {{ room.isInMaintenance ? "Currently in maintenance" : "Currently available"}}
                 </td>
                 <td class="px-6 py-4" *ngIf="(isTrainer() | async) === true">

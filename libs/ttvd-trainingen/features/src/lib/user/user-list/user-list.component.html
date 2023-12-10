@@ -10,10 +10,10 @@
                 <th scope="col" class="px-6 py-3">
                     Name
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" class="px-6 py-3 hidden lg:table-cell">
                     Role
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" class="px-6 py-3 hidden lg:table-cell">
                     Email
                 </th>
                 <th scope="col" class="px-6 py-3">
@@ -34,7 +34,7 @@
                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     {{ user.firstName }} {{ user.lastName}}
                 </th>
-                <td class="px-6 py-4">
+                <td class="px-6 py-4 hidden lg:table-cell">
                     <ng-container *ngIf="isTrainer(user); else playerBlock">
                         Trainer
                       </ng-container>
@@ -47,7 +47,7 @@
                         Unknown
                       </ng-template>
                 </td>
-                <td class="px-6 py-4">
+                <td class="px-6 py-4 hidden lg:table-cell">
                     {{ user.email}}
                 </td>
                 <td class="px-6 py-4">
