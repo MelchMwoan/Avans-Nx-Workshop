@@ -45,7 +45,6 @@ export class TrainingDetailComponent implements OnInit, OnDestroy {
             this.mayEdit = results.trainers.some(x => x === res?.results.user._id);
             this.curUser = res?.results.user;
           });
-          ;
           const newTrainers: IUser[] = [];
           results.trainers.forEach(async (trainer) => {
             this.userService.read(trainer as any).subscribe((results) => {

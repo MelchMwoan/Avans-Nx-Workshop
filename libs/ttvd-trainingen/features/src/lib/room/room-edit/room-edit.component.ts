@@ -20,6 +20,7 @@ export class RoomEditComponent implements OnInit, OnDestroy {
   room: IRoom | null = null;
   subscription: Subscription | undefined = undefined;
   routeSub: Subscription | undefined = undefined;
+  curUser?: any | null;
 
   createRoomForm = this.formBuilder.group({
     name: ['', Validators.required],
@@ -36,10 +37,22 @@ export class RoomEditComponent implements OnInit, OnDestroy {
         this.alertService.show("warning", "Only trainers are allowed to do this.");
       }
     })
-    this.routeSub = this.route.params.subscribe(params => {
+    this.routeSub = this.route.params.subscribe(async params => {
+      await this.authService
+        .getUserFromLocalStorage()
+        .subscribe((results: any) => {
+          this.curUser = results.results.user;
+        });
       if(params['id']) {
         this.subscription = this.roomService.read(params['id']).subscribe((results) => {
           this.room = results;
+          if (this.room.owner != this.curUser._id) {
+            this.router.navigate(['/rooms']);
+            this.alertService.show(
+              'warning',
+              'You are not authorized to edit this room.'
+            );
+          }
           this.createRoomForm.markAllAsTouched();
         });
         const $modalElement: HTMLElement | null = document.querySelector('#popup-modal');

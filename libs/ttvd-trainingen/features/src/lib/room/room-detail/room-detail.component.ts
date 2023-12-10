@@ -29,6 +29,9 @@ export class RoomDetailComponent implements OnInit, OnDestroy {
     this.routeSub = this.route.params.subscribe(params => {
       this.subscription = this.roomService.read(params['id']).subscribe((results) => {
         this.room = results;
+        this.authService.getUserFromLocalStorage().subscribe((res: any) => {
+          this.mayEdit = results.owner == res?.results.user._id;
+        });
       });
     });
   }

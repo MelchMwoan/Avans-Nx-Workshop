@@ -22,10 +22,12 @@ export class ExerciseDetailComponent implements OnInit, OnDestroy {
   constructor(private exerciseService: ExerciseService, private route: ActivatedRoute, private authService: AuthService, private alertService: AlertService, private router: Router) {}
 
   ngOnInit(): void {
-    this.authService.userIsTrainer().subscribe(isTrainer => this.mayEdit = isTrainer)
     this.routeSub = this.route.params.subscribe(params => {
       this.subscription = this.exerciseService.read(params['id']).subscribe((results) => {
         this.exercise = results;
+        this.authService.getUserFromLocalStorage().subscribe((res: any) => {
+          this.mayEdit = results.owner == res?.results.user._id;
+        });
       });
     });
   }
