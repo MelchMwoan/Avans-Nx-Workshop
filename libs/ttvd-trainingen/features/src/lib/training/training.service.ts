@@ -49,6 +49,30 @@ export class TrainingService {
             );
     }
 
+    public rcmnd(options?: any): Observable<ITraining[] | null> {
+        console.log(`rcmnd ${environment.rcmndApiUrl}/users/rcmnd`);
+        const authOptions = {
+            ...httpOptions,
+            headers: new HttpHeaders({
+                'Content-type': 'application/json',
+            })
+        }
+        this.authService.getUserFromLocalStorage().subscribe((result) => {
+             const accessToken = (result as any).results.access_token;
+             authOptions.headers = authOptions.headers.set('Authorization', 'Bearer ' + accessToken);
+        })
+        return this.http
+            .get<ApiResponse<ITraining[]>>(environment.rcmndApiUrl+"/users/rcmnd", {
+                ...options,
+                ...authOptions,
+            })
+            .pipe(
+                map((response: any) => response.results as ITraining[]),
+                tap(console.log),
+                catchError((error) => this.handleError(error, this.router))
+            );
+    }
+
     /**
      * Get a single item from the service.
      *
