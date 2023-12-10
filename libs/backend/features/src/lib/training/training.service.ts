@@ -120,11 +120,12 @@ export class TrainingService {
           ? newTraining.trainers.push(req.user.sub)
           : null;
       }
+      newTraining.room = newTraining.roomId;
       const createdTraining = new this.trainingModel(newTraining);
       await createdTraining.save();
       const res = await this.neo4jService.write(
-        'MERGE (t:Training {name: $trainingName}) ON CREATE SET t.id = $trainingId, t.difficulty = $trainingDifficulty WITH t MATCH (u:User) WHERE u.id IN $trainingTrainers MERGE (u)-[r:HOST]->(t) MATCH (e:Exercise) WHERE e.id IN $trainingExercises MERGE (e)-[x:CONTAINS]->(t)',
-        {
+        'MERGE (t:Training {name: $trainingName}) ON CREATE SET t.id = $trainingId, t.difficulty = $trainingDifficulty WITH t MATCH (ro:Room {id:$roomId}) MERGE (t)-[y:TAKES_PLACE_IN]->(ro) WITH t MATCH (u:User) WHERE u.id IN $trainingTrainers MERGE (u)-[r:HOST]->(t) WITH t MATCH (e:Exercise) WHERE e.id IN $trainingExercises MERGE (e)-[x:CONTAINS]->(t)',
+         {
           trainingId: String(createdTraining._id),
           trainingDifficulty: createdTraining.difficulty,
           trainingName: createdTraining.name,
@@ -134,6 +135,7 @@ export class TrainingService {
           trainingExercises: createdTraining.exercises.map((objectId) =>
             String(objectId)
           ),
+          roomId: String(training.roomId)
         }
       );
 
