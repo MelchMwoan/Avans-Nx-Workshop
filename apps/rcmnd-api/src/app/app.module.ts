@@ -3,6 +3,8 @@ import { Neo4jBackendModule } from '@avans-nx-workshop/backend/neo4j';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { Neo4jModule } from 'nest-neo4j/dist'
+import { MongooseModule } from '@nestjs/mongoose';
+import { environment } from '@avans-nx-workshop/shared/util-env';
 
 @Module({
   imports: [
@@ -13,7 +15,8 @@ import { Neo4jModule } from 'nest-neo4j/dist'
       username: "neo4j",
       password: "22tg5FOtu_8jNwsdwkBBMrPxLfGmL3XKeUdYYxXh8dQ"
     }),
-    Neo4jBackendModule
+    Neo4jBackendModule,
+    MongooseModule.forRoot(environment.databaseUrl),
   ],
   controllers: [AppController],
   providers: [AppService],
