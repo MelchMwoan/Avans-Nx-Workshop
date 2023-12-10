@@ -315,4 +315,22 @@ export class TrainingService {
       throw new BadRequestException(error.message);
     }
   }
+  async getEnrollmentsByPlayer(
+    req: any
+  ): Promise<IEnrollment[]> {
+    Logger.log('get Enrollments by player', this.TAG);
+    const user = await this.userModel
+      .findOne({ email: req.user.email })
+      .exec();
+    if (!user) throw new NotFoundException('User not found');
+    try {
+      const result = await this.enrollmentModel.find({
+        player: user._id,
+      });
+      return result;
+    } catch (error: any) {
+      Logger.error('Unexpected Error:', error);
+      throw new BadRequestException(error.message);
+    }
+  }
 }

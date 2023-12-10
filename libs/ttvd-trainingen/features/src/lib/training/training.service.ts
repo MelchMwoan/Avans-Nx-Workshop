@@ -217,6 +217,28 @@ export class TrainingService {
                 catchError((error) => this.handleError(error, this.router))
             );
     }
+    public getEnrollmentsPlayer(options?: any) {
+        console.log(`getting enrollments`)
+        const authOptions = {
+            ...httpOptions,
+            headers: new HttpHeaders({
+                'Content-type': 'application/json',
+            })
+        }
+        this.authService.getUserFromLocalStorage().subscribe((result) => {
+             const accessToken = (result as any).results.access_token;
+             authOptions.headers = authOptions.headers.set('Authorization', 'Bearer ' + accessToken);
+        })
+        return this.http
+            .get<ApiResponse<any>>(this.endpoint + '/training/enrollments', {
+                ...options,
+                ...authOptions,
+            })
+            .pipe(
+                tap(console.log),
+                catchError((error) => this.handleError(error, this.router))
+            );
+    }
 
     /**
      * Handle errors.

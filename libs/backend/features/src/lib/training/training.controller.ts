@@ -17,6 +17,12 @@ export class TrainingController {
         return await this.trainingService.getAll();
     }
 
+    @Get('enrollments')
+    @UseGuards(AuthGuard)
+    getEnrollmentsByPlayer(@Request() req: any): Promise<IEnrollment[]> {
+        return this.trainingService.getEnrollmentsByPlayer(req);
+    }
+
     @Get(':id')
     @Public()
     async getOne(@Param('id') id: string): Promise<ITraining> {
